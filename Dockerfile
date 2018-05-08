@@ -1,6 +1,6 @@
 FROM ruby:2.5-alpine
 
-RUN apk update && apk add build-base postgresql-dev
+RUN apk update && apk add build-base postgresql-dev tzdata
 
 RUN mkdir /app
 WORKDIR /app
