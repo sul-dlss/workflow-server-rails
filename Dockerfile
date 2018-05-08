@@ -1,6 +1,6 @@
 FROM ruby:2.5-alpine
 
-RUN apk update && apk add build-base sqlite-dev tzdata
+RUN apk update && apk add build-base sqlite-dev tzdata git
 
 RUN mkdir /app
 WORKDIR /app
