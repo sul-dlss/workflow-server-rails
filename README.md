@@ -2,7 +2,7 @@
 
 ## Build
 ```
-docker build dlss/workflow-server:latest .
+docker build -t suldlss/workflow-server:latest .
 ```
 
 ## Run
