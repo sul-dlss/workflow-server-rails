@@ -7,7 +7,7 @@ docker build -t suldlss/workflow-server:latest .
 
 ## Run
 ```
-docker run -p 3000:3000 dlss/workflow-server:latest
+docker run -p 3000:3000 suldlss/workflow-server:latest
 ```
 
 ## Routes:
