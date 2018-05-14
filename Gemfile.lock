@@ -1,8 +1,9 @@
 GIT
   remote: https://github.com/sul-dlss/wfs_rails.git
-  revision: 923417502b9a00a777aacbf32fbc96b023c55bce
+  revision: 3a0705d52cdfeeb3dea755c36e3ec8dab767411f
   specs:
     wfs_rails (0.2.0)
+      jbuilder (~> 2.7)
       rails (~> 5.0)
 
 GEM
