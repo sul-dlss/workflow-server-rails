@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/sul-dlss/wfs_rails.git
-  revision: 3a0705d52cdfeeb3dea755c36e3ec8dab767411f
+  revision: 9c31b8165320668d8f6a5b2cc10d62ec6a396aef
   specs:
     wfs_rails (0.2.0)
       jbuilder (~> 2.7)
