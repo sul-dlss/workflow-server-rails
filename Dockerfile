@@ -17,5 +17,6 @@ RUN apk --no-cache add --virtual build-dependencies \
 COPY . .
 
 LABEL maintainer="Justin Coyne <jcoyne@justincoyne.com>"
+ENV RAILS_ENV=production
 
 CMD puma -C config/puma.rb

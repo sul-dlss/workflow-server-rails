@@ -1,6 +1,14 @@
 # Workflow service
 
+This is a workflow service that is set up just for testing. It's only using sqlite,
+so it's not something to use in production.
+
 ## Build
+First create the database (this gets bundled into the image)
+```
+RAILS_ENV=production rake db:migrate
+```
+Build the image
 ```
 docker build -t suldlss/workflow-server:latest .
 ```
