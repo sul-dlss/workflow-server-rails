@@ -1,11 +1,3 @@
-GIT
-  remote: https://github.com/sul-dlss/wfs_rails.git
-  revision: d2e7be70074d57c2ca7038513d1d2f4e3fe95139
-  specs:
-    wfs_rails (0.2.0)
-      jbuilder (~> 2.7)
-      rails (~> 5.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -140,6 +132,9 @@ GEM
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
+    wfs_rails (0.3.0)
+      jbuilder (~> 2.7)
+      rails (~> 5.0)
 
 PLATFORMS
   ruby
@@ -155,7 +150,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   sqlite3
   tzinfo-data
-  wfs_rails!
+  wfs_rails (~> 0.3.0)
 
 RUBY VERSION
    ruby 2.5.3p105
