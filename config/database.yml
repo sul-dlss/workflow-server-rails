@@ -21,5 +21,7 @@ test:
   database: db/test.sqlite3
 
 production:
-  <<: *default
-  database: db/production.sqlite3
+  adapter: oracle_enhanced
+  database: //localhost:1521/xe
+  username: user
+  password: secret
