@@ -35,6 +35,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Use pg as the database for Active Record
   gem 'sqlite3'
+  gem 'rspec-rails'
 end
 
 group :development do
