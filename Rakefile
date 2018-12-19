@@ -6,9 +6,3 @@
 require_relative 'config/application'
 
 Rails.application.load_tasks
-
-# clear the default task injected by rspec
-task(:default).clear
-
-# and replace it with our own
-task default: [:ci]
