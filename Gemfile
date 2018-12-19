@@ -26,8 +26,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # gem 'rack-cors'
 
 group :production do
-  gem 'ruby-oci8'
-  gem 'activerecord-oracle_enhanced-adapter'
+  gem 'pg'
 end
 
 group :development, :test do
