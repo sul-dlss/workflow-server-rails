@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,25 +12,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2015_11_12_054510) do
-
-  create_table "wfs_rails_workflows", force: :cascade do |t|
-    t.string "druid", null: false
-    t.string "datastream", null: false
-    t.string "process", null: false
-    t.string "status"
-    t.text "error_msg"
-    t.binary "error_txt"
-    t.integer "attempts", default: 0, null: false
-    t.string "lifecycle"
-    t.decimal "elapsed", precision: 9, scale: 3
-    t.string "repository"
-    t.integer "version", default: 1
-    t.text "note"
-    t.integer "priority", default: 0
-    t.string "lane_id", default: "default", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+ActiveRecord::Schema.define(version: 20_151_112_054_510) do
+  create_table 'wfs_rails_workflows', force: :cascade do |t|
+    t.string 'druid', null: false
+    t.string 'datastream', null: false
+    t.string 'process', null: false
+    t.string 'status'
+    t.text 'error_msg'
+    t.binary 'error_txt'
+    t.integer 'attempts', default: 0, null: false
+    t.string 'lifecycle'
+    t.decimal 'elapsed', precision: 9, scale: 3
+    t.string 'repository'
+    t.integer 'version', default: 1
+    t.text 'note'
+    t.integer 'priority', default: 0
+    t.string 'lane_id', default: 'default', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
   end
-
 end
