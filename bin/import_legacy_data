@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# This script imports a CSV file into the database.  The CSV file was created by
+# exporting the data from the legacy Oracle database.
+#
+# Usage:
+#   ./bin/import_legacy_data <pathToCSV>
+
+puts 'Loading environment...'
+require File.expand_path('../config/environment', __dir__)
+
+require 'csv'
+
+CSV.foreach(ARGV[0], headers: :first_row) do |line|
+  legacy = line.to_h
+  created_at = legacy.delete('datetime')
+  WfsRails::Workflow.create!(legacy.except('archive_dt').merge(created_at: created_at))
+end
