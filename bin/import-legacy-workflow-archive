@@ -5,7 +5,7 @@
 # exporting the data from the legacy Oracle database.
 #
 # Usage:
-#   ./bin/import_legacy_data <pathToCSV>
+#   ./bin/import-legacy-workflow-archive <pathToCSV>
 
 puts 'Loading environment...'
 require File.expand_path('../config/environment', __dir__)
@@ -15,5 +15,5 @@ require 'csv'
 CSV.foreach(ARGV[0], headers: :first_row) do |line|
   legacy = line.to_h
   created_at = legacy.delete('datetime')
-  WfsRails::Workflow.create!(legacy.except('archive_dt').merge(created_at: created_at))
+  WfsRails::Workflow.create!(legacy.merge(created_at: created_at))
 end
