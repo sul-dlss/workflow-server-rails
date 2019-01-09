@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# This script gets the latest versions for druids in a CSV by calling dor-services-app
+#
+# before running: gem install dor-services-client
+#
+# Usage:
+#   ./bin/fetch-versions <inputCsvFile> <dorServicesUri> <dorServicesUsername> <dorServicesPassword> > ~/versions.csv
+
+require 'dor/services/client'
+
+# Get the unique values from the second column of the file, excluding the header row.
+druids = `tail -n+2 #{ARGV[0]}|awk -F "\\"*,\\"*" '{print $2}'|sort|uniq`.split
+
+Dor::Services::Client.configure(url: ARGV[1],
+                                username: ARGV[2],
+                                password: ARGV[3])
+
+druids.each do |druid|
+  druid = "druid:#{druid}" unless druid.start_with? 'druid:'
+  version = Dor::Services::Client.object(druid).current_version
+  puts "#{druid},#{version}"
+rescue Dor::Services::Client::UnexpectedResponse => e
+  warn "Problem getting version for #{druid}"
+end
