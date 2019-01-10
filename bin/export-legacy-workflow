@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# This script extracts the data from the legacy oracle database and writes it to CSV.
+#
+# before running: gem install ruby-oci8
+#
+# Usage:
+#   ruby export-legacy-workflow <user> <password> <database> > workflow.csv
+
+require 'ruby-oci8'
+require 'csv'
+
+conn = OCI8.new(ARGV[0], ARGV[1], ARGV[2])
+columns = %w[id druid datastream process status error_msg error_txt datetime attempts
+             lifecycle elapsed repository note priority lane_id]
+sql = <<~SQL
+  select #{columns.join(', ')} from workflow
+SQL
+CSV do |csv_out|
+  csv_out << columns
+  conn.exec(sql) do |r|
+    csv_out << r
+  end
+end
