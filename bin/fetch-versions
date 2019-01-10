@@ -21,6 +21,7 @@ druids.each do |druid|
   druid = "druid:#{druid}" unless druid.start_with? 'druid:'
   version = Dor::Services::Client.object(druid).current_version
   puts "#{druid},#{version}"
-rescue Dor::Services::Client::UnexpectedResponse => e
+rescue Dor::Services::Client::UnexpectedResponse
+  # Ben said we can just ignore stuff without versions
   warn "Problem getting version for #{druid}"
 end

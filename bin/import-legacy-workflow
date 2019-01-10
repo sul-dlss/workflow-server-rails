@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# This script joins and imports two CSV files into the database.
+# The first CSV file was created by exporting the data from the legacy Oracle database.
+# The second CSV file is a map of pid to version.  If a pid is not present in the version CSV,
+# we will assume the data is junk and not import it.
+#
+# Usage:
+#   ./bin/import-legacy-workflow <pathToWorkflowCSV> <pathToVersionCSV>
+
+puts 'Loading environment...'
+require File.expand_path('../config/environment', __dir__)
+
+require 'csv'
+
+versions = CSV.read(ARGV[1]).to_h
+CSV.foreach(ARGV[0], headers: :first_row) do |line|
+  legacy = line.to_h
+  version = versions[legacy['druid']]
+  next unless version
+
+  created_at = legacy.delete('datetime')
+  WfsRails::Workflow.create!(legacy.merge(created_at: created_at, version: version))
+end
