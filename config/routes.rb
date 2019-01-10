@@ -1,6 +1,20 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  mount WfsRails::Engine => '/'
+  scope ':repo/objects/:druid', constraints: { druid: %r{[^\/]+} }, defaults: { format: :xml } do
+    get 'lifecycle', to: 'workflows#lifecycle'
+
+    resources :workflows, only: %i[show index destroy], param: :workflow do
+      collection do
+        # Create should be a POST, but this is what the Java WFS app did.
+        put ':workflow', to: 'workflows#create'
+        put ':workflow/:process', to: 'workflows#update'
+      end
+    end
+  end
+
+  get '/workflow_archive',
+      to: 'workflows#archive',
+      constraints: { druid: %r{[^\/]+} },
+      defaults: { format: :xml }
 end

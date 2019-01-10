@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_10_154157) do
+ActiveRecord::Schema.define(version: 2019_01_10_221945) do
 
-  create_table "wfs_rails_workflows", force: :cascade do |t|
+  create_table "workflow_steps", force: :cascade do |t|
     t.string "druid", null: false
     t.string "datastream", null: false
     t.string "process", null: false
@@ -23,14 +23,14 @@ ActiveRecord::Schema.define(version: 2019_01_10_154157) do
     t.string "lifecycle"
     t.decimal "elapsed", precision: 9, scale: 3
     t.string "repository"
-    t.integer "version", default: 1
+    t.integer "version"
     t.text "note"
     t.integer "priority", default: 0
     t.string "lane_id", default: "default", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["druid", "version"], name: "index_wfs_rails_workflows_on_druid_and_version"
-    t.index ["druid"], name: "index_wfs_rails_workflows_on_druid"
+    t.index ["druid", "version"], name: "index_workflow_steps_on_druid_and_version"
+    t.index ["druid"], name: "index_workflow_steps_on_druid"
   end
 
 end
