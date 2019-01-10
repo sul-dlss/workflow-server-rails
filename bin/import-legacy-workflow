@@ -21,5 +21,5 @@ CSV.foreach(ARGV[0], headers: :first_row) do |line|
   next unless version
 
   created_at = legacy.delete('datetime')
-  WfsRails::Workflow.create!(legacy.merge(created_at: created_at, version: version))
+  WorkflowStep.create!(legacy.merge(created_at: created_at, version: version))
 end

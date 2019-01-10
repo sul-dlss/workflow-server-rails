@@ -8,11 +8,10 @@ ruby '2.5.3'
 gem 'rails', '~> 5.2.0'
 
 gem 'bootsnap', '>= 1.1.0', require: false
+gem 'config', '~> 1.7'
 gem 'honeybadger', '~> 4.1'
 gem 'jbuilder', '~> 2.5'
 gem 'puma', '~> 3.11'
-gem 'wfs_rails', '~> 0.3.0'
-gem 'config', '~> 1.7'
 
 group :production do
   gem 'pg'
@@ -20,6 +19,8 @@ end
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'factory_bot_rails'
+  gem 'rails-controller-testing'
   gem 'rspec-rails'
   gem 'rubocop'
   gem 'sqlite3'
