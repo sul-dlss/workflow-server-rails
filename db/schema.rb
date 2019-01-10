@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_10_213421) do
+ActiveRecord::Schema.define(version: 2019_01_10_221945) do
 
   create_table "workflow_steps", force: :cascade do |t|
     t.string "druid", null: false
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 2019_01_10_213421) do
     t.string "lifecycle"
     t.decimal "elapsed", precision: 9, scale: 3
     t.string "repository"
-    t.integer "version", default: 1
+    t.integer "version"
     t.text "note"
     t.integer "priority", default: 0
     t.string "lane_id", default: "default", null: false

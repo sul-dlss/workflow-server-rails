@@ -3,16 +3,18 @@
 ##
 # Parsing Workflow creation request
 class WorkflowParser
-  attr_reader :xml_request, :druid, :repository
+  attr_reader :xml_request, :druid, :repository, :version
 
   ##
   # @param [String] request_body
   # @param [String] druid
   # @param [String] repository
-  def initialize(request_body, druid, repository)
+  # @param [Integer] version
+  def initialize(request_body, druid:, repository:, version:)
     @xml_request = Nokogiri::XML(request_body)
     @druid = druid
     @repository = repository
+    @version = version
   end
 
   ##
@@ -25,7 +27,8 @@ class WorkflowParser
                           status: process.status,
                           lane_id: process.lane_id,
                           repository: repository,
-                          lifecycle: process.lifecycle)
+                          lifecycle: process.lifecycle,
+                          version: version)
     end
   end
 

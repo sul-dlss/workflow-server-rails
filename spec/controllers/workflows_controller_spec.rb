@@ -67,6 +67,11 @@ RSpec.describe WorkflowsController do
     let(:workflow) { 'accessionWF' }
     let(:repository) { 'dor' }
     let(:request_data) { workflow_create }
+    let(:client) { double(current_version: '1') }
+
+    before do
+      allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
+    end
     it 'creates new workflows' do
       expect do
         put :create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }

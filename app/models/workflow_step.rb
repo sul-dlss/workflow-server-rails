@@ -5,6 +5,7 @@ class WorkflowStep < ApplicationRecord
   validates :druid, presence: true
   validates :datastream, presence: true
   validates :process, presence: true
+  validates :version, presence: true
 
   ##
   # Serialize a WorkflowStep as a milestone

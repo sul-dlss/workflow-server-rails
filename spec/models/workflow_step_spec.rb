@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe WorkflowStep do
   subject do
-    described_class.create(
-      druid: 'druid:abc123',
+    FactoryBot.create(
+      :workflow_step,
       datastream: 'accessionWF',
       process: 'start-accession',
       lifecycle: 'submitted'

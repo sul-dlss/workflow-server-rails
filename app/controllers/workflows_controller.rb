@@ -58,7 +58,22 @@ class WorkflowsController < ApplicationController
 
   def create
     @workflows = WorkflowParser.new(
-      request.body.read, params[:druid], params[:repo]
+      request.body.read,
+      druid: params[:druid],
+      repository: params[:repo],
+      version: current_version
     ).create_workflow_steps
+  end
+
+  private
+
+  def current_version
+    client.object(params[:druid]).current_version
+  end
+
+  def client
+    @client ||= Dor::Services::Client.configure(url: Settings.dor_services.url,
+                                                username: Settings.dor_services.username,
+                                                password: Settings.dor_services.password)
   end
 end

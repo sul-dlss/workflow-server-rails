@@ -6,5 +6,6 @@ FactoryBot.define do
     datastream { 'ds' }
     process { 'proc' }
     repository { 'dor' }
+    version { 1 }
   end
 end
