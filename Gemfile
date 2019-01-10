@@ -12,6 +12,7 @@ gem 'honeybadger', '~> 4.1'
 gem 'jbuilder', '~> 2.5'
 gem 'puma', '~> 3.11'
 gem 'wfs_rails', '~> 0.3.0'
+gem 'config', '~> 1.7'
 
 group :production do
   gem 'pg'
