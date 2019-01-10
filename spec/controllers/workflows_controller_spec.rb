@@ -67,16 +67,41 @@ RSpec.describe WorkflowsController do
     let(:workflow) { 'accessionWF' }
     let(:repository) { 'dor' }
     let(:request_data) { workflow_create }
-    let(:client) { double(current_version: '1') }
+    let(:client) { double(current_version: current_version) }
+    let(:expected_count) { Nokogiri::XML(workflow_create).xpath('//process').count }
 
     before do
       allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
     end
-    it 'creates new workflows' do
-      expect do
-        put :create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
-      end.to change(WorkflowStep, :count)
-        .by(Nokogiri::XML(workflow_create).xpath('//process').count)
+
+    context 'when no workflows exist' do
+      let(:current_version) { '1' }
+
+      it 'creates new workflows' do
+        expect do
+          put :create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
+        end.to change(WorkflowStep, :count)
+          .by(expected_count)
+      end
+    end
+
+    context 'when some workflows exist' do
+      let(:current_version) { '2' }
+      before do
+        WorkflowParser.new(
+          workflow_create,
+          druid: druid,
+          repository: repository,
+          version: '1'
+        ).create_workflow_steps
+      end
+
+      it 'creates new workflows' do
+        expect do
+          put :create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
+        end.to change(WorkflowStep, :count)
+          .by(expected_count)
+      end
     end
   end
 end
