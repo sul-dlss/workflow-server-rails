@@ -25,17 +25,10 @@ class WorkflowsController < ApplicationController
   end
 
   def update
-    @process = WorkflowStep.find_by!(
-      repository: params[:repo],
-      druid: params[:druid],
-      datastream: params[:workflow],
-      process: params[:process]
-    )
-
     if params['current-status'].present?
-      @process.update(status: params['current-status'])
+      find_step_for_process.update(status: params['current-status'])
     else
-      @process.update(status: 'completed')
+      find_step_for_process.update(status: 'completed')
     end
     head :no_content
   end
@@ -44,7 +37,8 @@ class WorkflowsController < ApplicationController
     @processes = WorkflowStep.where(
       repository: params[:repo],
       druid: params[:druid],
-      datastream: params[:workflow]
+      datastream: params[:workflow],
+      version: current_version
     ).destroy_all
     head :no_content
   end
@@ -66,6 +60,16 @@ class WorkflowsController < ApplicationController
   end
 
   private
+
+  def find_step_for_process
+    WorkflowStep.find_by!(
+      repository: params[:repo],
+      druid: params[:druid],
+      datastream: params[:workflow],
+      process: params[:process],
+      version: current_version
+    )
+  end
 
   def current_version
     client.object(params[:druid]).current_version
