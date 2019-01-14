@@ -13,15 +13,15 @@ require 'dor/services/client'
 # Get the unique values from the second column of the file, excluding the header row.
 druids = `tail -n+2 #{ARGV[0]}|awk -F "\\"*,\\"*" '{print $2}'|sort|uniq`.split
 
-Dor::Services::Client.configure(url: ARGV[1],
-                                username: ARGV[2],
-                                password: ARGV[3])
+client = Dor::Services::Client.configure(url: ARGV[1],
+                                         username: ARGV[2],
+                                         password: ARGV[3])
 
 druids.each do |druid|
   druid = "druid:#{druid}" unless druid.start_with? 'druid:'
-  version = Dor::Services::Client.object(druid).current_version
+  version = client.object(druid).current_version
   puts "#{druid},#{version}"
-rescue Dor::Services::Client::UnexpectedResponse
+rescue Dor::Services::Client::NotFoundResponse
   # Ben said we can just ignore stuff without versions
   warn "Problem getting version for #{druid}"
 end
