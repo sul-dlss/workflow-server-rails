@@ -68,11 +68,28 @@ RSpec.describe WorkflowsController do
     let(:repository) { 'dor' }
     let(:request_data) { workflow_create }
 
-    it 'creates new workflows' do
-      expect do
-        put :create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
-      end.to change(WorkflowStep, :count)
-        .by(Nokogiri::XML(workflow_create).xpath('//process').count)
+    context 'when the version exists' do
+      it 'creates new workflows' do
+        expect do
+          put :create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
+        end.to change(WorkflowStep, :count)
+          .by(Nokogiri::XML(workflow_create).xpath('//process').count)
+      end
+    end
+
+    context "when the version doesn't exist" do
+      let(:client) { double }
+
+      before do
+        allow(client).to receive(:current_version).and_raise(Dor::Services::Client::UnexpectedResponse)
+      end
+
+      it 'creates new workflows' do
+        expect do
+          put :create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
+        end.to change(WorkflowStep, :count)
+          .by(Nokogiri::XML(workflow_create).xpath('//process').count)
+      end
     end
   end
 end
