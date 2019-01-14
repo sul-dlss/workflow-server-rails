@@ -15,5 +15,6 @@ require 'csv'
 CSV.foreach(ARGV[0], headers: :first_row) do |line|
   legacy = line.to_h
   created_at = legacy.delete('datetime')
-  WorkflowStep.create!(legacy.merge(created_at: created_at))
+  # We must provide updated_at, or it will display as the import time in the lifecycle.
+  WorkflowStep.create!(legacy.merge(created_at: created_at, updated_at: created_at))
 end
