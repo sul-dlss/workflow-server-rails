@@ -11,7 +11,7 @@ ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 set :deploy_to, "/opt/app/workflow/#{fetch(:application)}"
 
-set :linked_dirs, %w[log tmp/pids tmp/cache tmp/sockets vendor/bundle]
+set :linked_dirs, %w[log tmp/pids tmp/cache tmp/sockets vendor/bundle config/settings]
 set :linked_files, %w[config/database.yml config/honeybadger.yml]
 
 # honeybadger_env otherwise defaults to rails_env
