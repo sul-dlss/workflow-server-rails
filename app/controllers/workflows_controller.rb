@@ -73,7 +73,7 @@ class WorkflowsController < ApplicationController
 
   def current_version
     client.object(params[:druid]).current_version
-  rescue Dor::Services::Client::UnexpectedResponse # A 404 error
+  rescue Dor::Services::Client::NotFoundResponse # A 404 error
     1
   end
 

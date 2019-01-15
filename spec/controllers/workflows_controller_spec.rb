@@ -81,7 +81,7 @@ RSpec.describe WorkflowsController do
       let(:client) { double }
 
       before do
-        allow(client).to receive(:current_version).and_raise(Dor::Services::Client::UnexpectedResponse)
+        allow(client).to receive(:current_version).and_raise(Dor::Services::Client::NotFoundResponse)
       end
 
       it 'creates new workflows' do

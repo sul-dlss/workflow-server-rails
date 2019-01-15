@@ -9,7 +9,7 @@ gem 'rails', '~> 5.2.0'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'config', '~> 1.7'
-gem 'dor-services-client', '~> 0.10'
+gem 'dor-services-client', '~> 1.0'
 gem 'honeybadger', '~> 4.1'
 gem 'jbuilder', '~> 2.5'
 gem 'puma', '~> 3.11'
@@ -35,5 +35,3 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
-
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
