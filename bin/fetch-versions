@@ -22,6 +22,5 @@ druids.each do |druid|
   version = client.object(druid).current_version
   puts "#{druid},#{version}"
 rescue Dor::Services::Client::NotFoundResponse
-  # Ben said we can just ignore stuff without versions
-  warn "Problem getting version for #{druid}"
+  puts "#{druid},1"
 end
