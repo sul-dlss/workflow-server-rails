@@ -17,4 +17,10 @@ Rails.application.routes.draw do
       to: 'workflows#archive',
       constraints: { druid: %r{[^\/]+} },
       defaults: { format: :xml }
+
+  resource :workflow_queue, only: [] do
+    collection do
+      get 'lane_ids'
+    end
+  end
 end

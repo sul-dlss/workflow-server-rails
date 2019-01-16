@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ##
-# API for handling workflow request.
+# API for handling requests about a specific object's workflow.
 class WorkflowsController < ApplicationController
   def lifecycle
     @objects = WorkflowStep.where(

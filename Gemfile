@@ -20,6 +20,7 @@ end
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'dor-workflow-service', '~> 2.3'
   gem 'factory_bot_rails'
   gem 'rails-controller-testing'
   gem 'rspec-rails'
