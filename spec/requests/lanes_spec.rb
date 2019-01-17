@@ -1,0 +1,35 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe 'Lanes', type: :request do
+  before do
+    FactoryBot.create(:workflow_step,
+                      datastream: 'accessionWF',
+                      process: 'shelve',
+                      lane_id: 'default',
+                      status: 'waiting')
+    FactoryBot.create(:workflow_step,
+                      datastream: 'accessionWF',
+                      process: 'shelve',
+                      lane_id: 'fast',
+                      status: 'waiting')
+    FactoryBot.create(:workflow_step,
+                      datastream: 'accessionWF',
+                      process: 'shelve',
+                      lane_id: 'fast',
+                      status: 'done')
+    FactoryBot.create(:workflow_step,
+                      datastream: 'accessionWF',
+                      process: 'accept',
+                      lane_id: 'fast',
+                      status: 'waiting')
+  end
+
+  it 'shows the lanes' do
+    get '/workflow_queue/lane_ids?step=dor:accessionWF:shelve'
+    expect(response).to render_template(:lane_ids)
+
+    expect(response.body).to be_equivalent_to '<lanes><lane id="default"/><lane id="fast"/></lanes>'
+  end
+end
