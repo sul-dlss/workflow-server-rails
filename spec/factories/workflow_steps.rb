@@ -2,7 +2,9 @@
 
 FactoryBot.define do
   factory :workflow_step do
-    druid { 'druid:abc123' }
+    sequence :druid do |n|
+      "druid:abc123#{n}"
+    end
     datastream { 'ds' }
     process { 'proc' }
     repository { 'dor' }
