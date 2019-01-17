@@ -2,34 +2,29 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Lanes', type: :request do
-  let!(:one) do
+RSpec.describe 'All queued steps', type: :request do
+  before do
+    # This is waiting, so it shouldn't appear in the results
     FactoryBot.create(:workflow_step,
-                      datastream: 'accessionWF',
                       process: 'shelve',
-                      lane_id: 'default',
                       status: 'waiting')
-  end
-  let!(:two) do
-    FactoryBot.create(:workflow_step,
-                      datastream: 'accessionWF',
-                      process: 'shelve',
-                      lane_id: 'default',
-                      status: 'queued',
-                      updated_at: 2.days.ago)
-  end
 
-  let!(:three) do
+    # This is newer than the threshold, so it shouldn't appear in results
     FactoryBot.create(:workflow_step,
-                      datastream: 'accessionWF',
                       process: 'shelve',
                       lane_id: 'fast',
                       status: 'queued')
   end
 
-  let!(:four) do
+  let!(:one) do
     FactoryBot.create(:workflow_step,
-                      datastream: 'accessionWF',
+                      process: 'shelve',
+                      status: 'queued',
+                      updated_at: 2.days.ago)
+  end
+
+  let!(:two) do
+    FactoryBot.create(:workflow_step,
                       process: 'accept',
                       lane_id: 'fast',
                       status: 'queued',
@@ -42,8 +37,8 @@ RSpec.describe 'Lanes', type: :request do
 
     expect(response.body).to be_equivalent_to <<~XML
       <workflows>
-        <workflow name="accessionWF" process="shelve" druid="#{two.druid}" laneId="default"/>
-        <workflow name="accessionWF" process="accept" druid="#{four.druid}" laneId="fast"/>
+        <workflow name="accessionWF" process="shelve" druid="#{one.druid}" laneId="default"/>
+        <workflow name="accessionWF" process="accept" druid="#{two.druid}" laneId="fast"/>
       </workflows>
     XML
   end

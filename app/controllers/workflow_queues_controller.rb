@@ -4,11 +4,7 @@
 # API for handling workflow queue requests.
 class WorkflowQueuesController < ApplicationController
   def lane_ids
-    repository, datastream, process = params[:step].split(':')
-    @lanes = WorkflowStep.where(repository: repository,
-                                datastream: datastream,
-                                process: process,
-                                status: 'waiting').distinct.pluck('lane_id')
+    @lanes = workflows_for_step(params[:step]).where(status: 'waiting').distinct.pluck('lane_id')
   end
 
   # Used by the robot-sweeper cron job:
@@ -22,12 +18,63 @@ class WorkflowQueuesController < ApplicationController
     @workflow_steps = @workflow_steps.where(hours_ago)
   end
 
+  # Used by robot-master:
+  # https://github.com/sul-dlss/robot-master/blob/master/lib/robot-master/workflow.rb#L169
+  def show
+    waiting_scope = workflows_for_step(params[:waiting])
+                    .where(lane_id: params['lane-id'], status: 'waiting')
+                    .select(:druid)
+
+    scopes = [waiting_scope] + completed_step_scopes
+    @objects = WorkflowStep.find_by_sql(*intersect(scopes)).pluck(:druid)
+  end
+
   private
+
+  def workflows_for_step(step)
+    repository, datastream, process = step.split(':')
+
+    WorkflowStep.where(
+      repository: repository,
+      datastream: datastream,
+      process: process
+    )
+  end
+
+  # Because `completed` can have more than one value, we can't use the rails params parser.
+  def completed_steps
+    request.query_string.split('&').grep(/^completed=/).map { |v| v.split('=').last }
+  end
+
+  def completed_step_scopes
+    completed_steps.map do |step|
+      workflows_for_step(step).where(status: 'completed').select('druid')
+    end
+  end
 
   def hours_ago
     return unless params['hours-ago']
 
     hours_ago = params['hours-ago'].to_i.hours.ago
     WorkflowStep.arel_table[:updated_at].lt(hours_ago)
+  end
+
+  def intersect(scopes)
+    parts = []
+    binds = []
+    scopes.each do |scope|
+      inner_sql, inner_binds = to_sql_and_binds(scope)
+      parts << inner_sql
+      binds += inner_binds
+    end
+    [parts.join(' INTERSECT '), binds]
+  end
+
+  def to_sql_and_binds(scope)
+    collector = Arel::Collectors::Composite.new(
+      Arel::Collectors::SQLString.new,
+      Arel::Collectors::Bind.new
+    )
+    WorkflowStep.connection.visitor.accept(scope.arel.ast, collector).value
   end
 end

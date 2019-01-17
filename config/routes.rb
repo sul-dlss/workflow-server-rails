@@ -18,7 +18,7 @@ Rails.application.routes.draw do
       constraints: { druid: %r{[^\/]+} },
       defaults: { format: :xml }
 
-  resource :workflow_queue, only: [], defaults: { format: :xml } do
+  resource :workflow_queue, only: :show, defaults: { format: :xml } do
     collection do
       get 'lane_ids'
       get 'all_queued'
