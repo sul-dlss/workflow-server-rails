@@ -3,6 +3,7 @@
 ##
 # API for handling requests about a specific object's workflow.
 class WorkflowsController < ApplicationController
+  # Used by Dor::VersionService
   def lifecycle
     @objects = WorkflowStep.where(
       repository: params[:repo], druid: params[:druid]
