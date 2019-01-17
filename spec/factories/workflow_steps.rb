@@ -5,9 +5,10 @@ FactoryBot.define do
     sequence :druid do |n|
       "druid:abc123#{n}"
     end
-    datastream { 'ds' }
+    datastream { 'accessionWF' }
     process { 'proc' }
     repository { 'dor' }
     version { 1 }
+    lane_id { 'default' }
   end
 end

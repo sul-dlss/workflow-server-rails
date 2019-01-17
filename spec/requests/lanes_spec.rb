@@ -5,22 +5,18 @@ require 'rails_helper'
 RSpec.describe 'Lanes', type: :request do
   before do
     FactoryBot.create(:workflow_step,
-                      datastream: 'accessionWF',
                       process: 'shelve',
                       lane_id: 'default',
                       status: 'waiting')
     FactoryBot.create(:workflow_step,
-                      datastream: 'accessionWF',
                       process: 'shelve',
                       lane_id: 'fast',
                       status: 'waiting')
     FactoryBot.create(:workflow_step,
-                      datastream: 'accessionWF',
                       process: 'shelve',
                       lane_id: 'fast',
                       status: 'done')
     FactoryBot.create(:workflow_step,
-                      datastream: 'accessionWF',
                       process: 'accept',
                       lane_id: 'fast',
                       status: 'waiting')
