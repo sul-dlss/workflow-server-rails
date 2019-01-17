@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   resource :workflow_queue, only: [], defaults: { format: :xml } do
     collection do
       get 'lane_ids'
+      get 'all_queued'
     end
   end
 end
