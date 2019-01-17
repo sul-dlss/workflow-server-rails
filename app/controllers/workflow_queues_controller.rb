@@ -26,7 +26,8 @@ class WorkflowQueuesController < ApplicationController
                     .select(:druid)
 
     scopes = [waiting_scope] + completed_step_scopes
-    @objects = WorkflowStep.find_by_sql(*intersect(scopes)).pluck(:druid)
+    # Get the druids that belong in all (intersection) of the scopes (ActiveRecord::Relations)
+    @objects = WorkflowStep.find_by_sql(*IntersectQuery.intersect(scopes)).pluck(:druid)
   end
 
   private
@@ -57,24 +58,5 @@ class WorkflowQueuesController < ApplicationController
 
     hours_ago = params['hours-ago'].to_i.hours.ago
     WorkflowStep.arel_table[:updated_at].lt(hours_ago)
-  end
-
-  def intersect(scopes)
-    parts = []
-    binds = []
-    scopes.each do |scope|
-      inner_sql, inner_binds = to_sql_and_binds(scope)
-      parts << inner_sql
-      binds += inner_binds
-    end
-    [parts.join(' INTERSECT '), binds]
-  end
-
-  def to_sql_and_binds(scope)
-    collector = Arel::Collectors::Composite.new(
-      Arel::Collectors::SQLString.new,
-      Arel::Collectors::Bind.new
-    )
-    WorkflowStep.connection.visitor.accept(scope.arel.ast, collector).value
   end
 end
