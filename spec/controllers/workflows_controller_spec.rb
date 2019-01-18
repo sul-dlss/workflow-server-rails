@@ -27,7 +27,7 @@ RSpec.describe WorkflowsController do
       get :show, params: { repo: wf.repository, druid: wf.druid, workflow: wf.datastream, format: :xml }
       expect(assigns(:processes)).to be_an Hash
       expect(assigns(:processes).length).to eq 1
-      expect(response).to render_template 'index'
+      expect(response).to render_template 'show'
     end
   end
 

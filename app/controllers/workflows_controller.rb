@@ -20,7 +20,8 @@ class WorkflowsController < ApplicationController
 
   def index
     @processes = WorkflowStep.where(
-      repository: params[:repo], druid: params[:druid]
+      repository: params[:repo],
+      druid: params[:druid]
     ).order(:datastream, created_at: :asc).group_by(&:datastream)
   end
 
@@ -30,7 +31,6 @@ class WorkflowsController < ApplicationController
       druid: params[:druid],
       datastream: params[:workflow]
     ).order(:datastream, created_at: :asc).group_by(&:datastream)
-    render :index
   end
 
   def update
