@@ -3,18 +3,16 @@
 ##
 # Parsing Workflow creation request
 class WorkflowParser
-  attr_reader :xml_request, :druid, :repository, :version
+  attr_reader :xml_request, :druid, :repository
 
   ##
   # @param [String] request_body
   # @param [String] druid
   # @param [String] repository
-  # @param [Integer] version
-  def initialize(request_body, druid:, repository:, version:)
+  def initialize(request_body, druid:, repository:)
     @xml_request = Nokogiri::XML(request_body)
     @druid = druid
     @repository = repository
-    @version = version
   end
 
   ##
@@ -33,6 +31,10 @@ class WorkflowParser
   end
 
   private
+
+  def version
+    @version ||= ObjectVersionService.current_version(druid)
+  end
 
   def workflow
     xml_request.xpath('//workflow')

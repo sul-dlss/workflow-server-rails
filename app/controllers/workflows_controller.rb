@@ -60,11 +60,10 @@ class WorkflowsController < ApplicationController
   end
 
   def create
-    @workflows = WorkflowParser.new(
+    WorkflowParser.new(
       request.body.read,
       druid: params[:druid],
-      repository: params[:repo],
-      version: current_version
+      repository: params[:repo]
     ).create_workflow_steps
   end
 
@@ -81,14 +80,6 @@ class WorkflowsController < ApplicationController
   end
 
   def current_version
-    client.object(params[:druid]).current_version
-  rescue Dor::Services::Client::NotFoundResponse # A 404 error
-    1
-  end
-
-  def client
-    @client ||= Dor::Services::Client.configure(url: Settings.dor_services.url,
-                                                username: Settings.dor_services.username,
-                                                password: Settings.dor_services.password)
+    ObjectVersionService.current_version(params[:druid])
   end
 end

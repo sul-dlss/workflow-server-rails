@@ -3,6 +3,7 @@
 Rails.application.routes.draw do
   scope ':repo/objects/:druid', constraints: { druid: %r{[^\/]+} }, defaults: { format: :xml } do
     get 'lifecycle', to: 'workflows#lifecycle'
+    post 'versionClose', to: 'versions#close'
 
     resources :workflows, only: %i[show index destroy], param: :workflow do
       collection do

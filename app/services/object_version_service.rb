@@ -1,0 +1,24 @@
+# frozen_string_literal: true
+
+# Handles retrieving versions for objects from dor-services-app
+class ObjectVersionService
+  include Singleton
+
+  def self.current_version(druid)
+    instance.current_version(druid)
+  end
+
+  def current_version(druid)
+    client.object(druid).current_version
+  rescue Dor::Services::Client::NotFoundResponse # A 404 error
+    1
+  end
+
+  private
+
+  def client
+    @client ||= Dor::Services::Client.configure(url: Settings.dor_services.url,
+                                                username: Settings.dor_services.username,
+                                                password: Settings.dor_services.password)
+  end
+end
