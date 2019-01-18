@@ -8,7 +8,7 @@ class WorkflowsController < ApplicationController
       repository: params[:repo],
       druid: params[:druid],
       version: current_version
-    )
+    ).where.not(lifecycle: nil)
   end
 
   def index
