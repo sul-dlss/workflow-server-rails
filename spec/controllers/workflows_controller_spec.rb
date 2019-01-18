@@ -13,14 +13,6 @@ RSpec.describe WorkflowsController do
     allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
   end
 
-  describe 'GET lifecycle' do
-    it 'loads ActiveRecord Relation and parses it to valid XML' do
-      get :lifecycle, params: { repo: wf.repository, druid: wf.druid, format: :xml }
-      expect(assigns(:objects)).to be_an ActiveRecord::Relation
-      expect(assigns(:objects).count).to eq 1
-      expect(response).to render_template 'lifecycle'
-    end
-  end
   describe 'GET index' do
     it 'loads and groups ActiveRecord Relation renders workflows' do
       get :index, params: { repo: wf.repository, druid: wf.druid, format: :xml }

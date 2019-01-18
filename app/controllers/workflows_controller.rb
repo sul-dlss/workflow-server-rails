@@ -5,7 +5,9 @@
 class WorkflowsController < ApplicationController
   def lifecycle
     @objects = WorkflowStep.where(
-      repository: params[:repo], druid: params[:druid]
+      repository: params[:repo],
+      druid: params[:druid],
+      version: current_version
     )
   end
 
