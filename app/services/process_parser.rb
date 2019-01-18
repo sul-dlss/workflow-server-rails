@@ -20,7 +20,7 @@ class ProcessParser
   end
 
   def lane_id
-    process.attr('laneId')
+    process.attr('laneId') || 'default'
   end
 
   def lifecycle

@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe WorkflowsController do
   include XmlFixtures
   let(:repository) { 'dor' }
-  let(:client) { double(current_version: '1') }
+  let(:client) { instance_double(Dor::Services::Client::Object, current_version: '1') }
   let(:wf) { FactoryBot.create(:workflow_step) }
   let(:druid) { wf.druid }
 
