@@ -4,11 +4,18 @@
 # API for handling requests about a specific object's workflow.
 class WorkflowsController < ApplicationController
   def lifecycle
-    @objects = WorkflowStep.where(
+    steps = WorkflowStep.where(
       repository: params[:repo],
       druid: params[:druid]
-    ).where.not(lifecycle: nil)
-    @objects = @objects.where(version: current_version) if params['active-only']
+    )
+    return @objects = steps.lifecycle unless params['active-only']
+
+    # Active means that it's of the current version, and that all the steps in
+    # the current version haven't been completed yet.
+    steps = steps.for_version(current_version)
+    return @objects = [] unless steps.incomplete.any?
+
+    @objects = steps.lifecycle
   end
 
   def index

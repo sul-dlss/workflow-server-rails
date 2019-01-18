@@ -7,6 +7,9 @@ class WorkflowStep < ApplicationRecord
   validates :process, presence: true
   validates :version, presence: true
 
+  scope :lifecycle, -> { where.not(lifecycle: nil) }
+  scope :incomplete, -> { where.not(status: %w[completed skipped]) }
+  scope :for_version, ->(version) { where(version: version) }
   ##
   # Serialize a WorkflowStep as a milestone
   # @param [Nokogiri::XML::Builder] xml
