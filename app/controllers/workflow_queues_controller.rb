@@ -4,7 +4,7 @@
 # API for handling workflow queue requests.
 class WorkflowQueuesController < ApplicationController
   def lane_ids
-    @lanes = workflows_for_step(params[:step]).where(status: 'waiting').distinct.pluck('lane_id')
+    @lanes = workflows_for_step_and_status(params[:step], 'waiting').distinct.pluck('lane_id')
   end
 
   # Used by the robot-sweeper cron job:
@@ -21,9 +21,9 @@ class WorkflowQueuesController < ApplicationController
   # Used by robot-master:
   # https://github.com/sul-dlss/robot-master/blob/master/lib/robot-master/workflow.rb#L169
   def show
-    waiting_scope = workflows_for_step(params[:waiting])
-                    .where(lane_id: params['lane-id'], status: 'waiting')
+    waiting_scope = workflows_for_step_and_status(params[:waiting], 'waiting')
                     .select(:druid)
+    waiting_scope = waiting_scope.where(lane_id: params['lane-id']) if params['lane-id']
 
     scopes = [waiting_scope] + completed_step_scopes
     # Get the druids that belong in all (intersection) of the scopes (ActiveRecord::Relations)
@@ -32,13 +32,14 @@ class WorkflowQueuesController < ApplicationController
 
   private
 
-  def workflows_for_step(step)
+  def workflows_for_step_and_status(step, status)
     repository, datastream, process = step.split(':')
 
     WorkflowStep.where(
       repository: repository,
       datastream: datastream,
-      process: process
+      process: process,
+      status: status
     )
   end
 
@@ -49,7 +50,7 @@ class WorkflowQueuesController < ApplicationController
 
   def completed_step_scopes
     completed_steps.map do |step|
-      workflows_for_step(step).where(status: 'completed').select('druid')
+      workflows_for_step_and_status(step, 'completed').select('druid')
     end
   end
 

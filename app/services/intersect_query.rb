@@ -13,8 +13,8 @@ class IntersectQuery
     private
 
     def build_intersect(scopes)
-      if scopes.size == 2
-        Arel::Nodes::Intersect.new(scopes[0], scopes[1])
+      if scopes.size == 1
+        scopes[0]
       else
         Arel::Nodes::Intersect.new(scopes[0], build_intersect(scopes[1..-1]))
       end
