@@ -6,9 +6,9 @@ class WorkflowsController < ApplicationController
   def lifecycle
     @objects = WorkflowStep.where(
       repository: params[:repo],
-      druid: params[:druid],
-      version: current_version
+      druid: params[:druid]
     ).where.not(lifecycle: nil)
+    @objects = @objects.where(version: current_version) if params['active-only']
   end
 
   def index

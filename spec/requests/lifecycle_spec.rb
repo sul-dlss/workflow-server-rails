@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Lifecycle', type: :request do
   let(:wf) do
-    # This should not appear in the results
+    # This should not appear in the results if they want active-only
     FactoryBot.create(:workflow_step,
                       process: 'opened',
                       version: 1,
@@ -34,11 +34,26 @@ RSpec.describe 'Lifecycle', type: :request do
     allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
   end
 
-  it 'draws milestones from the current version' do
-    get "/dor/objects/#{druid}/lifecycle"
-    expect(response).to render_template(:lifecycle)
-    xml = Nokogiri::XML(response.body)
-    expect(xml.at_xpath('//lifecycle/milestone').attr('version')).to eq '2'
-    expect(xml.xpath('//lifecycle/milestone').length).to eq 1
+  let(:xml) { Nokogiri::XML(response.body) }
+  let(:returned_milestones) { xml.xpath('//lifecycle/milestone') }
+  let(:returned_milestone_versions) { returned_milestones.map { |node| node.attr('version') } }
+  let(:returned_milestone_text) { returned_milestones.map(&:text) }
+
+  context 'when active-only is set' do
+    it 'draws milestones from the current version' do
+      get "/dor/objects/#{druid}/lifecycle?active-only=true"
+      expect(response).to render_template(:lifecycle)
+      expect(returned_milestone_versions).to eq ['2']
+      expect(returned_milestone_text).to eq ['submitted']
+    end
+  end
+
+  context 'when active-only is not set' do
+    it 'draws milestones from the all versions' do
+      get "/dor/objects/#{druid}/lifecycle"
+      expect(response).to render_template(:lifecycle)
+      expect(returned_milestone_versions).to include('1', '2')
+      expect(returned_milestone_text).to include('submitted', 'submitted')
+    end
   end
 end
