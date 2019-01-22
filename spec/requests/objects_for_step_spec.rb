@@ -88,6 +88,27 @@ RSpec.describe 'Objects for workstep', type: :request do
     end
   end
 
+  context 'without waiting' do
+    let!(:complete) do
+      FactoryBot.create(:workflow_step,
+                        repository: 'sdr',
+                        datastream: 'preservationIngestWF',
+                        process: 'complete-ingest',
+                        status: 'completed')
+    end
+    it 'shows the items that have completed' do
+      get '/workflow_queue?completed=complete-ingest&' \
+          'repository=sdr&workflow=preservationIngestWF'
+      expect(response).to render_template(:show)
+
+      expect(response.body).to be_equivalent_to <<~XML
+        <objects count="1">
+          <object id="#{complete.druid}"/>
+        </objects>
+      XML
+    end
+  end
+
   context 'without prerequisites' do
     let!(:waiting) do
       FactoryBot.create(:workflow_step,

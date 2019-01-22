@@ -18,9 +18,22 @@ class WorkflowQueuesController < ApplicationController
     @workflow_steps = @workflow_steps.where(hours_ago)
   end
 
-  # Used by robot-master:
-  # https://github.com/sul-dlss/robot-master/blob/master/lib/robot-master/workflow.rb#L169
   def show
+    if params[:waiting].present?
+      # Used by robot-master:
+      # https://github.com/sul-dlss/robot-master/blob/master/lib/robot-master/workflow.rb#L169
+      find_waiting_objects
+    else
+      # Used by count_objects_in_step
+      # https://github.com/sul-dlss/dor-workflow-service/blob/845edfe4160a165d62b06530138f71e5c816a5c9/lib/dor/services/workflow_service.rb#L499
+      # Called from https://github.com/sul-dlss/preservation_robots/blob/659de805d9a5cc04216676060bcc4d48633a5a78/lib/stats_reporter.rb#L78-L79
+      find_completed_objects
+    end
+  end
+
+  private
+
+  def find_waiting_objects
     waiting_scope = workflows_for_step_and_status(params[:waiting], 'waiting')
                     .select(:druid)
     waiting_scope = waiting_scope.where(lane_id: params['lane-id']) if params['lane-id']
@@ -30,7 +43,12 @@ class WorkflowQueuesController < ApplicationController
     @objects = WorkflowStep.find_by_sql(*IntersectQuery.intersect(scopes)).pluck(:druid)
   end
 
-  private
+  def find_completed_objects
+    @objects = WorkflowStep.where(repository: params[:repository],
+                                  datastream: params[:workflow],
+                                  process: params[:completed],
+                                  status: 'completed').pluck(:druid)
+  end
 
   def workflows_for_step_and_status(step, status)
     repository, datastream, process = step.split(':')
