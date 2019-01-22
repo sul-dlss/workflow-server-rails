@@ -16,21 +16,32 @@ class WorkflowParser
   end
 
   ##
+  # Delete all the rows for this druid/version/datastream, and replace with new rows.
   # @return [Array]
   def create_workflow_steps
-    processes.map do |process|
-      WorkflowStep.create(datastream: workflow_id,
-                          druid: druid,
-                          process: process.name,
-                          status: process.status,
-                          lane_id: process.lane_id,
-                          repository: repository,
-                          lifecycle: process.lifecycle,
-                          version: version)
+    ActiveRecord::Base.transaction do
+      WorkflowStep.where(datastream: workflow_id, druid: druid, version: version).destroy_all
+
+      processes.map do |process|
+        WorkflowStep.create(workflow_attributes(process))
+      end
     end
   end
 
   private
+
+  def workflow_attributes(process)
+    {
+      datastream: workflow_id,
+      druid: druid,
+      process: process.name,
+      status: process.status,
+      lane_id: process.lane_id,
+      repository: repository,
+      lifecycle: process.lifecycle,
+      version: version
+    }
+  end
 
   def version
     @version ||= ObjectVersionService.current_version(druid)
@@ -47,6 +58,6 @@ class WorkflowParser
   end
 
   def workflow_id
-    workflow.attr('id')
+    @workflow_id ||= workflow.attr('id').value
   end
 end
