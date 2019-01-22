@@ -63,7 +63,7 @@ class WorkflowQueuesController < ApplicationController
 
   # Because `completed` can have more than one value, we can't use the rails params parser.
   def completed_steps
-    request.query_string.split('&').grep(/^completed=/).map { |v| v.split('=').last }
+    request.query_string.split('&').grep(/^completed=/).map { |v| v.split('=').last }.map { |v| CGI.unescape(v) }
   end
 
   def completed_step_scopes
