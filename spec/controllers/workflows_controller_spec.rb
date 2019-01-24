@@ -32,10 +32,69 @@ RSpec.describe WorkflowsController do
   end
 
   describe 'PUT update' do
-    it 'updates the process to complete' do
-      put :update, params: { repo: wf.repository, druid: wf.druid, workflow: wf.datastream, process: wf.process }
-      expect(wf.reload.status).to eq 'completed'
-      expect(response).to be_no_content
+    let(:process_xml) { update_process_to_completed }
+
+    context 'with XML indicating success' do
+      it 'updates the step' do
+        put :update, body: process_xml,
+                     params: { repo: wf.repository, druid: wf.druid, workflow: wf.datastream, process: wf.process }
+
+        expect(wf.reload.status).to eq 'completed'
+        expect(response).to be_no_content
+      end
+    end
+
+    context 'with error XML' do
+      let(:process_xml) { update_process_to_error }
+
+      it 'updates the step with error message/text' do
+        put :update, body: process_xml,
+                     params: { repo: wf.repository, druid: wf.druid, workflow: wf.datastream, process: wf.process }
+
+        expect(wf.reload.status).to eq 'error'
+        expect(response).to be_no_content
+      end
+    end
+
+    context 'when process names do not match' do
+      let(:process_xml) { update_other_process }
+
+      it 'returns a 400 and does not update the step' do
+        expect_any_instance_of(WorkflowStep).not_to receive(:update)
+
+        put :update, body: process_xml,
+                     params: { repo: wf.repository, druid: wf.druid, workflow: wf.datastream, process: wf.process }
+
+        expect(response).to be_bad_request
+      end
+    end
+
+    context 'when current-status is set' do
+      context 'and it does not match the current status' do
+        it 'does not update the step' do
+          expect_any_instance_of(WorkflowStep).not_to receive(:update)
+
+          put :update, body: process_xml,
+                       params: { repo: wf.repository, druid: wf.druid, workflow: wf.datastream, process: wf.process, 'current-status' => 'waiting' }
+
+          # NOTE: `#be_conflict` does not exist as a matcher for 409 errors
+          expect(response.status).to eq 409
+        end
+      end
+
+      context 'and it matches the current status' do
+        before do
+          wf.update(status: 'hold')
+        end
+
+        it 'updates the step' do
+          put :update, body: process_xml,
+                       params: { repo: wf.repository, druid: wf.druid, workflow: wf.datastream, process: wf.process, 'current-status' => 'hold' }
+
+          expect(wf.reload.status).to eq 'completed'
+          expect(response).to be_no_content
+        end
+      end
     end
   end
 

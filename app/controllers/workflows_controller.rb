@@ -35,11 +35,14 @@ class WorkflowsController < ApplicationController
   end
 
   def update
-    if params['current-status'].present?
-      find_step_for_process.update(status: params['current-status'])
-    else
-      find_step_for_process.update(status: 'completed')
-    end
+    parser = ProcessParser.new(process_from_request_body)
+    step = find_step_for_process
+
+    return render plain: process_mismatch_error(parser), status: :bad_request if parser.process != params[:process]
+
+    return render plain: status_mismatch_error(step), status: :conflict if params['current-status'] && step.status != params['current-status']
+
+    step.update(parser.to_h)
     head :no_content
   end
 
@@ -70,6 +73,14 @@ class WorkflowsController < ApplicationController
 
   private
 
+  def process_mismatch_error(parser)
+    "Process name in body (#{parser.process}) does not match process name in URI (#{params[:process]})"
+  end
+
+  def status_mismatch_error(step)
+    "Status in params (#{params['current-status']}) does not match current status (#{step.status})"
+  end
+
   def find_step_for_process
     WorkflowStep.find_by!(
       repository: params[:repo],
@@ -78,6 +89,11 @@ class WorkflowsController < ApplicationController
       process: params[:process],
       version: current_version
     )
+  end
+
+  def process_from_request_body
+    # TODO: Confirm we do not have a use case for multiple processes when PUT'ing updates
+    Nokogiri::XML(request.body.read).xpath('//process').first
   end
 
   def current_version
