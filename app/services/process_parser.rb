@@ -3,27 +3,65 @@
 ##
 # Parsing Process creation request
 class ProcessParser
-  attr_reader :process
+  attr_reader :process_element
+
+  PROCESS_ATTRIBUTES = %i[
+    process
+    status
+    lane_id
+    lifecycle
+    error_msg
+    error_txt
+    note
+    elapsed
+  ].freeze
 
   ##
-  # @param [Nokogiri::XML::Element] process
-  def initialize(process)
-    @process = process
+  # @param [Nokogiri::XML::Element] process_element
+  def initialize(process_element)
+    @process_element = process_element
   end
 
-  def name
-    process.attr('name')
+  def to_h
+    hash = {}
+    PROCESS_ATTRIBUTES.each do |attribute|
+      value = public_send(attribute)
+      next if value.nil?
+
+      hash[attribute] = value
+    end
+    hash
+  end
+
+  def process
+    process_element.attr('name')
   end
 
   def status
-    process.attr('status')
+    process_element.attr('status')
   end
 
   def lane_id
-    process.attr('laneId') || 'default'
+    process_element.attr('laneId') || 'default'
   end
 
   def lifecycle
-    process.attr('lifecycle')
+    process_element.attr('lifecycle')
+  end
+
+  def error_msg
+    process_element.attr('errorMessage')
+  end
+
+  def error_txt
+    process_element.attr('errorText')
+  end
+
+  def note
+    process_element.attr('note')
+  end
+
+  def elapsed
+    process_element.attr('elapsed').to_f
   end
 end

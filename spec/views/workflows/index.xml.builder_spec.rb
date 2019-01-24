@@ -33,7 +33,7 @@ RSpec.describe 'workflows/index' do
       ['attempts', /0/],
       ['datetime', //],
       ['status', ''],
-      %w[name proc]
+      %w[name start-accession]
     )
   end
 end

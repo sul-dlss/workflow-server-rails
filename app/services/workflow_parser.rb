@@ -34,7 +34,7 @@ class WorkflowParser
     {
       datastream: workflow_id,
       druid: druid,
-      process: process.name,
+      process: process.process,
       status: process.status,
       lane_id: process.lane_id,
       repository: repository,

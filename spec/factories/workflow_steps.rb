@@ -6,7 +6,7 @@ FactoryBot.define do
       "druid:abc123#{n}"
     end
     datastream { 'accessionWF' }
-    process { 'proc' }
+    process { 'start-accession' }
     repository { 'dor' }
     version { 1 }
     lane_id { 'default' }
