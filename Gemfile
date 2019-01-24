@@ -12,6 +12,7 @@ gem 'config', '~> 1.7'
 gem 'dor-services-client', '~> 1.2'
 gem 'honeybadger', '~> 4.1'
 gem 'jbuilder', '~> 2.5'
+gem 'okcomputer'
 gem 'puma', '~> 3.11'
 
 group :production do
