@@ -58,6 +58,11 @@ class WorkflowParser
   end
 
   def workflow_id
-    @workflow_id ||= workflow.attr('id').value
+    @workflow_id ||= begin
+      node = workflow.attr('id')
+      raise DataError, 'Workflow did not provide a required @id attribute' unless node
+
+      node.value
+    end
   end
 end
