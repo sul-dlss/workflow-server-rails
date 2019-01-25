@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_10_221945) do
+ActiveRecord::Schema.define(version: 2019_01_25_161810) do
 
   create_table "workflow_steps", force: :cascade do |t|
     t.string "druid", null: false
-    t.string "datastream", null: false
+    t.string "workflow", null: false
     t.string "process", null: false
     t.string "status"
     t.text "error_msg"

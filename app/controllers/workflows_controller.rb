@@ -23,15 +23,15 @@ class WorkflowsController < ApplicationController
     @processes = WorkflowStep.where(
       repository: params[:repo],
       druid: params[:druid]
-    ).order(:datastream, created_at: :asc).group_by(&:datastream)
+    ).order(:workflow, created_at: :asc).group_by(&:workflow)
   end
 
   def show
     @processes = WorkflowStep.where(
       repository: params[:repo],
       druid: params[:druid],
-      datastream: params[:workflow]
-    ).order(:datastream, created_at: :asc).group_by(&:datastream)
+      workflow: params[:workflow]
+    ).order(:workflow, created_at: :asc).group_by(&:workflow)
   end
 
   def update
@@ -50,7 +50,7 @@ class WorkflowsController < ApplicationController
     @processes = WorkflowStep.where(
       repository: params[:repo],
       druid: params[:druid],
-      datastream: params[:workflow],
+      workflow: params[:workflow],
       version: current_version
     ).destroy_all
     head :no_content
@@ -59,7 +59,7 @@ class WorkflowsController < ApplicationController
   def archive
     @objects = WorkflowStep.where(
       repository: params[:repository],
-      datastream: params[:workflow]
+      workflow: params[:workflow]
     ).count
   end
 
@@ -85,7 +85,7 @@ class WorkflowsController < ApplicationController
     WorkflowStep.find_by!(
       repository: params[:repo],
       druid: params[:druid],
-      datastream: params[:workflow],
+      workflow: params[:workflow],
       process: params[:process],
       version: current_version
     )

@@ -3,7 +3,7 @@
 # Models a process that occurred for a digital object. Basically a log entry.
 class WorkflowStep < ApplicationRecord
   validates :druid, presence: true
-  validates :datastream, presence: true
+  validates :workflow, presence: true
   validates :process, presence: true
   validates :version, presence: true
 

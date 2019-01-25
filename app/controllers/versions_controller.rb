@@ -25,7 +25,7 @@ class VersionsController < ApplicationController
     WorkflowStep.where(
       repository: params[:repo],
       druid: params[:druid],
-      datastream: 'versioningWF',
+      workflow: 'versioningWF',
       process: ['submit-version', 'start-accession'],
       version: current_version
     )

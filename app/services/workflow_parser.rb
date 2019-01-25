@@ -16,11 +16,11 @@ class WorkflowParser
   end
 
   ##
-  # Delete all the rows for this druid/version/datastream, and replace with new rows.
+  # Delete all the rows for this druid/version/workflow, and replace with new rows.
   # @return [Array]
   def create_workflow_steps
     ActiveRecord::Base.transaction do
-      WorkflowStep.where(datastream: workflow_id, druid: druid, version: version).destroy_all
+      WorkflowStep.where(workflow: workflow_id, druid: druid, version: version).destroy_all
 
       processes.map do |process|
         WorkflowStep.create(workflow_attributes(process))
@@ -32,7 +32,7 @@ class WorkflowParser
 
   def workflow_attributes(process)
     {
-      datastream: workflow_id,
+      workflow: workflow_id,
       druid: druid,
       process: process.process,
       status: process.status,

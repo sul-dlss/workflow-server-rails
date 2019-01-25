@@ -12,7 +12,7 @@ RSpec.describe 'workflows/lifecycle' do
       :workflow_step,
       repository: repo,
       druid: druid,
-      datastream: 'accessionWF'
+      workflow: 'accessionWF'
     )
     @objects = WorkflowStep.all
 

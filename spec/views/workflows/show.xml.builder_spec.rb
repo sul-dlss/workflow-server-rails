@@ -11,9 +11,9 @@ RSpec.describe 'workflows/index' do
       :workflow_step,
       repository: repo,
       druid: druid,
-      datastream: 'accessionWF'
+      workflow: 'accessionWF'
     )
-    @processes = WorkflowStep.all.group_by(&:datastream)
+    @processes = WorkflowStep.all.group_by(&:workflow)
 
     render template: 'workflows/index', locals: { params: params }
     doc = Nokogiri::XML.parse(rendered)

@@ -45,17 +45,17 @@ class WorkflowQueuesController < ApplicationController
 
   def find_completed_objects
     @objects = WorkflowStep.where(repository: params[:repository],
-                                  datastream: params[:workflow],
+                                  workflow: params[:workflow],
                                   process: params[:completed],
                                   status: 'completed').pluck(:druid)
   end
 
   def workflows_for_step_and_status(step, status)
-    repository, datastream, process = step.split(':')
+    repository, workflow, process = step.split(':')
 
     WorkflowStep.where(
       repository: repository,
-      datastream: datastream,
+      workflow: workflow,
       process: process,
       status: status
     )

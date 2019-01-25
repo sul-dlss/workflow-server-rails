@@ -20,7 +20,10 @@ CSV.foreach(ARGV[0], headers: :first_row) do |line|
   version = versions[legacy['druid']]
   next unless version
 
+  # Renamed fields
   created_at = legacy.delete('datetime')
+  workflow = legacy.delete('datastream')
+
   # We must provide updated_at, or it will display as the import time in the lifecycle.
-  WorkflowStep.create!(legacy.merge(created_at: created_at, updated_at: created_at, version: version))
+  WorkflowStep.create!(legacy.merge(workflow: workflow, created_at: created_at, updated_at: created_at, version: version))
 end
