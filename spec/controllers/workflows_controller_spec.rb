@@ -34,6 +34,10 @@ RSpec.describe WorkflowsController do
   describe 'PUT update' do
     let(:process_xml) { update_process_to_completed }
 
+    before do
+      allow(SendUpdateMessage).to receive(:publish)
+    end
+
     context 'with XML indicating success' do
       it 'updates the step' do
         put :update, body: process_xml,
@@ -41,6 +45,7 @@ RSpec.describe WorkflowsController do
 
         expect(wf.reload.status).to eq 'completed'
         expect(response).to be_no_content
+        expect(SendUpdateMessage).to have_received(:publish).with(druid: wf.druid)
       end
     end
 
@@ -53,6 +58,7 @@ RSpec.describe WorkflowsController do
 
         expect(wf.reload.status).to eq 'error'
         expect(response).to be_no_content
+        expect(SendUpdateMessage).to have_received(:publish).with(druid: wf.druid)
       end
     end
 
@@ -66,6 +72,7 @@ RSpec.describe WorkflowsController do
                      params: { repo: wf.repository, druid: wf.druid, workflow: wf.workflow, process: wf.process }
 
         expect(response).to be_bad_request
+        expect(SendUpdateMessage).not_to have_received(:publish)
       end
     end
 
@@ -79,6 +86,7 @@ RSpec.describe WorkflowsController do
 
           # NOTE: `#be_conflict` does not exist as a matcher for 409 errors
           expect(response.status).to eq 409
+          expect(SendUpdateMessage).not_to have_received(:publish)
         end
       end
 
@@ -93,6 +101,7 @@ RSpec.describe WorkflowsController do
 
           expect(wf.reload.status).to eq 'completed'
           expect(response).to be_no_content
+          expect(SendUpdateMessage).to have_received(:publish).with(druid: wf.druid)
         end
       end
     end
@@ -119,12 +128,18 @@ RSpec.describe WorkflowsController do
     let(:repository) { 'dor' }
     let(:request_data) { workflow_create }
 
+    before do
+      allow(SendUpdateMessage).to receive(:publish)
+    end
+
     context 'when the version exists' do
       it 'creates new workflows' do
         expect do
           put :create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
         end.to change(WorkflowStep, :count)
           .by(Nokogiri::XML(workflow_create).xpath('//process').count)
+
+        expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end
     end
 
@@ -140,6 +155,8 @@ RSpec.describe WorkflowsController do
           put :create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
         end.to change(WorkflowStep, :count)
           .by(Nokogiri::XML(workflow_create).xpath('//process').count)
+
+        expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end
     end
   end

@@ -34,6 +34,7 @@ class WorkflowsController < ApplicationController
     ).order(:workflow, created_at: :asc).group_by(&:workflow)
   end
 
+  # Update a single WorkflowStep
   def update
     parser = ProcessParser.new(process_from_request_body)
     step = find_step_for_process
@@ -43,6 +44,7 @@ class WorkflowsController < ApplicationController
     return render plain: status_mismatch_error(step), status: :conflict if params['current-status'] && step.status != params['current-status']
 
     step.update(parser.to_h)
+    SendUpdateMessage.publish(druid: step.druid)
     head :no_content
   end
 
@@ -69,6 +71,7 @@ class WorkflowsController < ApplicationController
       druid: params[:druid],
       repository: params[:repo]
     ).create_workflow_steps
+    SendUpdateMessage.publish(druid: params[:druid])
   end
 
   private

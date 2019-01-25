@@ -14,6 +14,7 @@ gem 'honeybadger', '~> 4.1'
 gem 'jbuilder', '~> 2.5'
 gem 'okcomputer'
 gem 'puma', '~> 3.11'
+gem 'stomp', '~> 1.4'
 
 group :production do
   gem 'pg'
