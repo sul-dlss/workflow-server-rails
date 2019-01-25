@@ -9,6 +9,9 @@ class WorkflowStep < ApplicationRecord
 
   scope :lifecycle, -> { where.not(lifecycle: nil) }
   scope :incomplete, -> { where.not(status: %w[completed skipped]) }
+  scope :complete, -> { where(status: %w[completed skipped]) }
+  scope :waiting, -> { where(status: 'waiting') }
+
   scope :for_version, ->(version) { where(version: version) }
   ##
   # Serialize a WorkflowStep as a milestone
