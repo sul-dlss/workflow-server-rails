@@ -16,8 +16,8 @@ RSpec.describe WorkflowsController do
   describe 'GET index' do
     it 'loads and groups ActiveRecord Relation renders workflows' do
       get :index, params: { repo: wf.repository, druid: wf.druid, format: :xml }
-      expect(assigns(:processes)).to be_an Hash
-      expect(assigns(:processes).length).to eq 1
+      expect(assigns(:workflow_steps)).to be_an Hash
+      expect(assigns(:workflow_steps).length).to eq 1
       expect(response).to render_template 'index'
     end
   end
@@ -25,8 +25,8 @@ RSpec.describe WorkflowsController do
   describe 'GET show' do
     it 'loads and groups ActiveRecord Relation renders workflows' do
       get :show, params: { repo: wf.repository, druid: wf.druid, workflow: wf.workflow, format: :xml }
-      expect(assigns(:processes)).to be_an Hash
-      expect(assigns(:processes).length).to eq 1
+      expect(assigns(:workflow_steps)).to be_an Hash
+      expect(assigns(:workflow_steps).length).to eq 1
       expect(response).to render_template 'show'
     end
   end

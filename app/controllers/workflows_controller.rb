@@ -20,14 +20,14 @@ class WorkflowsController < ApplicationController
   end
 
   def index
-    @processes = WorkflowStep.where(
+    @workflow_steps = WorkflowStep.where(
       repository: params[:repo],
       druid: params[:druid]
     ).order(:workflow, created_at: :asc).group_by(&:workflow)
   end
 
   def show
-    @processes = WorkflowStep.where(
+    @workflow_steps = WorkflowStep.where(
       repository: params[:repo],
       druid: params[:druid],
       workflow: params[:workflow]
@@ -47,7 +47,7 @@ class WorkflowsController < ApplicationController
   end
 
   def destroy
-    @processes = WorkflowStep.where(
+    @workflow_steps = WorkflowStep.where(
       repository: params[:repo],
       druid: params[:druid],
       workflow: params[:workflow],
