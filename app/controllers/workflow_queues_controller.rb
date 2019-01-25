@@ -4,7 +4,7 @@
 # API for handling workflow queue requests.
 class WorkflowQueuesController < ApplicationController
   def lane_ids
-    @lanes = workflows_for_step_and_status(params[:step], 'waiting').distinct.pluck('lane_id')
+    @lanes = workflows_for_step_and_scope(params[:step], :waiting).distinct.pluck('lane_id')
   end
 
   # Used by the robot-sweeper cron job:
@@ -34,7 +34,7 @@ class WorkflowQueuesController < ApplicationController
   private
 
   def find_waiting_objects
-    waiting_scope = workflows_for_step_and_status(params[:waiting], 'waiting')
+    waiting_scope = workflows_for_step_and_scope(params[:waiting], :waiting)
                     .select(:druid)
     waiting_scope = waiting_scope.where(lane_id: params['lane-id']) if params['lane-id']
 
@@ -50,14 +50,13 @@ class WorkflowQueuesController < ApplicationController
                                   status: 'completed').pluck(:druid)
   end
 
-  def workflows_for_step_and_status(step, status)
+  def workflows_for_step_and_scope(step, scope)
     repository, workflow, process = step.split(':')
 
-    WorkflowStep.where(
+    WorkflowStep.public_send(scope).where(
       repository: repository,
       workflow: workflow,
-      process: process,
-      status: status
+      process: process
     )
   end
 
@@ -68,7 +67,7 @@ class WorkflowQueuesController < ApplicationController
 
   def completed_step_scopes
     completed_steps.map do |step|
-      workflows_for_step_and_status(step, 'completed').select('druid')
+      workflows_for_step_and_scope(step, :complete).select('druid')
     end
   end
 
