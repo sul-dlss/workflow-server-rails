@@ -92,7 +92,7 @@ RSpec.describe 'Objects for workstep', type: :request do
     let!(:complete) do
       FactoryBot.create(:workflow_step,
                         repository: 'sdr',
-                        datastream: 'preservationIngestWF',
+                        workflow: 'preservationIngestWF',
                         process: 'complete-ingest',
                         status: 'completed')
     end
@@ -112,14 +112,14 @@ RSpec.describe 'Objects for workstep', type: :request do
   context 'without prerequisites' do
     let!(:waiting) do
       FactoryBot.create(:workflow_step,
-                        datastream: 'versioningWF',
+                        workflow: 'versioningWF',
                         process: 'start-accession',
                         status: 'waiting')
     end
 
     let!(:second_waiting) do
       FactoryBot.create(:workflow_step,
-                        datastream: 'versioningWF',
+                        workflow: 'versioningWF',
                         process: 'start-accession',
                         status: 'waiting')
     end
@@ -127,7 +127,7 @@ RSpec.describe 'Objects for workstep', type: :request do
     before do
       # It shouldn't show this one because it's the wrong process
       FactoryBot.create(:workflow_step,
-                        datastream: 'versioningWF',
+                        workflow: 'versioningWF',
                         process: 'submit-version',
                         status: 'waiting')
     end

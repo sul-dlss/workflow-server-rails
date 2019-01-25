@@ -5,7 +5,7 @@ FactoryBot.define do
     sequence :druid do |n|
       "druid:abc123#{n}"
     end
-    datastream { 'accessionWF' }
+    workflow { 'accessionWF' }
     process { 'start-accession' }
     repository { 'dor' }
     version { 1 }

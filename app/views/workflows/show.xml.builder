@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
-@processes.each do |datastream|
-  xml.workflow(repository: params[:repo], objectId: params[:druid], id: datastream[0]) do
-    datastream[1].each do |workflow|
-      workflow.as_process(xml)
+@workflow_steps.each do |workflow_step|
+  workflow = workflow_step[0]
+  processes = workflow_step[1]
+
+  xml.workflow(repository: params[:repo], objectId: params[:druid], id: workflow) do
+    processes.each do |process|
+      process.as_process(xml)
     end
   end
 end

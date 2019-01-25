@@ -6,7 +6,7 @@ RSpec.describe WorkflowStep do
   subject do
     FactoryBot.create(
       :workflow_step,
-      datastream: 'accessionWF',
+      workflow: 'accessionWF',
       process: 'start-accession',
       lifecycle: 'submitted'
     )

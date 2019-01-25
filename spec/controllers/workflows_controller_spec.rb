@@ -16,17 +16,17 @@ RSpec.describe WorkflowsController do
   describe 'GET index' do
     it 'loads and groups ActiveRecord Relation renders workflows' do
       get :index, params: { repo: wf.repository, druid: wf.druid, format: :xml }
-      expect(assigns(:processes)).to be_an Hash
-      expect(assigns(:processes).length).to eq 1
+      expect(assigns(:workflow_steps)).to be_an Hash
+      expect(assigns(:workflow_steps).length).to eq 1
       expect(response).to render_template 'index'
     end
   end
 
   describe 'GET show' do
     it 'loads and groups ActiveRecord Relation renders workflows' do
-      get :show, params: { repo: wf.repository, druid: wf.druid, workflow: wf.datastream, format: :xml }
-      expect(assigns(:processes)).to be_an Hash
-      expect(assigns(:processes).length).to eq 1
+      get :show, params: { repo: wf.repository, druid: wf.druid, workflow: wf.workflow, format: :xml }
+      expect(assigns(:workflow_steps)).to be_an Hash
+      expect(assigns(:workflow_steps).length).to eq 1
       expect(response).to render_template 'show'
     end
   end
@@ -37,7 +37,7 @@ RSpec.describe WorkflowsController do
     context 'with XML indicating success' do
       it 'updates the step' do
         put :update, body: process_xml,
-                     params: { repo: wf.repository, druid: wf.druid, workflow: wf.datastream, process: wf.process }
+                     params: { repo: wf.repository, druid: wf.druid, workflow: wf.workflow, process: wf.process }
 
         expect(wf.reload.status).to eq 'completed'
         expect(response).to be_no_content
@@ -49,7 +49,7 @@ RSpec.describe WorkflowsController do
 
       it 'updates the step with error message/text' do
         put :update, body: process_xml,
-                     params: { repo: wf.repository, druid: wf.druid, workflow: wf.datastream, process: wf.process }
+                     params: { repo: wf.repository, druid: wf.druid, workflow: wf.workflow, process: wf.process }
 
         expect(wf.reload.status).to eq 'error'
         expect(response).to be_no_content
@@ -63,7 +63,7 @@ RSpec.describe WorkflowsController do
         expect_any_instance_of(WorkflowStep).not_to receive(:update)
 
         put :update, body: process_xml,
-                     params: { repo: wf.repository, druid: wf.druid, workflow: wf.datastream, process: wf.process }
+                     params: { repo: wf.repository, druid: wf.druid, workflow: wf.workflow, process: wf.process }
 
         expect(response).to be_bad_request
       end
@@ -75,7 +75,7 @@ RSpec.describe WorkflowsController do
           expect_any_instance_of(WorkflowStep).not_to receive(:update)
 
           put :update, body: process_xml,
-                       params: { repo: wf.repository, druid: wf.druid, workflow: wf.datastream, process: wf.process, 'current-status' => 'waiting' }
+                       params: { repo: wf.repository, druid: wf.druid, workflow: wf.workflow, process: wf.process, 'current-status' => 'waiting' }
 
           # NOTE: `#be_conflict` does not exist as a matcher for 409 errors
           expect(response.status).to eq 409
@@ -89,7 +89,7 @@ RSpec.describe WorkflowsController do
 
         it 'updates the step' do
           put :update, body: process_xml,
-                       params: { repo: wf.repository, druid: wf.druid, workflow: wf.datastream, process: wf.process, 'current-status' => 'hold' }
+                       params: { repo: wf.repository, druid: wf.druid, workflow: wf.workflow, process: wf.process, 'current-status' => 'hold' }
 
           expect(wf.reload.status).to eq 'completed'
           expect(response).to be_no_content
@@ -100,7 +100,7 @@ RSpec.describe WorkflowsController do
 
   describe 'GET archive' do
     it 'loads count of workflows' do
-      get :archive, params: { repository: wf.repository, workflow: wf.datastream, format: :xml }
+      get :archive, params: { repository: wf.repository, workflow: wf.workflow, format: :xml }
       expect(assigns(:objects)).to eq 1
       expect(response).to render_template 'archive'
     end
@@ -108,7 +108,7 @@ RSpec.describe WorkflowsController do
 
   describe 'DELETE destroy' do
     it 'deletes workflows' do
-      delete :destroy, params: { repo: wf.repository, druid: wf.druid, workflow: wf.datastream, format: :xml }
+      delete :destroy, params: { repo: wf.repository, druid: wf.druid, workflow: wf.workflow, format: :xml }
       expect(response).to be_no_content
     end
   end
