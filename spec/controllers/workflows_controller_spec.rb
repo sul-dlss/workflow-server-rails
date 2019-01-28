@@ -49,6 +49,20 @@ RSpec.describe WorkflowsController do
       end
     end
 
+    context 'when no matching step exists (Hydrus does this)' do
+      let(:druid) { 'druid:zz696qh8598' }
+      let(:wf) { WorkflowStep.where(druid: druid, workflow: 'hydrusAssemblyWF', process: 'submit') }
+
+      it 'creates the step' do
+        put :update, body: '<process name="submit" status="completed" elapsed="3" lifecycle="submitted" laneId="default" note="Yay"/>',
+                     params: { repo: 'dor', druid: druid, workflow: 'hydrusAssemblyWF', process: 'submit' }
+
+        expect(wf.pluck(:status)).to eq ['completed']
+        expect(response).to be_no_content
+        expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
+      end
+    end
+
     context 'with error XML' do
       let(:process_xml) { update_process_to_error }
 

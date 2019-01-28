@@ -37,7 +37,7 @@ class WorkflowsController < ApplicationController
   # Update a single WorkflowStep
   def update
     parser = ProcessParser.new(process_from_request_body)
-    step = find_step_for_process
+    step = find_or_create_step_for_process
 
     return render plain: process_mismatch_error(parser), status: :bad_request if parser.process != params[:process]
 
@@ -84,8 +84,11 @@ class WorkflowsController < ApplicationController
     "Status in params (#{params['current-status']}) does not match current status (#{step.status})"
   end
 
-  def find_step_for_process
-    WorkflowStep.find_by!(
+  # Only Hydrus calls this when the objects don't exist.
+  # I suspect we could make Hydrus behave more "as expected", but for now it's
+  # easier to just mirror the behavior of the old Java workflow service - Justin C., Jan 2019
+  def find_or_create_step_for_process
+    WorkflowStep.find_or_create_by(
       repository: params[:repo],
       druid: params[:druid],
       workflow: params[:workflow],
