@@ -1,4 +1,4 @@
-id,druid,workflow,process,status,error_msg,error_txt,datetime,attempts,lifecycle,elapsed,repository,note,priority,lane_id
+id,druid,datastream,process,status,error_msg,error_txt,datetime,attempts,lifecycle,elapsed,repository,note,priority,lane_id
 1102179,druid:vm372xm3526,dpgImageWF,copy_to_staging,completed,,,2014-08-21 13:28:20 -0800,2,,0.0,dor,,0,default
 1102180,druid:vm372xm3526,dpgImageWF,md5_verify,completed,,,2014-08-21 13:28:22 -0800,3,,0.0,dor,,0,default
 1102181,druid:vm372xm3526,dpgImageWF,delete_scratch,completed,,,2014-08-21 13:28:25 -0800,2,,0.0,dor,,0,default

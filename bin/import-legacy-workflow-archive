@@ -12,13 +12,16 @@ require File.expand_path('../config/environment', __dir__)
 
 require 'csv'
 
-CSV.foreach(ARGV[0], headers: :first_row) do |line|
-  legacy = line.to_h
+CSV.open(ARGV[0], headers: :first_row).each_slice(10_000) do |batch|
+  values = batch.map do |line|
+    legacy = line.to_h
 
-  # Renamed fields
-  created_at = legacy.delete('datetime')
-  workflow = legacy.delete('datastream')
+    # Renamed fields
+    created_at = legacy.delete('datetime')
+    workflow = legacy.delete('datastream')
+    # We must provide updated_at, or it will display as the import time in the lifecycle.
+    legacy.merge(workflow: workflow, created_at: created_at, updated_at: created_at)
+  end
 
-  # We must provide updated_at, or it will display as the import time in the lifecycle.
-  WorkflowStep.create!(legacy.merge(workflow: workflow, created_at: created_at, updated_at: created_at))
+  WorkflowStep.import values
 end
