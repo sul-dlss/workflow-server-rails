@@ -35,10 +35,11 @@ class WorkflowQueuesController < ApplicationController
 
   def find_waiting_objects
     waiting_scope = workflows_for_step_and_scope(params[:waiting], :waiting)
-                    .select(:druid)
+                    .select(:druid, :version)
     waiting_scope = waiting_scope.where(lane_id: params['lane-id']) if params['lane-id']
 
     scopes = [waiting_scope] + completed_step_scopes
+
     # Get the druids that belong in all (intersection) of the scopes (ActiveRecord::Relations)
     @objects = WorkflowStep.find_by_sql(*IntersectQuery.intersect(scopes)).pluck(:druid)
   end
@@ -67,7 +68,7 @@ class WorkflowQueuesController < ApplicationController
 
   def completed_step_scopes
     completed_steps.map do |step|
-      workflows_for_step_and_scope(step, :complete).select('druid')
+      workflows_for_step_and_scope(step, :complete).group(:druid).having('version = MAX(version)').select(:druid, :version)
     end
   end
 
