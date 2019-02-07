@@ -68,7 +68,7 @@ class WorkflowQueuesController < ApplicationController
 
   def completed_step_scopes
     completed_steps.map do |step|
-      workflows_for_step_and_scope(step, :complete).group(:druid).having('version = MAX(version)').select(:druid, :version)
+      workflows_for_step_and_scope(step, :complete).group(:druid, :version).having('version = MAX(version)').select(:druid, :version)
     end
   end
 

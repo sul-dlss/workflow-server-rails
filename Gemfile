@@ -14,12 +14,9 @@ gem 'dor-services-client', '~> 1.2'
 gem 'honeybadger', '~> 4.1'
 gem 'jbuilder', '~> 2.5'
 gem 'okcomputer'
+gem 'pg'
 gem 'puma', '~> 3.11'
 gem 'stomp', '~> 1.4'
-
-group :production do
-  gem 'pg'
-end
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
@@ -29,7 +26,6 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'rspec-rails'
   gem 'rubocop'
-  gem 'sqlite3'
 end
 
 group :development do
