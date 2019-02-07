@@ -2,21 +2,35 @@
 
 [![](https://images.microbadger.com/badges/image/suldlss/workflow-server.svg)](https://microbadger.com/images/suldlss/workflow-server "Get your own image badge on microbadger.com")
 
-This is a Rails-based workflow service that was originally created for testing but will ultimately replaced our current Java-based worfklow service.
+This is a Rails-based workflow service that was originally created for testing but will ultimately replace SDR's Java-based workflow service.
 
 ## Build
-First create the database (this gets bundled into the image)
-```
-RAILS_ENV=production rails db:migrate
-```
-Build the image
+Build the production image
 ```
 docker build -t suldlss/workflow-server:latest .
 ```
 
-## Run
+## Run the development stack
 ```
-docker run -p 3000:3000 suldlss/workflow-server:latest
+$ docker-compose up -d
+[FIRST RUN]
+$ docker-compose run app rake db:setup
+$ docker-compose stop
+$ docker-compose up -d
+[ -------- ]
+```
+
+If you want to connect to the container:
+```
+$ docker ps (to retrieve the container id)
+$ docker exec -it (container id) /bin/sh
+```
+
+Testing:
+
+```
+docker-compose run -e "RAILS_ENV=test" app rake db:create db:migrate
+docker-compose run -e "RAILS_ENV=test" app rake spec
 ```
 
 ## Routes:
