@@ -5,15 +5,7 @@
 class IntersectQuery
   class << self
     def intersect(scopes)
-      sql, binds = to_sql_and_binds build_intersect(scopes.map(&:arel))
-      # Remove the unneeded parenthesis. See https://github.com/rails/rails/pull/34437
-      # Strip outermost parens
-      sql = sql.sub(/^\((.*)\)$/, '\1')
-
-      # Strip parens from intersect clauses recursively.
-      sql = sql.sub(/\((.*?)\) INTERSECT \((.*)\)/, '\1 INTERSECT \2') while /\) INTERSECT \(/.match?(sql)
-
-      [sql, binds]
+      to_sql_and_binds build_intersect(scopes.map(&:arel))
     end
 
     private
