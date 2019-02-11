@@ -1,6 +1,8 @@
 # Workflow service
 
-This is the workflow service for the SDR.
+[![](https://images.microbadger.com/badges/image/suldlss/workflow-server.svg)](https://microbadger.com/images/suldlss/workflow-server "Get your own image badge on microbadger.com")
+
+This is a Rails-based workflow service that was originally created for testing but will ultimately replace SDR's Java-based workflow service.
 
 ## Build
 Build the production image
@@ -33,9 +35,15 @@ docker-compose run -e "RAILS_ENV=test" app rake spec
 
 ## Routes:
 ```
-GET http://localhost:3000/dor/objects/:druid/lifecycle
-GET http://localhost:3000/dor/objects/:druid/workflows
-GET http://localhost:3000/dor/objects/:druid/workflows/:workflows
-PUT http://localhost:3000/dor/objects/:druid/workflows/:workflows
-GET http://localhost:3000/workflow_archive
+GET    /:repo/objects/:druid/lifecycle
+POST   /:repo/objects/:druid/versionClose
+PUT    /:repo/objects/:druid/workflows/:workflow
+PUT    /:repo/objects/:druid/workflows/:workflow/:process
+GET    /:repo/objects/:druid/workflows
+GET    /:repo/objects/:druid/workflows/:workflow
+DELETE /:repo/objects/:druid/workflows/:workflow
+GET    /workflow_archive
+GET    /workflow_queue/lane_ids
+GET    /workflow_queue/all_queued
+GET    /workflow_queue
 ```
