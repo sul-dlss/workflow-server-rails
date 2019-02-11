@@ -36,7 +36,7 @@ class WorkflowStep < ApplicationRecord
                 laneId: lane_id,
                 elapsed: elapsed,
                 attempts: attempts,
-                datetime: created_at.to_time.iso8601,
+                datetime: updated_at.to_time.iso8601,
                 errorMessage: error_msg,
                 status: status,
                 name: process)
