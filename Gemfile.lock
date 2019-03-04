@@ -33,7 +33,7 @@ GEM
       activemodel (= 5.2.2)
       activesupport (= 5.2.2)
       arel (>= 9.0)
-    activerecord-import (1.0.0)
+    activerecord-import (1.0.1)
       activerecord (>= 3.2)
     activestorage (5.2.2)
       actionpack (= 5.2.2)
@@ -48,7 +48,7 @@ GEM
       sshkit (>= 1.6.1, != 1.7.0)
     arel (9.0.0)
     ast (2.4.0)
-    bootsnap (1.4.0)
+    bootsnap (1.4.1)
       msgpack (~> 1.0)
     builder (3.2.3)
     bundler-audit (0.6.1)
@@ -107,7 +107,7 @@ GEM
       nokogiri (~> 1.6)
       retries
     druid-tools (1.0.0)
-    dry-configurable (0.8.1)
+    dry-configurable (0.8.2)
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.4, >= 0.4.7)
     dry-container (0.7.0)
@@ -150,7 +150,7 @@ GEM
       activesupport (>= 4.2.0)
     hashie (3.6.0)
     honeybadger (4.2.1)
-    i18n (1.5.3)
+    i18n (1.6.0)
       concurrent-ruby (~> 1.0)
     jaro_winkler (1.5.2)
     jbuilder (2.8.0)
@@ -179,7 +179,7 @@ GEM
       json
       nokogiri
       nokogiri-happymapper
-    msgpack (1.2.6)
+    msgpack (1.2.7)
     multi_json (1.13.1)
     multipart-post (2.0.0)
     net-http-persistent (3.0.0)
@@ -193,7 +193,7 @@ GEM
     nokogiri-happymapper (0.8.0)
       nokogiri (~> 1.5)
     okcomputer (1.17.3)
-    parallel (1.13.0)
+    parallel (1.14.0)
     parser (2.6.0.0)
       ast (~> 2.4.0)
     pg (1.1.4)
