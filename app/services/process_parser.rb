@@ -23,14 +23,9 @@ class ProcessParser
   end
 
   def to_h
-    hash = {}
-    PROCESS_ATTRIBUTES.each do |attribute|
-      value = public_send(attribute)
-      next if value.nil?
-
-      hash[attribute] = value
+    PROCESS_ATTRIBUTES.each_with_object({}) do |attribute, hash|
+      hash[attribute] = public_send(attribute)
     end
-    hash
   end
 
   def process

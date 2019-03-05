@@ -39,11 +39,21 @@ RSpec.describe WorkflowsController do
     end
 
     context 'with XML indicating success' do
-      it 'updates the step' do
-        put :update, body: process_xml,
-                     params: { repo: wf.repository, druid: wf.druid, workflow: wf.workflow, process: wf.process }
+      let(:wf) do
+        FactoryBot.create(:workflow_step, status: 'error', error_msg: 'Bang!')
+      end
 
-        expect(wf.reload.status).to eq 'completed'
+      it 'updates the step and clears the old error message' do
+        put :update, body: process_xml,
+                     params: { repo: wf.repository,
+                               druid: wf.druid,
+                               workflow: wf.workflow,
+                               process: wf.process }
+
+        wf.reload
+        expect(wf.status).to eq 'completed'
+        expect(wf.error_msg).to be_nil
+
         expect(response).to be_no_content
         expect(SendUpdateMessage).to have_received(:publish).with(druid: wf.druid)
       end
