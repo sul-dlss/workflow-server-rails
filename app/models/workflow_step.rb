@@ -27,19 +27,28 @@ class WorkflowStep < ApplicationRecord
   # Serialize a WorkflowStep as a process
   # @param [Nokogiri::XML::Builder] xml
   # @return [Nokogiri::XML::Builder::NodeBuilder]
-  # rubocop:disable Metrics/MethodLength
   def as_process(xml)
-    xml.process(version: version,
-                priority: priority,
-                note: note,
-                lifecycle: lifecycle,
-                laneId: lane_id,
-                elapsed: elapsed,
-                attempts: attempts,
-                datetime: updated_at.to_time.iso8601,
-                errorMessage: error_msg,
-                status: status,
-                name: process)
+    xml.process(attributes_for_process)
+  end
+
+  private
+
+  # rubocop:disable Metrics/MethodLength
+  def attributes_for_process
+    {
+      version: version,
+      priority: priority,
+      note: note,
+      lifecycle: lifecycle,
+      laneId: lane_id,
+      elapsed: elapsed,
+      attempts: attempts,
+      datetime: updated_at.to_time.iso8601,
+      status: status,
+      name: process
+    }.tap do |attr|
+      attr[:errorMessage] = error_msg if error_msg
+    end
   end
   # rubocop:enable Metrics/MethodLength
 end
