@@ -23,16 +23,6 @@ class WorkflowStep < ApplicationRecord
                   version: version)
   end
 
-  ##
-  # Serialize a WorkflowStep as a process
-  # @param [Nokogiri::XML::Builder] xml
-  # @return [Nokogiri::XML::Builder::NodeBuilder]
-  def as_process(xml)
-    xml.process(attributes_for_process)
-  end
-
-  private
-
   # rubocop:disable Metrics/MethodLength
   def attributes_for_process
     {
