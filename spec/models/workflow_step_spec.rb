@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe WorkflowStep do
-  subject do
+  subject(:step) do
     FactoryBot.create(
       :workflow_step,
       workflow: 'accessionWF',
@@ -36,28 +36,22 @@ RSpec.describe WorkflowStep do
       expect(parsed_xml.at_xpath('//milestone').content).to eq 'submitted'
     end
   end
-  describe '#as_process' do
-    builder = {}
-    before do
-      builder = Nokogiri::XML::Builder.new do |xml|
-        subject.as_process(xml)
-      end
-    end
-    let(:parsed_xml) { Nokogiri::XML(builder.to_xml) }
-    it 'serializes a Workflow as a process' do
-      expect(parsed_xml.at_xpath('//process'))
-        .to include(
-          ['version', /1/],
-          ['priority', /0/],
-          ['note', ''],
-          %w[lifecycle submitted],
-          %w[laneId default],
-          ['elapsed', ''],
-          ['attempts', /0/],
-          ['datetime', //],
-          ['status', ''],
-          ['name', 'start-accession']
-        )
-    end
+
+  describe '#attributes_for_process' do
+    subject { step.attributes_for_process }
+    it {
+      is_expected.to include(
+        version: 1,
+        priority: 0,
+        note: nil,
+        lifecycle: 'submitted',
+        laneId: 'default',
+        elapsed: nil,
+        attempts: 0,
+        datetime: String,
+        status: nil,
+        name: 'start-accession'
+      )
+    }
   end
 end

@@ -5,8 +5,6 @@
   processes = workflow_step[1]
 
   xml.workflow(repository: params[:repo], objectId: params[:druid], id: workflow) do
-    processes.each do |process|
-      process.as_process(xml)
-    end
+    render(partial: 'process', collection: processes, locals: { builder: xml })
   end
 end
