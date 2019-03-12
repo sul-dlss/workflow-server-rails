@@ -2,6 +2,7 @@ FROM ruby:2.5-alpine
 
 # The postgres-client could be eliminated in production
 RUN apk --no-cache add \
+  git \
   postgresql-dev \
   postgresql-client \
   tzdata
