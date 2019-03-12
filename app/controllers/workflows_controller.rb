@@ -3,13 +3,14 @@
 ##
 # API for handling requests about a specific object's workflow.
 class WorkflowsController < ApplicationController
-  # Used by Dor::VersionService
+  # Used by Dor::VersionService and Dor::StatusService
   def lifecycle
     steps = WorkflowStep.where(
       repository: params[:repo],
       druid: params[:druid]
     )
-    return @objects = steps.lifecycle unless params['active-only']
+
+    return @objects = steps.lifecycle.complete unless params['active-only']
 
     # Active means that it's of the current version, and that all the steps in
     # the current version haven't been completed yet.

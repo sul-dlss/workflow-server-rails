@@ -78,7 +78,7 @@ RSpec.describe 'Lifecycle', type: :request do
                         process: 'opened',
                         version: 1,
                         lane_id: 'default',
-                        status: 'waiting',
+                        status: 'completed',
                         lifecycle: 'submitted')
     end
 
@@ -87,7 +87,7 @@ RSpec.describe 'Lifecycle', type: :request do
                         druid: druid,
                         version: 2,
                         process: 'opened',
-                        status: 'waiting',
+                        status: 'completed',
                         lifecycle: 'submitted')
 
       # This is not a lifecycle event, so it shouldn't display.
@@ -96,14 +96,22 @@ RSpec.describe 'Lifecycle', type: :request do
                         version: 2,
                         process: 'start-accession',
                         lane_id: 'fast',
-                        status: 'waiting')
+                        status: 'completed')
+
+      # This is not a complete event, so it shouldn't display.
+      FactoryBot.create(:workflow_step,
+                        druid: druid,
+                        version: 2,
+                        process: 'index',
+                        status: 'waiting',
+                        lifecycle: 'indexed')
     end
 
     it 'draws milestones from the all versions' do
       get "/dor/objects/#{druid}/lifecycle"
       expect(response).to render_template(:lifecycle)
-      expect(returned_milestone_versions).to include('1', '2')
-      expect(returned_milestone_text).to include('submitted', 'submitted')
+      expect(returned_milestone_versions).to match_array %w[1 2]
+      expect(returned_milestone_text).to match_array %w[submitted submitted]
     end
   end
 end
