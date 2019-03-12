@@ -32,7 +32,9 @@ RSpec.describe WorkflowsController do
   end
 
   describe 'PUT update' do
-    let(:process_xml) { update_process_to_completed }
+    let(:process_xml) do
+      '<process name="start-accession" status="completed" elapsed="3" laneId="default" note="Yay"/>'
+    end
 
     before do
       allow(SendUpdateMessage).to receive(:publish)
@@ -40,10 +42,13 @@ RSpec.describe WorkflowsController do
 
     context 'with XML indicating success' do
       let(:wf) do
-        FactoryBot.create(:workflow_step, status: 'error', error_msg: 'Bang!')
+        FactoryBot.create(:workflow_step,
+                          status: 'error',
+                          error_msg: 'Bang!',
+                          lifecycle: 'submitted')
       end
 
-      it 'updates the step and clears the old error message' do
+      it 'clears the old error message, but preserves the lifecycle' do
         put :update, body: process_xml,
                      params: { repo: wf.repository,
                                druid: wf.druid,
@@ -53,6 +58,8 @@ RSpec.describe WorkflowsController do
         wf.reload
         expect(wf.status).to eq 'completed'
         expect(wf.error_msg).to be_nil
+
+        expect(wf.lifecycle).to eq 'submitted'
 
         expect(response).to be_no_content
         expect(SendUpdateMessage).to have_received(:publish).with(druid: wf.druid)

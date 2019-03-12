@@ -23,10 +23,6 @@ module XmlFixtures
     XML
   end
 
-  def update_process_to_completed
-    '<process name="start-accession" status="completed" elapsed="3" lifecycle="submitted" laneId="default" note="Yay"/>'
-  end
-
   def update_process_to_error
     '<process name="start-accession" status="error" errorMessage="failed to do the thing" errorText="box1.foo.edu"/>'
   end
