@@ -81,7 +81,9 @@ RSpec.describe WorkflowsController do
     end
 
     context 'with error XML' do
-      let(:process_xml) { update_process_to_error }
+      let(:process_xml) do
+        '<process name="start-accession" status="error" errorMessage="failed to do the thing" errorText="box1.foo.edu"/>'
+      end
 
       it 'updates the step with error message/text' do
         put :update, body: process_xml,
@@ -94,7 +96,9 @@ RSpec.describe WorkflowsController do
     end
 
     context 'when process names do not match' do
-      let(:process_xml) { update_other_process }
+      let(:process_xml) do
+        '<process name="other-metadata" status="completed"/>'
+      end
 
       it 'returns a 400 and does not update the step' do
         expect_any_instance_of(WorkflowStep).not_to receive(:update)
