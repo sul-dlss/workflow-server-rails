@@ -14,6 +14,8 @@ services:
       - DATABASE_PORT=5432
       - SECRET_KEY_BASE="${SECRET_KEY_BASE}"
     image: 'suldlss/workflow-server:latest-dev'
+    volumes:
+       - .:/app
     ports:
       - "3000:3000"
     depends_on:
