@@ -22,6 +22,9 @@ class WorkflowParser
     ActiveRecord::Base.transaction do
       WorkflowStep.where(workflow: workflow_id, druid: druid, version: version).destroy_all
 
+      # Any steps for this object/workflow that are not the current version are marked as not active.
+      WorkflowStep.where(workflow: workflow_id, druid: druid).update(active_version: false)
+
       processes.map do |process|
         WorkflowStep.create(workflow_attributes(process))
       end
@@ -39,7 +42,8 @@ class WorkflowParser
       lane_id: process.lane_id,
       repository: repository,
       lifecycle: process.lifecycle,
-      version: version
+      version: version,
+      active_version: true
     }
   end
 

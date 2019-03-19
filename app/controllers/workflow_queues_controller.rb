@@ -35,7 +35,7 @@ class WorkflowQueuesController < ApplicationController
 
   def find_waiting_objects
     waiting_scope = workflows_for_step_and_scope(params[:waiting], :waiting)
-                    .select(:druid, :version)
+                    .select(:druid)
     waiting_scope = waiting_scope.where(lane_id: params['lane-id']) if params['lane-id']
 
     scopes = [waiting_scope] + completed_step_scopes
@@ -54,7 +54,7 @@ class WorkflowQueuesController < ApplicationController
   def workflows_for_step_and_scope(step, scope)
     repository, workflow, process = step.split(':')
 
-    WorkflowStep.public_send(scope).where(
+    WorkflowStep.active.public_send(scope).where(
       repository: repository,
       workflow: workflow,
       process: process
@@ -68,7 +68,7 @@ class WorkflowQueuesController < ApplicationController
 
   def completed_step_scopes
     completed_steps.map do |step|
-      workflows_for_step_and_scope(step, :complete).group(:druid, :version).having('version = MAX(version)').select(:druid, :version)
+      workflows_for_step_and_scope(step, :complete).select(:druid)
     end
   end
 

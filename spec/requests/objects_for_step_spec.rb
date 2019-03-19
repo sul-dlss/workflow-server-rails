@@ -8,70 +8,87 @@ RSpec.describe 'Objects for workstep', type: :request do
       let(:prereqs_and_waiting) do
         FactoryBot.create(:workflow_step,
                           process: 'reset-workspace',
-                          status: 'waiting')
+                          status: 'waiting',
+                          active_version: true)
       end
 
       let(:prereqs_and_not_waiting) do
         FactoryBot.create(:workflow_step,
                           process: 'reset-workspace',
-                          status: 'queued')
+                          status: 'queued',
+                          active_version: true)
       end
 
       let(:not_prereqs_and_waiting) do
         FactoryBot.create(:workflow_step,
                           process: 'reset-workspace',
-                          status: 'waiting')
+                          status: 'waiting',
+                          active_version: true)
       end
 
       let(:second_prereqs_and_waiting) do
         FactoryBot.create(:workflow_step,
                           process: 'reset-workspace',
-                          status: 'waiting')
+                          status: 'waiting',
+                          active_version: true)
       end
 
       let(:prereqs_and_waiting_and_wrong_lane) do
         FactoryBot.create(:workflow_step,
                           process: 'reset-workspace',
                           lane_id: 'fast',
-                          status: 'waiting')
+                          status: 'waiting',
+                          active_version: true)
       end
 
       before do
         FactoryBot.create(:workflow_step,
                           druid: prereqs_and_waiting.druid,
                           process: 'sdr-ingest-received',
-                          status: 'completed')
+                          status: 'completed',
+                          active_version: true)
+
         FactoryBot.create(:workflow_step,
                           druid: prereqs_and_waiting.druid,
                           process: 'provenance-metadata',
-                          status: 'completed')
+                          status: 'completed',
+                          active_version: true)
 
         FactoryBot.create(:workflow_step,
                           druid: second_prereqs_and_waiting.druid,
                           process: 'sdr-ingest-received',
-                          status: 'completed')
+                          status: 'completed',
+                          active_version: true)
+
         FactoryBot.create(:workflow_step,
                           druid: second_prereqs_and_waiting.druid,
                           process: 'provenance-metadata',
-                          status: 'completed')
+                          status: 'completed',
+                          active_version: true)
 
         FactoryBot.create(:workflow_step,
                           druid: prereqs_and_waiting_and_wrong_lane.druid,
                           process: 'sdr-ingest-received',
-                          status: 'completed')
+                          status: 'completed',
+                          active_version: true)
+
         FactoryBot.create(:workflow_step,
                           druid: prereqs_and_waiting_and_wrong_lane.druid,
                           process: 'provenance-metadata',
-                          status: 'completed')
+                          status: 'completed',
+                          active_version: true)
 
         FactoryBot.create(:workflow_step,
                           druid: prereqs_and_not_waiting.druid,
                           process: 'sdr-ingest-received',
-                          status: 'completed')
+                          status: 'completed',
+                          active_version: true)
+
         FactoryBot.create(:workflow_step,
                           druid: prereqs_and_not_waiting.druid,
                           process: 'provenance-metadata',
-                          status: 'completed')
+                          status: 'completed',
+                          active_version: true)
       end
 
       it 'shows the items that are waiting and have met the prereqs' do
@@ -101,6 +118,7 @@ RSpec.describe 'Objects for workstep', type: :request do
         FactoryBot.create(:workflow_step,
                           process: 'rights-metadata',
                           status: 'waiting',
+                          active_version: true,
                           version: 2)
       end
 
@@ -121,6 +139,7 @@ RSpec.describe 'Objects for workstep', type: :request do
                           druid: not_prereqs_current_version.druid,
                           process: 'descriptive-metadata',
                           status: 'waiting',
+                          active_version: true,
                           version: 2)
 
         FactoryBot.create(:workflow_step,
@@ -139,6 +158,7 @@ RSpec.describe 'Objects for workstep', type: :request do
                           druid: with_preqs_for_current_version.druid,
                           process: 'descriptive-metadata',
                           status: 'completed',
+                          active_version: true,
                           version: 2)
       end
 
@@ -162,7 +182,8 @@ RSpec.describe 'Objects for workstep', type: :request do
                         repository: 'sdr',
                         workflow: 'preservationIngestWF',
                         process: 'complete-ingest',
-                        status: 'completed')
+                        status: 'completed',
+                        active_version: true)
     end
     it 'shows the items that have completed' do
       get '/workflow_queue?completed=complete-ingest&' \
@@ -182,14 +203,16 @@ RSpec.describe 'Objects for workstep', type: :request do
       FactoryBot.create(:workflow_step,
                         workflow: 'versioningWF',
                         process: 'start-accession',
-                        status: 'waiting')
+                        status: 'waiting',
+                        active_version: true)
     end
 
     let!(:second_waiting) do
       FactoryBot.create(:workflow_step,
                         workflow: 'versioningWF',
                         process: 'start-accession',
-                        status: 'waiting')
+                        status: 'waiting',
+                        active_version: true)
     end
 
     before do
@@ -197,7 +220,8 @@ RSpec.describe 'Objects for workstep', type: :request do
       FactoryBot.create(:workflow_step,
                         workflow: 'versioningWF',
                         process: 'submit-version',
-                        status: 'waiting')
+                        status: 'waiting',
+                        active_version: true)
     end
 
     it 'shows the items that are waiting' do
