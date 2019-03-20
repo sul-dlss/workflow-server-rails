@@ -15,6 +15,7 @@ class SendUpdateMessage
 
   def self.publish(druid:)
     return unless Settings.enable_stomp
+
     new(druid: druid).publish
   end
 
