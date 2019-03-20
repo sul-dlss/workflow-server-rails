@@ -32,7 +32,26 @@ class SendUpdateMessage
   end
 
   def client
-    Stomp::Client.new(Settings.messaging.uri)
+    Stomp::Client.new(hosts: parse_failover_url(Settings.messaging.uri),
+                      reliable: true,
+                      start_timeout: 1,
+                      connect_timeout: 1,
+                      connread_timeout: 1,
+                      parse_timeout: 1)
+  end
+
+  def parse_failover_url(url)
+    md = Stomp::FAILOVER_REGEX.match(url)
+    raise ArgumentError, "#{url} does not match the Stomp::FAILOVER_REGEX" unless md
+
+    host_match = %r{stomp(\+ssl)?://#{Stomp::URL_REPAT}}
+    url.scan(host_match).map do |match|
+      { ssl: match[0] == '+ssl',
+        login: match[3] || '',
+        passcode: match[4] || '',
+        host: match[5],
+        port: match[6].to_i }
+    end
   end
 
   # @private
