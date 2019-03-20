@@ -11,7 +11,10 @@ default: &default
 
 development:
   <<: *default
-
+  username: postgres
+  password: sekret
+  host: localhost
+  
 test:
   <<: *default
   username: postgres
