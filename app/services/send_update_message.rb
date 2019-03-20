@@ -7,10 +7,15 @@
 # is set to deduplicate messages, so that many quick updates in succession don't
 # necessarily trigger multiple reindexes which are expensive in terms of
 # number of service calls.
+#
+# You may set the environment variable SETTINGS__ENABLE_STOMP=false to
+# prevent sending any Stomp messages.
 class SendUpdateMessage
   TOPIC_NAME = '/topic/fedora.apim.update'
 
   def self.publish(druid:)
+    return unless Settings.enable_stomp
+
     new(druid: druid).publish
   end
 
