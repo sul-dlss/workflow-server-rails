@@ -15,6 +15,7 @@ class SendUpdateMessage
 
   def self.publish(druid:)
     return unless Settings.enable_stomp
+
     Rails.logger.info "Publishing STOMP Message for #{druid}"
     new(druid: druid).publish
     Rails.logger.info "Published STOMP Message for #{druid}"
