@@ -39,7 +39,7 @@ class SendUpdateMessage
   def client
     Stomp::Client.new(hosts: parse_failover_url(Settings.messaging.uri),
                       reliable: true,
-                      start_timeout: 1,
+                      start_timeout: 0, # Don't set a start_timeout when reliable == true
                       connect_timeout: 1,
                       connread_timeout: 1,
                       parse_timeout: 1,
