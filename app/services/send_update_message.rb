@@ -26,6 +26,7 @@ class SendUpdateMessage
   def publish(message: build_message)
     headers = { 'pid' => druid, 'methodName' => 'modifyObject' }
     client.publish(TOPIC_NAME, message.to_xml, headers)
+    client.close
   end
 
   private
