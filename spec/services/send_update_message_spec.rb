@@ -12,10 +12,9 @@ RSpec.describe SendUpdateMessage do
     end
     let(:mock_message) { instance_double(described_class::UpdateMessage, to_xml: 'hello') }
 
-    let(:mock_client) { instance_double(Stomp::Client, publish: true) }
+    let(:mock_client) { instance_double(Stomp::Client, publish: true, close: true) }
 
     before do
-      # allow(sender.message).to receive(:timestamp).and_return('2019-01-25T15:01:03Z')
       allow(Stomp::Client).to receive(:new).and_return(mock_client)
       publish
     end
