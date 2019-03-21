@@ -27,8 +27,9 @@ class SendUpdateMessage
 
   def publish(message: build_message)
     headers = { 'pid' => druid, 'methodName' => 'modifyObject' }
-    client.publish(TOPIC_NAME, message.to_xml, headers)
-    client.close
+    with_client do |client|
+      client.publish(TOPIC_NAME, message.to_xml, headers)
+    end
   end
 
   private
@@ -39,14 +40,16 @@ class SendUpdateMessage
     UpdateMessage.new(druid: druid)
   end
 
-  def client
-    Stomp::Client.new(hosts: parse_failover_url(Settings.messaging.uri),
-                      reliable: true,
-                      start_timeout: 0, # Don't set a start_timeout when reliable == true
-                      connect_timeout: 1,
-                      connread_timeout: 1,
-                      parse_timeout: 1,
-                      max_reconnect_attempts: 3)
+  def with_client
+    client = Stomp::Client.new(hosts: parse_failover_url(Settings.messaging.uri),
+                               reliable: true,
+                               start_timeout: 0, # Don't set a start_timeout when reliable == true
+                               connect_timeout: 1,
+                               connread_timeout: 1,
+                               parse_timeout: 1,
+                               max_reconnect_attempts: 3)
+    yield client
+    client.close
   end
 
   def parse_failover_url(url)
