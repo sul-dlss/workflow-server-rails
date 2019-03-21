@@ -42,7 +42,8 @@ class SendUpdateMessage
                       start_timeout: 1,
                       connect_timeout: 1,
                       connread_timeout: 1,
-                      parse_timeout: 1)
+                      parse_timeout: 1,
+                      max_reconnect_attempts: 3)
   end
 
   def parse_failover_url(url)
