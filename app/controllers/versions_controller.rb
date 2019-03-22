@@ -45,12 +45,6 @@ class VersionsController < ApplicationController
   end
 
   def initial_workflow
-    client.workflows.initial(name: 'accessionWF')
-  end
-
-  def client
-    @client ||= Dor::Services::Client.configure(url: Settings.dor_services.url,
-                                                username: Settings.dor_services.username,
-                                                password: Settings.dor_services.password)
+    WorkflowTemplateService.template_for('accessionWF')
   end
 end
