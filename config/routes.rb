@@ -25,4 +25,6 @@ Rails.application.routes.draw do
       get 'all_queued'
     end
   end
+
+  get '/workflow/:workflow', to: 'status#show', defaults: { format: :json }
 end
