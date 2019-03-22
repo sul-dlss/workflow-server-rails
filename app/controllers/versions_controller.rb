@@ -41,7 +41,7 @@ class VersionsController < ApplicationController
   end
 
   def current_version
-    ObjectVersionService.current_version(params[:druid])
+    @current_version ||= ObjectVersionService.current_version(params[:druid])
   end
 
   def initial_workflow
