@@ -13,15 +13,16 @@ RSpec.describe WorkflowCreator do
   end
 
   let(:wf_creator) do
-    described_class.new(parser: wf_parser, druid: druid, repository: repository)
+    described_class.new(
+      parser: wf_parser,
+      druid: druid,
+      repository: repository,
+      version: 1
+    )
   end
 
   describe '#create_workflow_steps' do
     subject(:create_workflow_steps) { wf_creator.create_workflow_steps }
-
-    before do
-      allow(ObjectVersionService).to receive(:current_version).with(druid).and_return('1')
-    end
 
     it 'creates a WorkflowStep for each process' do
       expect do

@@ -35,7 +35,8 @@ class VersionsController < ApplicationController
     WorkflowCreator.new(
       parser: WorkflowParser.new(initial_workflow),
       druid: params[:druid],
-      repository: params[:repo]
+      repository: params[:repo],
+      version: current_version
     ).create_workflow_steps
   end
 

@@ -71,7 +71,8 @@ class WorkflowsController < ApplicationController
     WorkflowCreator.new(
       parser: WorkflowParser.new(request.body.read),
       druid: params[:druid],
-      repository: params[:repo]
+      repository: params[:repo],
+      version: current_version
     ).create_workflow_steps
     SendUpdateMessage.publish(druid: params[:druid])
   end
