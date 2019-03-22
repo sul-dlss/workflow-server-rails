@@ -3,17 +3,13 @@
 ##
 # Parsing Workflow XML
 class WorkflowCreator
-  attr_reader :parser, :druid, :repository, :version
+  attr_reader :parser, :version
 
   ##
   # @param [WorkflowParser] parser
-  # @param [String] druid
-  # @param [String] repository
-  # @param [Integer] version the current version of the object
-  def initialize(parser:, druid:, repository:, version:)
+  # @param [Version] version the object/version
+  def initialize(parser:, version:)
     @parser = parser
-    @druid = druid
-    @repository = repository
     @version = version
   end
 
@@ -22,13 +18,13 @@ class WorkflowCreator
   # @return [Array]
   def create_workflow_steps
     ActiveRecord::Base.transaction do
-      WorkflowStep.where(workflow: workflow_id, druid: druid, version: version).destroy_all
+      version.workflow_steps.where(workflow: workflow_id).destroy_all
 
       # Any steps for this object/workflow that are not the current version are marked as not active.
-      WorkflowStep.where(workflow: workflow_id, druid: druid).update(active_version: false)
+      WorkflowStep.where(workflow: workflow_id, druid: version.druid).update(active_version: false)
 
       processes.map do |process|
-        WorkflowStep.create(workflow_attributes(process))
+        WorkflowStep.create!(workflow_attributes(process))
       end
     end
   end
@@ -40,13 +36,13 @@ class WorkflowCreator
   def workflow_attributes(process)
     {
       workflow: workflow_id,
-      druid: druid,
+      druid: version.druid,
       process: process.process,
       status: process.status,
       lane_id: process.lane_id,
-      repository: repository,
+      repository: version.repository,
       lifecycle: process.lifecycle,
-      version: version,
+      version: version.version_id,
       active_version: true
     }
   end
