@@ -22,21 +22,22 @@ class VersionsController < ApplicationController
   end
 
   def find_versioning_steps
-    WorkflowStep.where(
-      repository: params[:repo],
-      druid: params[:druid],
+    obj = Version.new(repository: params[:repo],
+                      druid: params[:druid],
+                      version: current_version)
+    obj.workflow_steps.where(
       workflow: 'versioningWF',
-      process: ['submit-version', 'start-accession'],
-      version: current_version
+      process: ['submit-version', 'start-accession']
     )
   end
 
   def initialize_workflow
+    obj = Version.new(repository: params[:repo],
+                      druid: params[:druid],
+                      version: current_version)
     WorkflowCreator.new(
       parser: WorkflowParser.new(initial_workflow),
-      druid: params[:druid],
-      repository: params[:repo],
-      version: current_version
+      version: obj
     ).create_workflow_steps
   end
 

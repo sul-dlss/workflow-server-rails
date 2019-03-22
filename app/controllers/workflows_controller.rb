@@ -21,6 +21,7 @@ class WorkflowsController < ApplicationController
     @objects = steps.lifecycle
   end
 
+  # Display all steps for all versions of a given object
   def index
     @workflow_steps = WorkflowStep.where(
       repository: params[:repo],
@@ -28,6 +29,7 @@ class WorkflowsController < ApplicationController
     ).order(:workflow, created_at: :asc).group_by(&:workflow)
   end
 
+  # Display all steps for all workflows for all versions of a given object
   def show
     @workflow_steps = WorkflowStep.where(
       repository: params[:repo],
@@ -51,12 +53,12 @@ class WorkflowsController < ApplicationController
   end
 
   def destroy
-    @workflow_steps = WorkflowStep.where(
+    obj = Version.new(
       repository: params[:repo],
       druid: params[:druid],
-      workflow: params[:workflow],
       version: current_version
-    ).destroy_all
+    )
+    obj.workflow_steps.where(workflow: params[:workflow]).destroy_all
     head :no_content
   end
 
@@ -70,9 +72,11 @@ class WorkflowsController < ApplicationController
   def create
     WorkflowCreator.new(
       parser: WorkflowParser.new(request.body.read),
-      druid: params[:druid],
-      repository: params[:repo],
-      version: current_version
+      version: Version.new(
+        repository: params[:repo],
+        druid: params[:druid],
+        version: current_version
+      )
     ).create_workflow_steps
     SendUpdateMessage.publish(druid: params[:druid])
   end
