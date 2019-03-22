@@ -1,66 +1,24 @@
 # frozen_string_literal: true
 
 ##
-# Parsing Workflow creation request
+# Parsing Workflow XML
 class WorkflowParser
-  attr_reader :xml_request, :druid, :repository
+  attr_reader :xml_request
 
   ##
   # @param [String] request_body
-  # @param [String] druid
-  # @param [String] repository
-  def initialize(request_body, druid:, repository:)
+  def initialize(request_body)
     @xml_request = Nokogiri::XML(request_body)
-    @druid = druid
-    @repository = repository
   end
 
-  ##
-  # Delete all the rows for this druid/version/workflow, and replace with new rows.
-  # @return [Array]
-  def create_workflow_steps
-    ActiveRecord::Base.transaction do
-      WorkflowStep.where(workflow: workflow_id, druid: druid, version: version).destroy_all
-
-      # Any steps for this object/workflow that are not the current version are marked as not active.
-      WorkflowStep.where(workflow: workflow_id, druid: druid).update(active_version: false)
-
-      processes.map do |process|
-        WorkflowStep.create(workflow_attributes(process))
-      end
-    end
-  end
-
-  private
-
-  def workflow_attributes(process)
-    {
-      workflow: workflow_id,
-      druid: druid,
-      process: process.process,
-      status: process.status,
-      lane_id: process.lane_id,
-      repository: repository,
-      lifecycle: process.lifecycle,
-      version: version,
-      active_version: true
-    }
-  end
-
-  def version
-    @version ||= ObjectVersionService.current_version(druid)
-  end
-
-  def workflow
-    xml_request.xpath('//workflow')
-  end
-
+  # @return [Array<ProcessParser>] a parser for each process element
   def processes
     workflow.xpath('//process').map do |process|
       ProcessParser.new(process)
     end
   end
 
+  # @return [String] the workflow identifier
   def workflow_id
     @workflow_id ||= begin
       node = workflow.attr('id')
@@ -68,5 +26,11 @@ class WorkflowParser
 
       node.value
     end
+  end
+
+  private
+
+  def workflow
+    xml_request.xpath('//workflow')
   end
 end

@@ -4,6 +4,7 @@
 # API for handling requests about a specific object's workflow.
 class WorkflowsController < ApplicationController
   # Used by Dor::VersionService and Dor::StatusService
+  # to get lifecycle milestones
   def lifecycle
     steps = WorkflowStep.where(
       repository: params[:repo],
@@ -67,8 +68,8 @@ class WorkflowsController < ApplicationController
   end
 
   def create
-    WorkflowParser.new(
-      request.body.read,
+    WorkflowCreator.new(
+      parser: WorkflowParser.new(request.body.read),
       druid: params[:druid],
       repository: params[:repo]
     ).create_workflow_steps

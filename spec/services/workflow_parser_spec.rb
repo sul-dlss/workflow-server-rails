@@ -5,40 +5,15 @@ require 'rails_helper'
 RSpec.describe WorkflowParser do
   include XmlFixtures
 
-  let(:druid) { 'druid:abc123' }
-  let(:repository) { 'dor' }
   let(:xml) { workflow_create }
   let(:wf_parser) do
-    described_class.new(xml, druid: druid, repository: repository)
+    described_class.new(xml)
   end
 
-  describe '#create_workflow_steps' do
-    subject(:create_workflow_steps) { wf_parser.create_workflow_steps }
+  describe '#workflow_id' do
+    subject(:workflow_id) { wf_parser.workflow_id }
 
-    before do
-      allow(ObjectVersionService).to receive(:current_version).with(druid).and_return('1')
-    end
-
-    it 'creates a WorkflowStep for each process' do
-      expect do
-        create_workflow_steps
-      end.to change(WorkflowStep, :count)
-        .by(Nokogiri::XML(workflow_create).xpath('//process').count)
-      expect(WorkflowStep.last.druid).to eq druid
-      expect(WorkflowStep.last.repository).to eq repository
-    end
-
-    context 'when workflow steps already exists' do
-      before do
-        wf_parser.create_workflow_steps
-      end
-
-      it 'replaces them' do
-        expect do
-          create_workflow_steps
-        end.not_to change(WorkflowStep, :count)
-      end
-    end
+    it { is_expected.to eq 'accessionWF' }
 
     context 'when the data is missing an id' do
       let(:xml) do
@@ -55,9 +30,18 @@ RSpec.describe WorkflowParser do
       end
       it 'raises an error' do
         expect do
-          create_workflow_steps
+          workflow_id
         end.to raise_error(DataError)
       end
+    end
+  end
+
+  describe '#processes' do
+    subject(:processes) { wf_parser.processes }
+
+    it 'is a list of ProcessParsers' do
+      expect(processes).to all be_instance_of ProcessParser
+      expect(processes.size).to eq 13
     end
   end
 end
