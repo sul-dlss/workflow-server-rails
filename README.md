@@ -34,15 +34,25 @@ docker-compose run -e "RAILS_ENV=test" app rake spec
 ```
 
 ## Routes:
+`GET    /:repo/objects/:druid/lifecycle` - Returns the milestones in the lifecycle that have been completed
+
+
+`POST   /:repo/objects/:druid/versionClose` - Set all versioningWF steps to 'complete' and starts a new accessionWF unless `create-accession=false` is passed as a parameter.
+
+
+These methods deal with the workflow for a single object
 ```
-GET    /:repo/objects/:druid/lifecycle
-POST   /:repo/objects/:druid/versionClose
 PUT    /:repo/objects/:druid/workflows/:workflow
 PUT    /:repo/objects/:druid/workflows/:workflow/:process
 GET    /:repo/objects/:druid/workflows
 GET    /:repo/objects/:druid/workflows/:workflow
 DELETE /:repo/objects/:druid/workflows/:workflow
-GET    /workflow_archive
+```
+
+`GET    /workflow_archive` - Deprecated. Currently just returns a count of the number of items/versions for the workflow
+
+These processes are used by robot-master to discover which steps need to be performed.
+```
 GET    /workflow_queue/lane_ids
 GET    /workflow_queue/all_queued
 GET    /workflow_queue
