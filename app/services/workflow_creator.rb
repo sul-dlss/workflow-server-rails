@@ -3,16 +3,18 @@
 ##
 # Parsing Workflow XML
 class WorkflowCreator
-  attr_reader :parser, :druid, :repository
+  attr_reader :parser, :druid, :repository, :version
 
   ##
   # @param [WorkflowParser] parser
   # @param [String] druid
   # @param [String] repository
-  def initialize(parser:, druid:, repository:)
+  # @param [Integer] version the current version of the object
+  def initialize(parser:, druid:, repository:, version:)
     @parser = parser
     @druid = druid
     @repository = repository
+    @version = version
   end
 
   ##
@@ -47,9 +49,5 @@ class WorkflowCreator
       version: version,
       active_version: true
     }
-  end
-
-  def version
-    @version ||= ObjectVersionService.current_version(druid)
   end
 end
