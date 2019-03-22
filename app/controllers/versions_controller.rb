@@ -32,8 +32,8 @@ class VersionsController < ApplicationController
   end
 
   def initialize_workflow
-    WorkflowParser.new(
-      initial_workflow,
+    WorkflowCreator.new(
+      parser: WorkflowParser.new(initial_workflow),
       druid: params[:druid],
       repository: params[:repo]
     ).create_workflow_steps
