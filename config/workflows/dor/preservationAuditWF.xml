@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<workflow-def id="preservationAuditWF" repository="dor">
+  <process name="moab-valid" sequence="1" skip-queue="true">
+    <label>Moab validation errors</label>
+  </process>
+  <process name="preservation-audit" sequence="2" skip-queue="true">
+    <label>preservation object audit errors</label>
+  </process>
+</workflow-def>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<workflow-def id="wasSeedDisseminationWF" repository="dor">
+  <process name="start" sequence="1" skip-queue="true" status="completed">
+    <label>Initiate Sed Dissemination WF of the object</label>
+  </process>
+  <process name="update-thumbnail-generator" sequence="2">
+    <prereq>start</prereq>
+    <label>It sends the druid and uri to thumbnail generator service</label>
+  </process>
+</workflow-def>

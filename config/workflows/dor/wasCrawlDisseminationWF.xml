@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<workflow-def id="wasCrawlDisseminationWF" repository="dor">
+  <process name="start" sequence="1" status="completed">
+    <label>Initiate was crawl disseminationWF of the object</label>
+  </process>
+  <process name="cdx-generator" sequence="2">
+    <prereq>start</prereq>
+    <label>Generate CDX files for (W)ARCs</label>
+  </process>
+  <process name="cdx-merge-sort-publish" sequence="3">
+    <prereq>cdx-generator</prereq>
+    <label>Sort individual new CDX files, merge into existing openwayback cdx file</label>
+  </process>
+  <process name="path-indexer" sequence="4">
+    <prereq>cdx-merge-sort-publish</prereq>
+    <label>Update the path index with the new (W)ARCs</label>
+  </process>
+</workflow-def>

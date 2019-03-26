@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<workflow-def id="digitizationWF" repository="dor">
+  <process lifecycle="registered" name="initiate" sequence="1" status="completed">
+    <label>Initiate digitization workflow</label>
+  </process>
+  <process lifecycle="digitized" name="digitize" sequence="2">
+    <prereq>initiate</prereq>
+    <label>Place-holder step for digitization processes</label>
+  </process>
+  <process name="start-accession" sequence="3">
+    <prereq>digitize</prereq>
+    <label>Start accessioning</label>
+  </process>
+</workflow-def>

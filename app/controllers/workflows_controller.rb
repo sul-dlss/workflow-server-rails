@@ -39,6 +39,7 @@ class WorkflowsController < ApplicationController
   end
 
   # Update a single WorkflowStep
+  # rubocop:disable Metrics/AbcSize
   def update
     parser = ProcessParser.new(process_from_request_body)
     step = find_or_create_step_for_process
@@ -49,8 +50,9 @@ class WorkflowsController < ApplicationController
 
     step.update(parser.to_h)
     SendUpdateMessage.publish(druid: step.druid)
-    head :no_content
+    render json: { next_steps: NextStepService.for(step: step) }
   end
+  # rubocop:enable Metrics/AbcSize
 
   def destroy
     obj = Version.new(
