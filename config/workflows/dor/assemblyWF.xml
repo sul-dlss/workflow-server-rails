@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<workflow-def id="assemblyWF" repository="dor">
+  <process name="start-assembly" sequence="1" status="completed">
+    <label>Initiate assembly of the object</label>
+  </process>
+  <process name="content-metadata-create" sequence="2">
+    <prereq>start-assembly</prereq>
+    <label>Create content-metadata from stub content metadata if it exists</label>
+  </process>
+  <process name="jp2-create" sequence="3">
+    <prereq>content-metadata-create</prereq>
+    <label>Create JP2 derivatives for any images in object</label>
+  </process>
+  <process name="checksum-compute" sequence="4">
+    <prereq>jp2-create</prereq>
+    <label>Compute and compare checksums for any files referenced in contentMetadata</label>
+  </process>
+  <process name="exif-collect" sequence="5">
+    <prereq>checksum-compute</prereq>
+    <label>Calculate and add exif, mimetype, file size and other attributes to each file node in contentMetadata</label>
+  </process>
+  <process name="accessioning-initiate" sequence="6">
+    <prereq>exif-collect</prereq>
+    <label>Initiate workspace and start common accessioning</label>
+  </process>
+</workflow-def>

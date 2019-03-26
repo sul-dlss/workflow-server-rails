@@ -61,7 +61,7 @@ RSpec.describe WorkflowsController do
 
         expect(wf.lifecycle).to eq 'submitted'
 
-        expect(response).to be_no_content
+        expect(response.body).to eq '{"next_steps":[]}'
         expect(SendUpdateMessage).to have_received(:publish).with(druid: wf.druid)
       end
     end
@@ -75,7 +75,7 @@ RSpec.describe WorkflowsController do
                      params: { repo: 'dor', druid: druid, workflow: 'hydrusAssemblyWF', process: 'submit' }
 
         expect(wf.pluck(:status)).to eq ['completed']
-        expect(response).to be_no_content
+        expect(response.body).to eq '{"next_steps":[]}'
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end
     end
@@ -90,7 +90,7 @@ RSpec.describe WorkflowsController do
                      params: { repo: wf.repository, druid: wf.druid, workflow: wf.workflow, process: wf.process }
 
         expect(wf.reload.status).to eq 'error'
-        expect(response).to be_no_content
+        expect(response.body).to eq '{"next_steps":[]}'
         expect(SendUpdateMessage).to have_received(:publish).with(druid: wf.druid)
       end
     end
@@ -135,7 +135,7 @@ RSpec.describe WorkflowsController do
                        params: { repo: wf.repository, druid: wf.druid, workflow: wf.workflow, process: wf.process, 'current-status' => 'hold' }
 
           expect(wf.reload.status).to eq 'completed'
-          expect(response).to be_no_content
+          expect(response.body).to eq '{"next_steps":[]}'
           expect(SendUpdateMessage).to have_received(:publish).with(druid: wf.druid)
         end
       end

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<workflow-def id="wasCrawlPreassemblyWF" repository="dor">
+  <process name="start" sequence="1" status="completed">
+    <label>Initiate WAS Crawl Preassembly WF of the object</label>
+  </process>
+  <process name="build-was-crawl-druid-tree" sequence="2">
+    <prereq>start</prereq>
+    <label>Build druid-tree and copy the files</label>
+  </process>
+  <process name="metadata-extractor" sequence="3">
+    <prereq>build-was-crawl-druid-tree</prereq>
+    <label>Extract metadata from (W)ARCs files</label>
+  </process>
+  <process name="content-metadata-generator" sequence="4">
+    <prereq>metadata-extractor</prereq>
+    <label>Generate content metadata</label>
+  </process>
+  <process name="technical-metadata-generator" sequence="5">
+    <prereq>content-metadata-generator</prereq>
+    <label>Generate technical metadata</label>
+  </process>
+  <process name="desc-metadata-generator" sequence="6">
+    <prereq>technical-metadata-generator</prereq>
+    <label>Generate desc metadata</label>
+  </process>
+  <process name="end-was-crawl-preassembly" sequence="7">
+    <prereq>desc-metadata-generator</prereq>
+    <label>End of the WAS Crawl preassembly</label>
+  </process>
+</workflow-def>

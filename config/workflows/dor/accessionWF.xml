@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<workflow-def id="accessionWF" repository="dor">
+  <process lifecycle="submitted" name="start-accession" sequence="1" status="completed">
+    <label>Start Accessioning</label>
+  </process>
+  <process batch-limit="1000" error-limit="10" lifecycle="described" name="descriptive-metadata" sequence="2">
+    <label>Descriptive Metadata</label>
+    <prereq>start-accession</prereq>
+  </process>
+  <process batch-limit="1000" error-limit="10" name="rights-metadata" sequence="3">
+    <label>Rights Metadata</label>
+    <prereq>descriptive-metadata</prereq>
+  </process>
+  <process batch-limit="1000" error-limit="10" name="content-metadata" sequence="4">
+    <label>Content Metadata</label>
+    <prereq>rights-metadata</prereq>
+  </process>
+  <process batch-limit="1000" error-limit="10" name="technical-metadata" sequence="5">
+    <label>Technical Metadata</label>
+    <prereq>content-metadata</prereq>
+  </process>
+  <process batch-limit="100" error-limit="5" name="remediate-object" sequence="6">
+    <label>Ensure object conforms to latest DOR standards and schemas</label>
+    <prereq>technical-metadata</prereq>
+  </process>
+  <process batch-limit="1" error-limit="5" name="shelve" sequence="7">
+    <label>Shelve content in Digital Stacks</label>
+    <prereq>remediate-object</prereq>
+  </process>
+  <process batch-limit="100" error-limit="10" lifecycle="published" name="publish" sequence="8">
+    <label>Publish Metadata</label>
+    <prereq>shelve</prereq>
+  </process>
+  <process batch-limit="1" error-limit="5" name="provenance-metadata" sequence="9">
+    <label>Provenance Metadata</label>
+    <prereq>publish</prereq>
+  </process>
+  <process batch-limit="1" error-limit="5" name="sdr-ingest-transfer" sequence="10">
+    <label>Initiate Ingest into Preservation</label>
+    <prereq>provenance-metadata</prereq>
+  </process>
+  <process batch-limit="1" error-limit="5" lifecycle="deposited" name="sdr-ingest-received" sequence="11" skip-queue="true">
+    <label>Signal from SDR that object has been received</label>
+  </process>
+  <process batch-limit="1" error-limit="5" name="reset-workspace" sequence="12">
+    <label>Reset workspace by renaming the druid-tree to a versioned directory</label>
+    <prereq>sdr-ingest-received</prereq>
+    <prereq>provenance-metadata</prereq>
+  </process>
+  <process batch-limit="1" error-limit="5" lifecycle="accessioned" name="end-accession" sequence="13">
+    <label>Clean up any diff caches and set disseminationWF:cleanup to waiting</label>
+    <prereq>reset-workspace</prereq>
+  </process>
+</workflow-def>
