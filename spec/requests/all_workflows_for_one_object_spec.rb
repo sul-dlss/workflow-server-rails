@@ -16,7 +16,7 @@ RSpec.describe 'Get the steps for one object', type: :request do
     end
 
     it 'shows the error message' do
-      get "/dor/objects/#{druid}/workflows"
+      get "/objects/#{druid}/workflows"
       expect(response).to be_successful
       expect(response.body).to be_equivalent_to <<~XML
         <workflows objectId="#{druid}">
@@ -38,7 +38,7 @@ RSpec.describe 'Get the steps for one object', type: :request do
     end
 
     it 'does not have an error message' do
-      get "/dor/objects/#{druid}/workflows"
+      get "/objects/#{druid}/workflows"
       expect(response).to be_successful
       expect(response.body).to be_equivalent_to <<~XML
         <workflows objectId="#{druid}">
@@ -49,6 +49,15 @@ RSpec.describe 'Get the steps for one object', type: :request do
           </workflow>
         </workflows>
       XML
+    end
+  end
+
+  context 'the deprecated route with the repository' do
+    let(:druid) { 'abc:123' }
+
+    it 'redirects to the new route' do
+      get "/dor/objects/#{druid}/workflows"
+      expect(response).to redirect_to "/objects/#{druid}/workflows"
     end
   end
 end
