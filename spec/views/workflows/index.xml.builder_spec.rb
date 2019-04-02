@@ -5,16 +5,31 @@ require 'rails_helper'
 RSpec.describe 'workflows/index' do
   let(:druid) { 'druid:abc123' }
   let(:repo) { 'dor' }
-  let(:params) { { druid: druid, repo: repo } }
-  it 'renders a workflows document' do
-    FactoryBot.create(
+
+  let(:step) do
+    FactoryBot.build(
       :workflow_step,
       repository: repo,
       druid: druid,
+      updated_at: Date.today,
       workflow: 'accessionWF'
     )
-    @workflow_steps = WorkflowStep.all.group_by(&:workflow)
+  end
 
+  before do
+    params[:druid] = druid
+
+    @workflows = [
+      Workflow.new(
+        repository: repo,
+        druid: druid,
+        name: 'accessionWF',
+        steps: [step]
+      )
+    ]
+  end
+
+  it 'renders a workflows document' do
     render template: 'workflows/index', locals: { params: params }
     doc = Nokogiri::XML.parse(rendered)
     expect(doc.at_xpath('//workflows')).to include %w[objectId druid:abc123]

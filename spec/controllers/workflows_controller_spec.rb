@@ -13,24 +13,6 @@ RSpec.describe WorkflowsController do
     allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
   end
 
-  describe 'GET index' do
-    it 'loads and groups ActiveRecord Relation renders workflows' do
-      get :index, params: { repo: wf.repository, druid: wf.druid, format: :xml }
-      expect(assigns(:workflow_steps)).to be_an Hash
-      expect(assigns(:workflow_steps).length).to eq 1
-      expect(response).to render_template 'index'
-    end
-  end
-
-  describe 'GET show' do
-    it 'loads and groups ActiveRecord Relation renders workflows' do
-      get :show, params: { repo: wf.repository, druid: wf.druid, workflow: wf.workflow, format: :xml }
-      expect(assigns(:workflow_steps)).to be_an Hash
-      expect(assigns(:workflow_steps).length).to eq 1
-      expect(response).to render_template 'show'
-    end
-  end
-
   describe 'PUT update' do
     let(:process_xml) do
       '<process name="start-accession" status="completed" elapsed="3" laneId="default" note="Yay"/>'

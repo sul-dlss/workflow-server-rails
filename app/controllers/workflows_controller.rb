@@ -23,19 +23,23 @@ class WorkflowsController < ApplicationController
 
   # Display all steps for all versions of a given object
   def index
-    @workflow_steps = WorkflowStep.where(
-      repository: params[:repo],
-      druid: params[:druid]
-    ).order(:workflow, created_at: :asc).group_by(&:workflow)
+    object_steps = WorkflowStep.where(repository: params[:repo], druid: params[:druid])
+                               .order(:workflow, created_at: :asc)
+                               .group_by(&:workflow)
+
+    @workflows = object_steps.map do |wf_name, workflow_steps|
+      Workflow.new(name: wf_name, repository: params[:repo], druid: params[:druid], steps: workflow_steps)
+    end
   end
 
   # Display all steps for all workflows for all versions of a given object
   def show
-    @workflow_steps = WorkflowStep.where(
+    workflow_steps = WorkflowStep.where(
       repository: params[:repo],
       druid: params[:druid],
       workflow: params[:workflow]
-    ).order(:workflow, created_at: :asc).group_by(&:workflow)
+    ).order(:workflow, created_at: :asc)
+    @workflow = Workflow.new(name: params[:workflow], repository: params[:repo], druid: params[:druid], steps: workflow_steps)
   end
 
   # Update a single WorkflowStep
