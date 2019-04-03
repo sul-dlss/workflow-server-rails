@@ -14,6 +14,10 @@ Rails.application.routes.draw do
     end
   end
 
+  scope 'objects/:druid', constraints: { druid: %r{[^\/]+} }, defaults: { format: :xml } do
+    resources :workflows, only: %i[index], param: :workflow
+  end
+
   get '/workflow_archive',
       to: 'workflows#archive',
       constraints: { druid: %r{[^\/]+} },

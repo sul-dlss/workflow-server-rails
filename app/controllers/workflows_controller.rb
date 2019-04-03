@@ -23,12 +23,21 @@ class WorkflowsController < ApplicationController
 
   # Display all steps for all versions of a given object
   def index
-    object_steps = WorkflowStep.where(repository: params[:repo], druid: params[:druid])
+    # This ought to be a redirect, but our infrastructure is making it a
+    # challenge to do right now: https://github.com/sul-dlss/workflow-server-rails/pull/162#issuecomment-479191283
+    # so we'll just ignore an log it.
+    # return redirect_to "/objects/#{params[:druid]}/workflows" if params[:repo]
+    logger.warn 'Workflows#index with repo parameter is deprecated. Call /objects/:druid/workflows instead' if params[:repo]
+
+    object_steps = WorkflowStep.where(druid: params[:druid])
                                .order(:workflow, created_at: :asc)
                                .group_by(&:workflow)
 
     @workflows = object_steps.map do |wf_name, workflow_steps|
-      Workflow.new(name: wf_name, repository: params[:repo], druid: params[:druid], steps: workflow_steps)
+      Workflow.new(name: wf_name,
+                   repository: workflow_steps.first.repository,
+                   druid: params[:druid],
+                   steps: workflow_steps)
     end
   end
 
