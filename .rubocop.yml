@@ -11,3 +11,7 @@ Style/Documentation:
 Metrics/BlockLength:
   Exclude:
     - spec/**/*
+
+Metrics/MethodLength:
+  Exclude:
+    - db/migrate/*
