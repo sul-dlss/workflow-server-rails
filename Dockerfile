@@ -1,19 +1,15 @@
 FROM ruby:2.5-alpine
 
-# netcat is required by wait-for in invoke.sh
+# postgresql-client is required for invoke.sh
 RUN apk --no-cache add \
   postgresql-dev \
-  netcat-openbsd \
+  postgresql-client \
   tzdata
 
 RUN mkdir /app
 WORKDIR /app
 
-ADD https://raw.githubusercontent.com/eficode/wait-for/master/wait-for ./wait-for
-RUN chmod +x wait-for
-
-COPY Gemfile Gemfile.lock docker/invoke.sh ./
-RUN chmod +x invoke.sh
+COPY Gemfile Gemfile.lock ./
 
 RUN apk --no-cache add --virtual build-dependencies \
   build-base \
@@ -30,4 +26,4 @@ LABEL description="The workflow server suitable for testing other applications i
                    nodes to try to run the migrations."
 ENV RAILS_ENV=production
 
-CMD ["./invoke.sh"]
+CMD ["./docker/invoke.sh"]

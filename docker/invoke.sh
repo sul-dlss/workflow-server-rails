@@ -2,12 +2,18 @@
 
 # Don't allow this command to fail
 set -e
-echo "Waiting for db"
-/app/wait-for db:5432 -t 45 -- echo "Db is up"
+
+echo "HOST IS: $DATABASE_HOSTNAME"
+until PGPASSWORD=$DATABASE_PASSWORD psql -h "$DATABASE_HOSTNAME" -U $DATABASE_USERNAME -c '\q'; do
+  echo "Postgres is unavailable - sleeping"
+  sleep 1
+done
+
+echo "Postgres is up - Setting up database"
 
 # Allow this command to fail
 set +e
-echo "Setting up db. OK to ignore errors about test db."
+echo "Creating DB. OK to ignore errors about test db."
 # https://github.com/rails/rails/issues/27299
 rails db:create
 
