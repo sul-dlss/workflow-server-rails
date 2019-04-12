@@ -3,13 +3,15 @@
 ##
 # Parsing Workflow XML
 class WorkflowCreator
-  attr_reader :parser, :version
+  attr_reader :version
 
   ##
-  # @param [WorkflowParser] parser
+  # @param [Array<ProcessParser>] processes
+  # @param [String] workflow_id the workflow identifier
   # @param [Version] version the object/version
-  def initialize(parser:, version:)
-    @parser = parser
+  def initialize(processes:, workflow_id:, version:)
+    @processes = processes
+    @workflow_id = workflow_id
     @version = version
   end
 
@@ -31,7 +33,7 @@ class WorkflowCreator
 
   private
 
-  delegate :processes, :workflow_id, to: :parser
+  attr_reader :processes, :workflow_id
 
   def workflow_attributes(process)
     {
