@@ -158,6 +158,16 @@ RSpec.describe WorkflowsController do
 
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end
+
+      context 'and the request is bad' do
+        let(:request_data) { '<foo></foo>' }
+        it 'returns a 400 error' do
+          expect do
+            put :create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
+          end.not_to change(WorkflowStep, :count)
+          expect(response.status).to eq 400
+        end
+      end
     end
 
     context "when the version doesn't exist" do

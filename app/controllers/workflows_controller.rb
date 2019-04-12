@@ -84,9 +84,18 @@ class WorkflowsController < ApplicationController
     ).count
   end
 
+  # rubocop:disable Metrics/MethodLength
   def create
+    parser = WorkflowParser.new(request.body.read)
+    begin
+      workflow_id = parser.workflow_id
+    rescue DataError => e
+      return render plain: e.message, status: :bad_request
+    end
+
     WorkflowCreator.new(
-      parser: WorkflowParser.new(request.body.read),
+      workflow_id: workflow_id,
+      processes: parser.processes,
       version: Version.new(
         repository: params[:repo],
         druid: params[:druid],
@@ -95,6 +104,7 @@ class WorkflowsController < ApplicationController
     ).create_workflow_steps
     SendUpdateMessage.publish(druid: params[:druid])
   end
+  # rubocop:enable Metrics/MethodLength
 
   private
 

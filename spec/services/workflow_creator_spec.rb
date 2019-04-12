@@ -14,7 +14,8 @@ RSpec.describe WorkflowCreator do
 
   let(:wf_creator) do
     described_class.new(
-      parser: wf_parser,
+      workflow_id: wf_parser.workflow_id,
+      processes: wf_parser.processes,
       version: Version.new(druid: druid,
                            repository: repository,
                            version: 1)
