@@ -10,6 +10,7 @@ Rails.application.routes.draw do
         # Create should be a POST, but this is what the Java WFS app did.
         put ':workflow', to: 'workflows#create'
         put ':workflow/:process', to: 'steps#update'
+        post ':workflow/:process/next', to: 'steps#next'
       end
     end
   end

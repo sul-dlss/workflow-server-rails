@@ -42,4 +42,8 @@ class WorkflowStep < ApplicationRecord
     end
   end
   # rubocop:enable Metrics/MethodLength
+
+  def complete?
+    status == 'completed'
+  end
 end

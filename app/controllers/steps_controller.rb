@@ -19,6 +19,25 @@ class StepsController < ApplicationController
   end
   # rubocop:enable Metrics/AbcSize
 
+  # Update a single WorkflowStep and if the status was "completed", enqueue the next.
+  # rubocop:disable Metrics/AbcSize
+  def next
+    parser = ProcessParser.new(process_from_request_body)
+    step = find_or_create_step_for_process
+
+    return render plain: process_mismatch_error(parser), status: :bad_request if parser.process != params[:process]
+
+    return render plain: status_mismatch_error(step), status: :conflict if params['current-status'] && step.status != params['current-status']
+
+    step.update(parser.to_h)
+    SendUpdateMessage.publish(druid: step.druid)
+
+    next_steps = NextStepService.for(step: step)
+    WorkerQueue.enqueue_steps(next_steps) if step.complete?
+    render json: { next_steps: next_steps }
+  end
+  # rubocop:enable Metrics/AbcSize
+
   private
 
   def process_mismatch_error(parser)
