@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       collection do
         # Create should be a POST, but this is what the Java WFS app did.
         put ':workflow', to: 'workflows#create'
-        put ':workflow/:process', to: 'workflows#update'
+        put ':workflow/:process', to: 'steps#update'
       end
     end
   end
