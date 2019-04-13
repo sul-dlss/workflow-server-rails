@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
 # Pushes workflow_step's into the Resque queue so that work can begin
+#
+# You may set the environment variable SETTINGS__ENABLE_QUEUING=false to
+# prevent sending work to the Resque queue.
 class WorkerQueue
   # @param [ActiveRecord::Relation<WorkflowStep>] steps to enqueue
   def self.enqueue_steps(steps)
+    return unless Settings.enable_queuing
+
     steps.each do |step|
       Resque.enqueue_to queue_name(step), job_name(step), step.druid
       step.update(status: 'queued')

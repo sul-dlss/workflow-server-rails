@@ -4,6 +4,7 @@ dor_services:
   password: 'password'
 
 enable_stomp: true
+enable_queuing: true
 
 messaging:
   uri: 'failover:(stomp+ssl://localhost:61612,stomp://remotehost:61613)'
