@@ -6,6 +6,7 @@ class WorkerQueue
   def self.enqueue_steps(steps)
     steps.each do |step|
       Resque.enqueue_to queue_name(step), job_name(step), step.druid
+      step.update(status: 'queued')
     end
   end
 

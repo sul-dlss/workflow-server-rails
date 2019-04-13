@@ -40,7 +40,7 @@ RSpec.describe 'Start the next workflow step for an object', type: :request do
       allow(Resque).to receive(:enqueue_to)
     end
 
-    it 'enqueues a message to start the next step' do
+    it 'enqueues a message to start the next step and sets the status to queued' do
       post "/dor/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}/next", params: process_xml
 
       wf.reload
@@ -48,13 +48,15 @@ RSpec.describe 'Start the next workflow step for an object', type: :request do
       expect(wf.error_msg).to be_nil
 
       expect(wf.lifecycle).to eq 'submitted'
-
-      expect(response.body).to eq "{\"next_steps\":[#{next_step.to_json}]}"
+      json = JSON.parse(response.body)
+      expect(json['next_steps']).to eq [JSON.parse(next_step.reload.to_json)]
       expect(SendUpdateMessage).to have_received(:publish).with(druid: wf.druid)
       expect(Resque).to have_received(:enqueue_to)
         .with('dor_accessionWF_rights-metadata_default',
               'Robots::DorRepo::Accession::RightsMetadata',
               wf.druid)
+
+      expect(next_step.status).to eq 'queued'
     end
   end
 
