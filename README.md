@@ -57,3 +57,5 @@ GET    /workflow_queue/lane_ids
 GET    /workflow_queue/all_queued
 GET    /workflow_queue
 ```
+
+`GET    /workflow/:workflow` - Returns aggregate data of number of active processes in each workflow step
