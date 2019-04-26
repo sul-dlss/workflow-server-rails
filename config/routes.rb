@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     get 'lifecycle', to: 'workflows#lifecycle'
     post 'versionClose', to: 'versions#close'
 
+    # NOTE: the index route /dor/objects/:druid/workflows is encoded in the dsLocation of the workflows
+    # datastream (external type) for all of our Fedora 3 objects.  We shouldn't change this endpoint.
     resources :workflows, only: %i[show index destroy], param: :workflow do
       collection do
         # Create should be a POST, but this is what the Java WFS app did.
