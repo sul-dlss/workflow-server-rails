@@ -37,7 +37,9 @@ class NextStepService
   end
 
   def load_workflow(repository, workflow)
-    doc = File.open(File.join('config', 'workflows', repository, "#{workflow}.xml")) { |f| Nokogiri::XML(f) }
+    doc = WorkflowTemplateLoader.load_as_xml(workflow, repository)
+    raise "Workflow #{workflow} not found" if doc.nil?
+
     doc.xpath('/workflow-def/process').each_with_object({}) do |process, obj|
       obj[process['name']] = {
         prerequisites: process.xpath('prereq').map(&:text),
