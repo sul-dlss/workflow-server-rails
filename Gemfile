@@ -24,6 +24,7 @@ group :development, :test do
   gem 'equivalent-xml'
   gem 'factory_bot_rails'
   gem 'rails-controller-testing'
+  gem 'rb-readline' # For readline funkiness on OS X.
   gem 'rspec-rails'
   gem 'rubocop'
 end

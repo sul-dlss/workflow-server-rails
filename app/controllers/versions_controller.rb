@@ -3,9 +3,6 @@
 ##
 # API for handling requests about a specific object's versions.
 class VersionsController < ApplicationController
-  # TODO: Rather than this controller calling dor-services-app, the
-  # dor-services-app could pass in accessionWF when it calls this.
-  # Unfortunately some places may be hitting this directly and not via dor-services-app
   def close
     update_versioning_steps
     initialize_workflow unless params['create-accession'] == 'false'
@@ -35,7 +32,8 @@ class VersionsController < ApplicationController
     obj = Version.new(repository: params[:repo],
                       druid: params[:druid],
                       version: current_version)
-    parser = WorkflowParser.new(initial_workflow)
+    # This should be processed.
+    parser = InitialWorkflowParser.new(initial_workflow)
     WorkflowCreator.new(
       workflow_id: parser.workflow_id,
       processes: parser.processes,
@@ -48,6 +46,7 @@ class VersionsController < ApplicationController
   end
 
   def initial_workflow
-    WorkflowTemplateService.template_for('accessionWF')
+    template = WorkflowTemplateLoader.load_as_xml('accessionWF', 'dor')
+    WorkflowTransformer.initial_workflow(template)
   end
 end

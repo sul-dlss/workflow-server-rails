@@ -235,6 +235,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
+    rb-readline (0.5.5)
     retries (0.0.5)
     rspec-core (3.8.0)
       rspec-support (~> 3.8.0)
@@ -311,6 +312,7 @@ DEPENDENCIES
   puma (~> 3.11)
   rails (~> 5.2.0)
   rails-controller-testing
+  rb-readline
   rspec-rails
   rubocop
   spring

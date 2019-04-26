@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe WorkflowParser do
+RSpec.describe InitialWorkflowParser do
   include XmlFixtures
 
-  let(:xml) { workflow_create }
+  let(:xml) { initial_workflow }
   let(:wf_parser) do
     described_class.new(xml)
   end
@@ -17,16 +17,12 @@ RSpec.describe WorkflowParser do
 
     context 'when the data is missing an id' do
       let(:xml) do
-        <<~XML
-          <?xml version="1.0"?>
-          <workflow>
-            <process name="start-assembly"        priority="80" status="completed" lifecycle="pipelined"/>
-            <process name="jp2-create"            priority="80" status="skipped"/>
-            <process name="checksum-compute"      priority="80" status="waiting"/>
-            <process name="exif-collect"          priority="80" status="waiting"/>
-            <process name="accessioning-initiate" priority="80" status="waiting"/>
-          </workflow>
-        XML
+        Nokogiri::XML(
+          <<~XML
+            <?xml version="1.0"?>
+            <workflow />
+          XML
+        )
       end
       it 'raises an error' do
         expect do

@@ -10,14 +10,14 @@ Rails.application.routes.draw do
     resources :workflows, only: %i[show index destroy], param: :workflow do
       collection do
         # Create should be a POST, but this is what the Java WFS app did.
-        put ':workflow', to: 'workflows#create'
+        put ':workflow', to: 'workflows#deprecated_create'
         put ':workflow/:process', to: 'steps#update'
       end
     end
   end
 
   scope 'objects/:druid', constraints: { druid: %r{[^\/]+} }, defaults: { format: :xml } do
-    resources :workflows, only: %i[index], param: :workflow
+    resources :workflows, only: %i[index create], param: :workflow
   end
 
   get '/workflow_archive',
