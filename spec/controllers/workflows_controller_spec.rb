@@ -3,11 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe WorkflowsController do
-  include XmlFixtures
   let(:repository) { 'dor' }
   let(:client) { instance_double(Dor::Services::Client::Object, current_version: '1') }
   let(:wf) { FactoryBot.create(:workflow_step) }
   let(:druid) { wf.druid }
+  let(:workflow_template) { WorkflowTemplateLoader.load_as_xml('accessionWF', 'dor') }
 
   before do
     allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
@@ -28,11 +28,11 @@ RSpec.describe WorkflowsController do
     end
   end
 
-  describe 'PUT create' do
+  describe 'deprecated PUT create' do
     let(:druid) { 'druid:abc123' }
     let(:workflow) { 'accessionWF' }
     let(:repository) { 'dor' }
-    let(:request_data) { workflow_create }
+    let(:request_data) { workflow_template }
 
     before do
       allow(SendUpdateMessage).to receive(:publish)
@@ -41,18 +41,67 @@ RSpec.describe WorkflowsController do
     context 'when the version exists' do
       it 'creates new workflows' do
         expect do
-          put :create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
-        end.to change(WorkflowStep, :count)
-          .by(Nokogiri::XML(workflow_create).xpath('//process').count)
+          put :deprecated_create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
+        end.to change(WorkflowStep, :count).by(13)
 
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end
 
-      context 'and the request is bad' do
+      context 'and ignores bad request data' do
         let(:request_data) { '<foo></foo>' }
         it 'returns a 400 error' do
           expect do
-            put :create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
+            put :deprecated_create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
+          end.to change(WorkflowStep, :count).by(13)
+        end
+      end
+    end
+
+    context "when the version doesn't exist" do
+      let(:client) { double }
+
+      before do
+        allow(client).to receive(:current_version).and_raise(Dor::Services::Client::NotFoundResponse)
+      end
+
+      it 'creates new workflows' do
+        expect do
+          put :deprecated_create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
+        end.to change(WorkflowStep, :count).by(13)
+
+        expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
+      end
+    end
+  end
+
+  describe 'POST create' do
+    let(:druid) { 'druid:abc123' }
+    let(:workflow) { 'accessionWF' }
+    let(:lane_id) { 'foo' }
+
+    before do
+      allow(SendUpdateMessage).to receive(:publish)
+    end
+
+    context 'when the version exists' do
+      it 'creates new workflows' do
+        expect do
+          post :create, params: { druid: druid, workflow: workflow, format: :xml }
+        end.to change(WorkflowStep, :count).by(13)
+        expect(WorkflowStep.last.lane_id).to eq('default')
+        expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
+      end
+
+      it 'sets the lane id' do
+        post :create, params: { druid: druid, workflow: workflow, lane_id: lane_id, format: :xml }
+        expect(WorkflowStep.last.lane_id).to eq(lane_id)
+      end
+
+      context 'and the request is bad' do
+        let(:workflow) { 'xaccessionWF' }
+        it 'returns a 400 error' do
+          expect do
+            post :create, params: { druid: druid, workflow: workflow, format: :xml }
           end.not_to change(WorkflowStep, :count)
           expect(response.status).to eq 400
         end
@@ -68,9 +117,8 @@ RSpec.describe WorkflowsController do
 
       it 'creates new workflows' do
         expect do
-          put :create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
-        end.to change(WorkflowStep, :count)
-          .by(Nokogiri::XML(workflow_create).xpath('//process').count)
+          post :create, params: { druid: druid, workflow: workflow, format: :xml }
+        end.to change(WorkflowStep, :count).by(13)
 
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end

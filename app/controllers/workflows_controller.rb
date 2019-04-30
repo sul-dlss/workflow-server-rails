@@ -68,31 +68,45 @@ class WorkflowsController < ApplicationController
     ).count
   end
 
-  # rubocop:disable Metrics/MethodLength
+  def deprecated_create
+    logger.warn 'Workflows#create with repo parameter and xml body is deprecated. Call /objects/:druid/workflows instead'
+
+    create
+  end
+
   def create
-    parser = WorkflowParser.new(request.body.read)
-    begin
-      workflow_id = parser.workflow_id
-    rescue DataError => e
-      return render plain: e.message, status: :bad_request
-    end
+    return render(plain: 'Unknown workflow', status: :bad_request) if template.nil?
 
     WorkflowCreator.new(
-      workflow_id: workflow_id,
-      processes: parser.processes,
+      workflow_id: initial_parser.workflow_id,
+      processes: initial_parser.processes,
       version: Version.new(
-        repository: params[:repo],
+        repository: template_parser.repo,
         druid: params[:druid],
         version: current_version
       )
     ).create_workflow_steps
     SendUpdateMessage.publish(druid: params[:druid])
   end
-  # rubocop:enable Metrics/MethodLength
 
   private
 
   def current_version
     ObjectVersionService.current_version(params[:druid])
+  end
+
+  def initial_parser
+    @initial_parser ||= begin
+      initial_workflow = WorkflowTransformer.initial_workflow(template, params[:lane_id])
+      InitialWorkflowParser.new(initial_workflow)
+    end
+  end
+
+  def template_parser
+    @template_parser ||= WorkflowTemplateParser.new(template)
+  end
+
+  def template
+    @template ||= WorkflowTemplateLoader.load_as_xml(params[:workflow])
   end
 end

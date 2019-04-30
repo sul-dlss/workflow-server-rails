@@ -3,13 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe WorkflowCreator do
-  include XmlFixtures
-
   let(:druid) { 'druid:abc123' }
   let(:repository) { 'dor' }
-  let(:xml) { workflow_create }
+  let(:xml) do
+    workflow_template = WorkflowTemplateLoader.load_as_xml('accessionWF', 'dor')
+    WorkflowTransformer.initial_workflow(workflow_template)
+  end
   let(:wf_parser) do
-    WorkflowParser.new(xml)
+    InitialWorkflowParser.new(xml)
   end
 
   let(:wf_creator) do
@@ -28,8 +29,7 @@ RSpec.describe WorkflowCreator do
     it 'creates a WorkflowStep for each process' do
       expect do
         create_workflow_steps
-      end.to change(WorkflowStep, :count)
-        .by(Nokogiri::XML(workflow_create).xpath('//process').count)
+      end.to change(WorkflowStep, :count).by(13)
       expect(WorkflowStep.last.druid).to eq druid
       expect(WorkflowStep.last.repository).to eq repository
     end
