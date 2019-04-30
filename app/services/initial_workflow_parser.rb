@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 ##
-# Parsing Workflow XML
-class WorkflowParser
-  attr_reader :xml_request
+# Parsing initial Workflow
+# That is, as created by WorkflowTransformer.initial_workflow, not workflow template)
+class InitialWorkflowParser
+  attr_reader :workflow_doc
 
-  ##
-  # @param [String] request_body
-  def initialize(request_body)
-    @xml_request = Nokogiri::XML(request_body)
+  # @param [Nokogiri::XML::Document] Initial workflow as XML
+  def initialize(workflow_doc)
+    @workflow_doc = workflow_doc
   end
 
   # @return [Array<ProcessParser>] a parser for each process element
@@ -31,6 +31,6 @@ class WorkflowParser
   private
 
   def workflow
-    xml_request.xpath('//workflow')
+    workflow_doc.xpath('//workflow')
   end
 end

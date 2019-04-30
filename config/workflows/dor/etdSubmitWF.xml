@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <workflow-def id="etdSubmitWF" repository="dor">
-  <process lifecycle="registered" name="register-object" sequence="1">
+  <process lifecycle="registered" name="register-object" sequence="1" skip-queue="true">
     <label>Register object in DOR</label>
   </process>
-  <process name="submit" sequence="2">
+  <process name="submit" sequence="2" skip-queue="true">
     <label>Student submits completed ETD</label>
   </process>
-  <process name="reader-approval" sequence="3">
+  <process name="reader-approval" sequence="3" skip-queue="true">
     <label>Faculty reader has approved (signal from PeopleSoft)</label>
   </process>
-  <process name="registrar-approval" sequence="4">
+  <process name="registrar-approval" sequence="4" skip-queue="true">
     <label>Final Registrar approval (signal from PeopleSoft)</label>
   </process>
   <process name="submit-marc" sequence="5" skip-queue="true">
@@ -34,6 +34,5 @@
   </process>
   <process name="binder-transfer" sequence="10" skip-queue="true" status="skipped">
     <label>Transfer PDF to binder drop off directory for bound physical copy</label>
-    <prereq>dor:accessionWF:shelve</prereq>
   </process>
 </workflow-def>
