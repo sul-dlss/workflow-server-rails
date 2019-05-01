@@ -2,7 +2,7 @@
 
 [![](https://images.microbadger.com/badges/image/suldlss/workflow-server.svg)](https://microbadger.com/images/suldlss/workflow-server "Get your own image badge on microbadger.com")
 
-This is a Rails-based workflow service that was originally created for testing but will ultimately replace SDR's Java-based workflow service.
+This is a Rails-based workflow service that replaced SDR's Java-based workflow service.
 
 ## Build
 Build the production image
