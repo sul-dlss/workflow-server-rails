@@ -29,11 +29,22 @@ class WorkflowCreator
         WorkflowStep.create!(workflow_attributes(process))
       end
     end
+    enqueue
   end
 
   private
 
   attr_reader :processes, :workflow_id
+
+  def enqueue
+    # Get the first step and enqueue any next steps
+    first_step = WorkflowStep.find_by(workflow: workflow_id, druid: version.druid, active_version: true,
+                                      process: processes.first.process)
+
+    # Enqueue next steps
+    next_steps = NextStepService.for(step: first_step)
+    next_steps.each { |next_step| QueueService.enqueue(next_step) }
+  end
 
   def workflow_attributes(process)
     {

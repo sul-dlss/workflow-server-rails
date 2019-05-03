@@ -10,5 +10,6 @@ FactoryBot.define do
     repository { 'dor' }
     version { 1 }
     lane_id { 'default' }
+    status { 'waiting' }
   end
 end

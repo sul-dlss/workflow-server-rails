@@ -4,6 +4,7 @@
 # API for handling requests about a specific step within an object's workflow.
 class StepsController < ApplicationController
   # Update a single WorkflowStep
+  # If there are next steps, they are enqueued.
   # rubocop:disable Metrics/AbcSize
   def update
     parser = ProcessParser.new(process_from_request_body)
@@ -14,8 +15,13 @@ class StepsController < ApplicationController
     return render plain: status_mismatch_error(step), status: :conflict if params['current-status'] && step.status != params['current-status']
 
     step.update(parser.to_h)
+
+    # Enqueue next steps
+    next_steps = NextStepService.for(step: step)
+    next_steps.each { |next_step| QueueService.enqueue(next_step) }
+
     SendUpdateMessage.publish(druid: step.druid)
-    render json: { next_steps: NextStepService.for(step: step) }
+    render json: { next_steps: next_steps }
   end
   # rubocop:enable Metrics/AbcSize
 
@@ -48,6 +54,7 @@ class StepsController < ApplicationController
   end
 
   def current_version
-    ObjectVersionService.current_version(params[:druid])
+    # Providing the version as a param is for local testing without needing to run DOR services.
+    params[:version] || ObjectVersionService.current_version(params[:druid])
   end
 end
