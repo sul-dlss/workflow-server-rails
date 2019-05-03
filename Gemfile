@@ -16,6 +16,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'okcomputer'
 gem 'pg'
 gem 'puma', '~> 3.11'
+gem 'resque', '~> 2.0'
 gem 'stomp', '~> 1.4'
 
 group :development, :test do

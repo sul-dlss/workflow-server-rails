@@ -23,6 +23,10 @@ RSpec.describe WorkflowCreator do
     )
   end
 
+  before do
+    allow(QueueService).to receive(:enqueue)
+  end
+
   describe '#create_workflow_steps' do
     subject(:create_workflow_steps) { wf_creator.create_workflow_steps }
 
@@ -32,6 +36,7 @@ RSpec.describe WorkflowCreator do
       end.to change(WorkflowStep, :count).by(13)
       expect(WorkflowStep.last.druid).to eq druid
       expect(WorkflowStep.last.repository).to eq repository
+      expect(QueueService).to have_received(:enqueue).with(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata'))
     end
 
     context 'when workflow steps already exists' do
@@ -43,6 +48,7 @@ RSpec.describe WorkflowCreator do
         expect do
           create_workflow_steps
         end.not_to change(WorkflowStep, :count)
+        expect(QueueService).to have_received(:enqueue).with(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata'))
       end
     end
   end

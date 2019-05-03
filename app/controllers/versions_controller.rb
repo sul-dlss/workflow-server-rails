@@ -42,7 +42,8 @@ class VersionsController < ApplicationController
   end
 
   def current_version
-    @current_version ||= ObjectVersionService.current_version(params[:druid])
+    # Providing the version as a param is for local testing without needing to run DOR services.
+    @current_version ||= params[:version] || ObjectVersionService.current_version(params[:druid])
   end
 
   def initial_workflow

@@ -49,7 +49,7 @@ RSpec.describe WorkflowStep do
         elapsed: nil,
         attempts: 0,
         datetime: String,
-        status: nil,
+        status: 'waiting',
         name: 'start-accession'
       )
     }

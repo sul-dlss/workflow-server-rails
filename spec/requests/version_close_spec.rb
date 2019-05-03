@@ -9,6 +9,7 @@ RSpec.describe 'Close a version', type: :request do
     obj_client = instance_double(Dor::Services::Client::Object, current_version: '2')
 
     allow(Dor::Services::Client).to receive(:object).with(druid).and_return(obj_client)
+    allow(QueueService).to receive(:enqueue)
   end
 
   it 'closes the version' do
