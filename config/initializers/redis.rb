@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Load Resque configuration and controller
 redis = Redis.new(host: Settings.redis.hostname,
                   port: Settings.redis.port,
