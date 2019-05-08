@@ -14,5 +14,5 @@ messaging:
 redis:
   hostname: localhost
   port: 6379
-  db: resque
-  namespace: development
+  db: 0
+  namespace: 'resque:development'

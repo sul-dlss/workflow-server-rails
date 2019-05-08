@@ -15,7 +15,7 @@ services:
       - SECRET_KEY_BASE="${SECRET_KEY_BASE}"
 #      - RAILS_ENV=development
       - SETTINGS__ENABLE_STOMP=false
-      - REDIS_HOSTNAME=redis
+      - SETTINGS__REDIS__HOSTNAME=redis
 #    image: 'suldlss/workflow-server:latest-dev'
     volumes:
        - .:/app
