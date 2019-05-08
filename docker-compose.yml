@@ -4,7 +4,7 @@ services:
   app:
     build:
       context: ./
-      dockerfile: docker/Dockerfile.dev
+      dockerfile: Dockerfile
     environment:
       - RAILS_LOG_TO_STDOUT=true
       - DATABASE_NAME=workflow-server
@@ -13,7 +13,8 @@ services:
       - DATABASE_HOSTNAME=db
       - DATABASE_PORT=5432
       - SECRET_KEY_BASE="${SECRET_KEY_BASE}"
-    image: 'suldlss/workflow-server:latest-dev'
+      - SETTINGS__ENABLE_STOMP=false
+      - SETTINGS__REDIS__HOSTNAME=redis
     volumes:
        - .:/app
     ports:
@@ -30,6 +31,12 @@ services:
       - POSTGRES_PASSWORD=sekret
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
+    networks:
+      - wfs
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
     networks:
       - wfs
 networks:

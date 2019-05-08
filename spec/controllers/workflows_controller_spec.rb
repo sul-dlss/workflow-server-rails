@@ -11,6 +11,7 @@ RSpec.describe WorkflowsController do
 
   before do
     allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
+    allow(QueueService).to receive(:enqueue)
   end
 
   describe 'GET archive' do
