@@ -2,6 +2,8 @@ dor_services:
   url: 'http://localhost:3003'
   username: 'user'
   password: 'password'
+  token: secret-token
+  token_header: 'X-Auth'
 
 enable_stomp: true
 
