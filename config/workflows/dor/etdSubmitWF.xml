@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <workflow-def id="etdSubmitWF" repository="dor">
-  <process lifecycle="registered" name="register-object" sequence="1" skip-queue="true">
+  <process lifecycle="registered" name="register-object" sequence="1" skip-queue="true" status="completed">
     <label>Register object in DOR</label>
   </process>
   <process name="submit" sequence="2" skip-queue="true">
