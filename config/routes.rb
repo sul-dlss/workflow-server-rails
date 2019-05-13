@@ -1,6 +1,19 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  # Version provided.
+  scope ':repo/objects/:druid/versions/:version', constraints: { druid: %r{[^\/]+} }, defaults: { format: :xml } do
+    get 'lifecycle', to: 'workflows#lifecycle'
+    post 'versionClose', to: 'versions#close'
+
+    resources :workflows, only: %i[destroy], param: :workflow do
+      collection do
+        put ':workflow/:process', to: 'steps#update'
+      end
+    end
+  end
+
+  # Version not provided. Defaults to current version when needed.
   scope ':repo/objects/:druid', constraints: { druid: %r{[^\/]+} }, defaults: { format: :xml } do
     get 'lifecycle', to: 'workflows#lifecycle'
     post 'versionClose', to: 'versions#close'
@@ -16,6 +29,16 @@ Rails.application.routes.draw do
     end
   end
 
+  # Version provided.
+  scope 'objects/:druid/versions/:version', constraints: { druid: %r{[^\/]+} }, defaults: { format: :xml } do
+    resources :workflows, only: %i[], param: :workflow do
+      collection do
+        post ':workflow', to: 'workflows#create'
+      end
+    end
+  end
+
+  # Version not provided. Defaults to current version when needed.
   scope 'objects/:druid', constraints: { druid: %r{[^\/]+} }, defaults: { format: :xml } do
     resources :workflows, only: %i[index], param: :workflow do
       collection do
