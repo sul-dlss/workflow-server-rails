@@ -22,8 +22,7 @@ class QueueService
     Rails.logger.info "Enqueued #{class_name} for #{step.druid} to #{queue_name}"
 
     # Update status
-    step.status = 'queued'
-    step.save
+    step.update(status: 'queued')
   end
 
   private
