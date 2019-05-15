@@ -4,6 +4,9 @@
 class ObjectVersionService
   include Singleton
 
+  # @param [String] druid the object identifier to get the version for
+  # @return [Integer] the current version of the object from dor-services-app
+  # @raises [Faraday::TimeoutError, Dor::Services::Client::NotFoundResponse]
   def self.current_version(druid)
     instance.current_version(druid)
   end
