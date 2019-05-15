@@ -2,7 +2,7 @@
 
 [![](https://images.microbadger.com/badges/image/suldlss/workflow-server.svg)](https://microbadger.com/images/suldlss/workflow-server "Get your own image badge on microbadger.com")
 
-This is a Rails-based workflow service that replaced SDR's Java-based workflow service.  It is consumed by the users of dor-workflow-client (argo, hydrus, hydra_etd, pre-assembly, robots) and *soon* the goobi application (currently proxying through dor-services-app).
+This is a Rails-based workflow service that replaced SDR's Java-based workflow service.  It is consumed by the users of dor-workflow-client (argo, hydrus, hydra_etd, pre-assembly, dor-indexing-app, robots) and *soon* the goobi application (currently proxying through dor-services-app).
 
 ## Build
 Build the production image
