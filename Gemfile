@@ -18,6 +18,7 @@ gem 'pg'
 gem 'puma', '~> 3.11'
 gem 'resque', '~> 2.0'
 gem 'stomp', '~> 1.4'
+gem 'whenever', require: false
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
