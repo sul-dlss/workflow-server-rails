@@ -42,7 +42,6 @@ RSpec.describe WorkflowStep do
     it {
       is_expected.to include(
         version: 1,
-        priority: 0,
         note: nil,
         lifecycle: 'submitted',
         laneId: 'default',

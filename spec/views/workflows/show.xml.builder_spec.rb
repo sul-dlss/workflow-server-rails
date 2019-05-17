@@ -30,7 +30,6 @@ RSpec.describe 'workflows/index' do
     )
     expect(doc.at_xpath('//process')).to include(
       ['version', /1/],
-      ['priority', /0/],
       ['note', ''],
       ['lifecycle', ''],
       %w[laneId default],
