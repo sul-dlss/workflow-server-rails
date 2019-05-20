@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_20_163535) do
+ActiveRecord::Schema.define(version: 2019_05_17_154458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "workflow_steps", force: :cascade do |t|
+  create_table "workflow_steps", id: :serial, force: :cascade do |t|
     t.string "druid", null: false
     t.string "workflow", null: false
     t.string "process", null: false
@@ -28,7 +28,6 @@ ActiveRecord::Schema.define(version: 2019_03_20_163535) do
     t.string "repository"
     t.integer "version"
     t.text "note"
-    t.integer "priority", default: 0
     t.string "lane_id", default: "default", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

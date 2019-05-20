@@ -29,7 +29,6 @@ class WorkflowStep < ApplicationRecord
   def attributes_for_process
     {
       version: version,
-      priority: priority,
       note: note,
       lifecycle: lifecycle,
       laneId: lane_id,
