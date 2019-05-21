@@ -45,11 +45,11 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
     let(:wf) { WorkflowStep.where(druid: druid, workflow: 'hydrusAssemblyWF', process: 'submit') }
     let(:process_xml) { '<process name="submit" status="completed" elapsed="3" lifecycle="submitted" laneId="default" note="Yay"/>' }
 
-    it 'creates the step' do
+    it 'returns a 404' do
       put "/dor/objects/#{druid}/workflows/hydrusAssemblyWF/submit", params: process_xml
-      expect(wf.pluck(:status)).to eq ['completed']
-      expect(response.body).to eq '{"next_steps":[]}'
-      expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
+
+      expect(response).to be_not_found
+      expect(SendUpdateMessage).not_to have_received(:publish).with(druid: druid)
     end
   end
 
@@ -110,6 +110,39 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
         expect(wf.reload.status).to eq 'completed'
         expect(response.body).to eq '{"next_steps":[]}'
         expect(SendUpdateMessage).to have_received(:publish).with(druid: wf.druid)
+      end
+    end
+
+    context 'when there are multiple versios' do
+      let(:version1_step) do
+        FactoryBot.create(:workflow_step,
+                          status: 'error',
+                          version: 1)
+      end
+      let(:version2_step) do
+        FactoryBot.create(:workflow_step,
+                          status: 'error',
+                          version: 2,
+                          druid: version1_step.druid)
+      end
+
+      before do
+        # Force create
+        version1_step
+        version2_step
+      end
+
+      it 'updates the newest version' do
+        put "/dor/objects/#{version1_step.druid}/workflows/#{version1_step.workflow}/#{version1_step.process}", params: process_xml
+
+        version1_step.reload
+        expect(version1_step.status).to eq 'error'
+
+        version2_step.reload
+        expect(version2_step.status).to eq 'completed'
+
+        expect(response.body).to eq '{"next_steps":[]}'
+        expect(SendUpdateMessage).to have_received(:publish).with(druid: version1_step.druid)
       end
     end
   end

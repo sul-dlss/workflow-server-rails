@@ -8,7 +8,9 @@ class StepsController < ApplicationController
   # rubocop:disable Metrics/AbcSize
   def update
     parser = ProcessParser.new(process_from_request_body)
-    step = find_or_create_step_for_process
+    step = find_step_for_process
+
+    return render plain: '', status: :not_found if step.nil?
 
     return render plain: process_mismatch_error(parser), status: :bad_request if parser.process != params[:process]
 
@@ -46,6 +48,10 @@ class StepsController < ApplicationController
     "Status in params (#{params['current-status']}) does not match current status (#{step.status})"
   end
 
+  def step_not_found_error
+    "#{params[:process]} step for #{params[:druid]} not found"
+  end
+
   # Returns most recent workflow step
   def find_step_for_process
     WorkflowStep.order(version: :desc).find_by(
@@ -56,26 +62,8 @@ class StepsController < ApplicationController
     )
   end
 
-  # Only Hydrus calls this when the objects don't exist.
-  # I suspect we could make Hydrus behave more "as expected", but for now it's
-  # easier to just mirror the behavior of the old Java workflow service - Justin C., Jan 2019
-  def find_or_create_step_for_process
-    WorkflowStep.find_or_create_by(
-      repository: params[:repo],
-      druid: params[:druid],
-      workflow: params[:workflow],
-      process: params[:process],
-      version: current_version
-    )
-  end
-
   def process_from_request_body
     # TODO: Confirm we do not have a use case for multiple processes when PUT'ing updates
     Nokogiri::XML(request.body.read).xpath('//process').first
-  end
-
-  def current_version
-    # Providing the version as a param is for local testing without needing to run DOR services.
-    params[:version] || ObjectVersionService.current_version(params[:druid])
   end
 end
