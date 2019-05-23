@@ -8,13 +8,34 @@
 
 This is a Rails-based workflow service that replaced SDR's Java-based workflow service.  It is consumed by the users of dor-workflow-client (argo, hydrus, hydra_etd, pre-assembly, dor-indexing-app, robots) and *soon* the goobi application (currently proxying through dor-services-app).
 
-## Build
+## Resque Jobs
+
+When a workflow step is set to done, the service calculates which workflow steps
+are ready to be worked on and enqueues Resque jobs for them.  The queues are named
+for the workflow and priority.  For example:
+
+```
+accessionWF_high
+accessionWF_default
+accessionWF_low
+assemblyWF_high
+assemblyWF_default
+assemblyWF_low
+disseminationWF_high
+disseminationWF_default
+disseminationWF_low
+...
+```
+
+## Developers
+
+### Build
 Build the production image
 ```
 docker build -t suldlss/workflow-server:latest .
 ```
 
-## Run the development stack
+### Run the development stack
 ```
 $ docker-compose up -d
 [FIRST RUN]
