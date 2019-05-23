@@ -25,6 +25,11 @@ class StepsController < ApplicationController
   end
   # rubocop:enable Metrics/AbcSize
 
+  def destroy_all
+    WorkflowStep.where(druid: params[:druid]).destroy_all
+    head :no_content
+  end
+
   private
 
   def process_mismatch_error(parser)
