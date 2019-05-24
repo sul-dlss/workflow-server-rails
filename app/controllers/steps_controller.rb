@@ -30,6 +30,12 @@ class StepsController < ApplicationController
     head :no_content
   end
 
+  def show
+    @step = find_step_for_process
+
+    render plain: '', status: :not_found if @step.nil?
+  end
+
   private
 
   def process_mismatch_error(parser)
@@ -38,6 +44,16 @@ class StepsController < ApplicationController
 
   def status_mismatch_error(step)
     "Status in params (#{params['current-status']}) does not match current status (#{step.status})"
+  end
+
+  # Returns most recent workflow step
+  def find_step_for_process
+    WorkflowStep.order(version: :desc).find_by(
+      repository: params[:repo],
+      druid: params[:druid],
+      workflow: params[:workflow],
+      process: params[:process]
+    )
   end
 
   # Only Hydrus calls this when the objects don't exist.

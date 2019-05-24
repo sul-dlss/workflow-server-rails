@@ -12,6 +12,7 @@ Rails.application.routes.draw do
         # Create should be a POST, but this is what the Java WFS app did.
         put ':workflow', to: 'workflows#deprecated_create'
         put ':workflow/:process', to: 'steps#update'
+        get ':workflow/:process', to: 'steps#show'
       end
     end
   end
