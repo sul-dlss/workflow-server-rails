@@ -19,7 +19,7 @@ class QueueService
   def enqueue
     # Perform the enqueue to Resque
     Resque.enqueue_to(queue_name.to_sym, class_name, step.druid)
-    Rails.logger.info "Enqueued #{class_name} for #{step.druid} to #{queue_name}"
+    Rails.logger.debug "Enqueued #{class_name} for #{step.druid} to #{queue_name}"
 
     # Update status
     step.update(status: 'queued')
