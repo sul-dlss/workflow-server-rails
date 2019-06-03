@@ -43,10 +43,15 @@ docker-compose run -e "RAILS_ENV=test" app rake spec
 These methods deal with the workflow for a single object
 ```
 POST   /objects/:druid/workflows/:workflow
-PUT    /:repo/objects/:druid/workflows/:workflow/:process
 GET    /:repo/objects/:druid/workflows
 GET    /:repo/objects/:druid/workflows/:workflow
 DELETE /:repo/objects/:druid/workflows/:workflow
+```
+
+These methods deal with a single step for a single object
+```
+PUT    /:repo/objects/:druid/workflows/:workflow/:process
+GET    /:repo/objects/:druid/workflows/:workflow/:process
 ```
 
 `GET    /workflow_archive` - Deprecated. Currently just returns a count of the number of items/versions for the workflow
