@@ -24,7 +24,7 @@ class VersionsController < ApplicationController
                       version: current_version)
     obj.workflow_steps.where(
       workflow: 'versioningWF',
-      process: ['submit-version', 'start-accession']
+      process: %w[submit-version start-accession]
     )
   end
 
