@@ -21,8 +21,6 @@ class ObjectVersionService
 
   def client
     @client ||= Dor::Services::Client.configure(url: Settings.dor_services.url,
-                                                username: Settings.dor_services.username,
-                                                password: Settings.dor_services.password,
                                                 token: Settings.dor_services.token,
                                                 token_header: Settings.dor_services.token_header)
   end
