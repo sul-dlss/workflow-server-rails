@@ -4,7 +4,8 @@ require 'rails_helper'
 
 RSpec.describe StepsController do
   let(:repository) { 'dor' }
-  let(:client) { instance_double(Dor::Services::Client::Object, current_version: '1') }
+  let(:client) { instance_double(Dor::Services::Client::Object, version: version_client) }
+  let(:version_client) { instance_double(Dor::Services::Client::ObjectVersion, current: '1') }
   let(:druid) { first_step.druid }
   let(:workflow_id) { 'accessionWF' }
   let(:first_step) { FactoryBot.create(:workflow_step, status: 'completed') } # start-accession, which is already completed

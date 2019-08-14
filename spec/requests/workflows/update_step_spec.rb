@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Update a workflow step for an object', type: :request do
-  let(:client) { instance_double(Dor::Services::Client::Object, current_version: '1') }
+  let(:client) { instance_double(Dor::Services::Client::Object, version: version_client) }
+  let(:version_client) { instance_double(Dor::Services::Client::ObjectVersion, current: '1') }
   let(:druid) { wf.druid }
 
   before do

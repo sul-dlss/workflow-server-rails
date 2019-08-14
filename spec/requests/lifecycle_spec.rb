@@ -7,7 +7,8 @@ RSpec.describe 'Lifecycle', type: :request do
   let(:returned_milestones) { xml.xpath('//lifecycle/milestone') }
   let(:returned_milestone_versions) { returned_milestones.map { |node| node.attr('version') } }
   let(:returned_milestone_text) { returned_milestones.map(&:text) }
-  let(:client) { instance_double(Dor::Services::Client::Object, current_version: '2') }
+  let(:client) { instance_double(Dor::Services::Client::Object, version: version_client) }
+  let(:version_client) { instance_double(Dor::Services::Client::ObjectVersion, current: '2') }
   let(:druid) { wf.druid }
 
   context 'when active-only is set' do
