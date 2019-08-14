@@ -1,5 +1,9 @@
 # Workflow service
 
+[![Build Status](https://travis-ci.org/sul-dlss/workflow-server-rails.svg?branch=master)](https://travis-ci.org/sul-dlss/workflow-server-rails)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/cc78d20264a4eaf8a782/test_coverage)](https://codeclimate.com/github/sul-dlss/workflow-server-rails/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/cc78d20264a4eaf8a782/maintainability)](https://codeclimate.com/github/sul-dlss/workflow-server-rails/maintainability)
+
 [![](https://images.microbadger.com/badges/image/suldlss/workflow-server.svg)](https://microbadger.com/images/suldlss/workflow-server "Get your own image badge on microbadger.com")
 
 This is a Rails-based workflow service that replaced SDR's Java-based workflow service.  It is consumed by the users of dor-workflow-client (argo, hydrus, hydra_etd, pre-assembly, dor-indexing-app, robots) and *soon* the goobi application (currently proxying through dor-services-app).
