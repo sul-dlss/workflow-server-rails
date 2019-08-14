@@ -4,11 +4,11 @@ require 'rails_helper'
 
 RSpec.describe 'Close a version', type: :request do
   let(:druid) { FactoryBot.build(:workflow_step).druid }
+  let(:object_client) { instance_double(Dor::Services::Client::Object, version: version_client) }
+  let(:version_client) { instance_double(Dor::Services::Client::ObjectVersion, current: '2') }
 
   before do
-    obj_client = instance_double(Dor::Services::Client::Object, current_version: '2')
-
-    allow(Dor::Services::Client).to receive(:object).with(druid).and_return(obj_client)
+    allow(Dor::Services::Client).to receive(:object).with(druid).and_return(object_client)
     allow(QueueService).to receive(:enqueue)
   end
 

@@ -12,7 +12,7 @@ class ObjectVersionService
   end
 
   def current_version(druid)
-    client.object(druid).current_version
+    client.object(druid).version.current
   rescue Dor::Services::Client::NotFoundResponse # A 404 error
     1
   end

@@ -10,7 +10,7 @@ gem 'rails', '~> 5.2.0'
 gem 'activerecord-import' # we can remove this after we've migrated the data
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'config', '~> 1.7'
-gem 'dor-services-client', '~> 1.2'
+gem 'dor-services-client', '~> 2.0'
 gem 'honeybadger', '~> 4.1'
 gem 'jbuilder', '~> 2.5'
 gem 'okcomputer'

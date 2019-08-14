@@ -93,9 +93,8 @@ GEM
       capistrano-bundle_audit (>= 0.1.0)
       capistrano-one_time_key
       capistrano-shared_configs
-    dor-services-client (1.11.0)
+    dor-services-client (2.0.0)
       activesupport (>= 4.2, < 6)
-      deprecation
       faraday (~> 0.15)
       moab-versioning (~> 4.0)
       nokogiri (~> 1.8)
@@ -321,7 +320,7 @@ DEPENDENCIES
   capistrano-rails
   config (~> 1.7)
   dlss-capistrano
-  dor-services-client (~> 1.2)
+  dor-services-client (~> 2.0)
   dor-workflow-service (~> 2.3)
   equivalent-xml
   factory_bot_rails

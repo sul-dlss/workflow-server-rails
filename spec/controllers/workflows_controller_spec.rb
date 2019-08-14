@@ -4,7 +4,8 @@ require 'rails_helper'
 
 RSpec.describe WorkflowsController do
   let(:repository) { 'dor' }
-  let(:client) { instance_double(Dor::Services::Client::Object, current_version: '1') }
+  let(:client) { instance_double(Dor::Services::Client::Object, version: version_client) }
+  let(:version_client) { instance_double(Dor::Services::Client::ObjectVersion, current: '1') }
   let(:wf) { FactoryBot.create(:workflow_step) }
   let(:druid) { wf.druid }
   let(:workflow_template) { WorkflowTemplateLoader.load_as_xml('accessionWF', 'dor') }
@@ -59,10 +60,10 @@ RSpec.describe WorkflowsController do
     end
 
     context "when the version doesn't exist" do
-      let(:client) { double }
+      let(:version_client) { double }
 
       before do
-        allow(client).to receive(:current_version).and_raise(Dor::Services::Client::NotFoundResponse)
+        allow(version_client).to receive(:current).and_raise(Dor::Services::Client::NotFoundResponse)
       end
 
       it 'creates new workflows' do
@@ -110,10 +111,10 @@ RSpec.describe WorkflowsController do
     end
 
     context "when the version doesn't exist" do
-      let(:client) { double }
+      let(:version_client) { double }
 
       before do
-        allow(client).to receive(:current_version).and_raise(Dor::Services::Client::NotFoundResponse)
+        allow(version_client).to receive(:current).and_raise(Dor::Services::Client::NotFoundResponse)
       end
 
       it 'creates new workflows' do
