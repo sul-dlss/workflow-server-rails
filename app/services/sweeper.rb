@@ -19,7 +19,7 @@ class Sweeper
 
   def steps_to_sweep
     WorkflowStep.queued
-                .where(WorkflowStep.arel_table[:updated_at].lt(24.hours.ago))
+                .where(WorkflowStep.arel_table[:updated_at].lt(12.hours.ago))
                 .limit(1000)
   end
 
