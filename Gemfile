@@ -28,6 +28,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'rspec-rails'
   gem 'rubocop'
+  gem 'simplecov'
 end
 
 group :development do
