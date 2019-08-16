@@ -32,16 +32,25 @@ $ docker exec -it (container id) /bin/sh
 
 ## Testing:
 
-Note that we create the docker container without the test group, so to run tests locally, you will need
-- postgres running (`pg_ctl -D /usr/local/var/postgres start` works on my mac)
-- postgres user for postgres database:  (`createuser -U [yer-pg-adminuser] -s postgres`)
+You need to be running the postgres database.  One of the easiest ways is to use the docker-compose db via separate terminal window:
 
-then
+```
+docker-compose up db
+```
+
+The first time you run tests, you may need to run this before the tests (from another terminal window):
+
+`RAILS_ENV=test ./bin/rails db:create db:migrate`
+
+To run tests:
 ```
 bundle exec rspec
 ```
 
-To shut down postgres afterwards:  `pg_ctl -D /usr/local/var/postgres stop`
+To shut down postgres afterwards,
+
+- cntl-C in your existing docker-compose terminal window.
+- ```docker-compose down``` afterwards
 
 ## Routes:
 `GET    /:repo/objects/:druid/lifecycle` - Returns the milestones in the lifecycle that have been completed
