@@ -30,12 +30,27 @@ $ docker ps (to retrieve the container id)
 $ docker exec -it (container id) /bin/sh
 ```
 
-Testing:
+## Testing:
+
+You need to be running the postgres database.  One of the easiest ways is to use the docker-compose db via separate terminal window:
 
 ```
-docker-compose run -e "RAILS_ENV=test" app rake db:create db:migrate
-docker-compose run -e "RAILS_ENV=test" app rake spec
+docker-compose up db
 ```
+
+The first time you run tests, you may need to run this before the tests (from another terminal window):
+
+`RAILS_ENV=test ./bin/rails db:create db:migrate`
+
+To run tests:
+```
+bundle exec rspec
+```
+
+To shut down postgres afterwards,
+
+- cntl-C in your existing docker-compose terminal window.
+- ```docker-compose down``` afterwards
 
 ## Routes:
 `GET    /:repo/objects/:druid/lifecycle` - Returns the milestones in the lifecycle that have been completed
