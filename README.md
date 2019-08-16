@@ -30,12 +30,18 @@ $ docker ps (to retrieve the container id)
 $ docker exec -it (container id) /bin/sh
 ```
 
-Testing:
+## Testing:
 
+Note that we create the docker container without the test group, so to run tests locally, you will need
+- postgres running (`pg_ctl -D /usr/local/var/postgres start` works on my mac)
+- postgres user for postgres database:  (`createuser -U [yer-pg-adminuser] -s postgres`)
+
+then
 ```
-docker-compose run -e "RAILS_ENV=test" app rake db:create db:migrate
-docker-compose run -e "RAILS_ENV=test" app rake spec
+bundle exec rspec
 ```
+
+To shut down postgres afterwards:  `pg_ctl -D /usr/local/var/postgres stop`
 
 ## Routes:
 `GET    /:repo/objects/:druid/lifecycle` - Returns the milestones in the lifecycle that have been completed
