@@ -103,10 +103,10 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
     end
 
     context 'and it matches the current status' do
-      let(:wf) { FactoryBot.create(:workflow_step, status: 'hold') }
+      let(:wf) { FactoryBot.create(:workflow_step, status: 'waiting') }
 
       it 'updates the step' do
-        put "/dor/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}?current-status=hold", params: process_xml
+        put "/dor/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}?current-status=waiting", params: process_xml
 
         expect(wf.reload.status).to eq 'completed'
         expect(response.body).to eq '{"next_steps":[]}'
