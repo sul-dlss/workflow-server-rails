@@ -17,8 +17,7 @@ class QueueService
 
   # Enqueue the provided step
   def enqueue
-    # Perform the enqueue to Resque
-    Resque.enqueue_to(queue_name.to_sym, class_name, step.druid)
+    Resque.enqueue_to(queue_name, class_name, step.druid)
     Rails.logger.debug "Enqueued #{class_name} for #{step.druid} to #{queue_name}"
 
     # Update status
@@ -27,19 +26,19 @@ class QueueService
 
   private
 
-  # @example
-  #     => dor:assemblyWF:jp2-create
-  def step_name
-    @step_name ||= "#{step.repository}:#{step.workflow}:#{step.process}"
-  end
-
   # Generate the queue name from step
   #
   # @example
-  #     => 'dor_assemblyWF_jp2-create_default'
-  #     => 'dor_assemblyWF_jp2-create_mylane'
+  #     => 'assemblyWF_default'
+  #     => 'assemblyWF_low'
   def queue_name
-    @queue_name ||= "#{step.repository}_#{step.workflow}_#{step.process}_#{step.lane_id}"
+    @queue_name ||= if class_name == 'Robots::DorRepo::Assembly::Jp2Create'
+                      # Special case because this robot can eats up too much memory if more
+                      # than one instance is running on a worker box simultaneously
+                      'assemblyWF_jp2'
+                    else
+                      "#{step.workflow}_#{step.lane_id}"
+                    end
   end
 
   # Converts a given step to the Robot class name

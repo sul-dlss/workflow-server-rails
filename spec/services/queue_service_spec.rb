@@ -12,27 +12,26 @@ RSpec.describe QueueService do
       allow(Resque).to receive(:enqueue_to)
     end
 
-    it 'enqueues to Resque and updates status' do
-      service.enqueue
-      expect(Resque).to have_received(:enqueue_to).with(:"dor_assemblyWF_jp2-create_default",
-                                                        'Robots::DorRepo::Assembly::Jp2Create', step.druid)
-      expect(step.status).to eq('queued')
+    context 'for JP2 robot (special case)' do
+      let(:step) { FactoryBot.create(:workflow_step, workflow: 'assemblyWF', process: 'jp2-create') }
+
+      it 'enqueues to Resque and updates status' do
+        service.enqueue
+        expect(Resque).to have_received(:enqueue_to).with('assemblyWF_jp2',
+                                                          'Robots::DorRepo::Assembly::Jp2Create', step.druid)
+        expect(step.status).to eq('queued')
+      end
     end
-  end
 
-  describe '#step_name' do
-    let(:step_name) { service.send(:step_name) }
+    context 'for other classes' do
+      let(:step) { FactoryBot.create(:workflow_step, workflow: 'accessionWF', process: 'descriptive-metadata') }
 
-    it 'create correct step_name' do
-      expect(step_name).to eq('dor:assemblyWF:jp2-create')
-    end
-  end
-
-  describe '#queue_name' do
-    let(:queue_name) { service.send(:queue_name) }
-
-    it 'create correct queue_name' do
-      expect(queue_name).to eq('dor_assemblyWF_jp2-create_default')
+      it 'enqueues to Resque and updates status' do
+        service.enqueue
+        expect(Resque).to have_received(:enqueue_to).with('accessionWF_default',
+                                                          'Robots::DorRepo::Accession::DescriptiveMetadata', step.druid)
+        expect(step.status).to eq('queued')
+      end
     end
   end
 
