@@ -3,23 +3,19 @@
   <process name="start" sequence="1" status="completed">
     <label>Initiate WAS Seed Preassembly WF of the object</label>
   </process>
-  <process name="build-was-seed-druid-tree" sequence="2">
+  <process name="desc-metadata-generator" sequence="2">
     <prereq>start</prereq>
-    <label>Build druid-tree and copy the files</label>
-  </process>
-  <process name="desc-metadata-generator" sequence="3">
-    <prereq>build-was-seed-druid-tree</prereq>
     <label>Generate desc metadata</label>
   </process>
-  <process name="thumbnail-generator" sequence="4">
+  <process name="thumbnail-generator" sequence="3">
     <prereq>desc-metadata-generator</prereq>
     <label>Generate thumbnail for the seed URI</label>
   </process>
-  <process name="content-metadata-generator" sequence="5">
+  <process name="content-metadata-generator" sequence="4">
     <prereq>thumbnail-generator</prereq>
     <label>Generate content metadata</label>
   </process>
-  <process name="end-was-seed-preassembly" sequence="6">
+  <process name="end-was-seed-preassembly" sequence="5">
     <prereq>content-metadata-generator</prereq>
     <label>End of the WAS Seed preassembly</label>
   </process>
