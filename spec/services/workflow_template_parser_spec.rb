@@ -29,4 +29,13 @@ RSpec.describe WorkflowTemplateParser do
       end
     end
   end
+
+  describe '#processes' do
+    subject(:processes) { wf_parser.processes }
+
+    it 'returns a list of process structs' do
+      expect(processes.length).to eq 13
+      expect(processes).to all(be_an_instance_of(WorkflowTemplateParser::Process))
+    end
+  end
 end

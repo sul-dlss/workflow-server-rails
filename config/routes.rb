@@ -26,6 +26,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :workflow_templates, only: [:show], defaults: { format: :json }
+
   get '/workflow_archive',
       to: 'workflows#archive',
       constraints: { druid: %r{[^\/]+} },
