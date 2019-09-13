@@ -22,7 +22,7 @@ RSpec.describe StepsController do
     context 'when updating a step' do
       let(:body) { '<process name="descriptive-metadata" status="test" />' }
 
-      it 'updates the step' do
+      it 'updates the step with repository (Deprecated)' do
         put :update, body: body, params: { repo: repository, druid: druid, workflow: workflow_id,
                                            process: 'descriptive-metadata', format: :xml }
         expect(response.body).to eq('{"next_steps":[]}')
@@ -41,6 +41,35 @@ RSpec.describe StepsController do
 
       it 'verifies that process in url and body match' do
         put :update, body: body, params: { repo: repository, druid: druid, workflow: workflow_id,
+                                           process: 'rights-metadata', format: :xml }
+        expect(response.body).to eq('Process name in body (descriptive-metadata) does not match process name in URI ' \
+                                    '(rights-metadata)')
+        expect(response.code).to eq('400')
+      end
+    end
+
+    context 'when updating a step without a repository' do
+      let(:body) { '<process name="descriptive-metadata" status="test" />' }
+
+      it 'updates the step' do
+        put :update, body: body, params: { druid: druid, workflow: workflow_id,
+                                           process: 'descriptive-metadata', format: :xml }
+        expect(response.body).to eq('{"next_steps":[]}')
+        expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
+        expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('test')
+        expect(QueueService).to_not have_received(:enqueue)
+      end
+
+      it 'verifies the current status' do
+        put :update, body: body, params: { druid: druid, workflow: workflow_id,
+                                           process: 'descriptive-metadata', 'current-status': 'not-waiting',
+                                           format: :xml }
+        expect(response.body).to eq('Status in params (not-waiting) does not match current status (waiting)')
+        expect(response.code).to eq('409')
+      end
+
+      it 'verifies that process in url and body match' do
+        put :update, body: body, params: { druid: druid, workflow: workflow_id,
                                            process: 'rights-metadata', format: :xml }
         expect(response.body).to eq('Process name in body (descriptive-metadata) does not match process name in URI ' \
                                     '(rights-metadata)')
