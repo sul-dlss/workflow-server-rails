@@ -75,7 +75,7 @@ GEM
       capistrano-bundler (~> 1.1)
     capistrano-shared_configs (0.2.2)
     chronic (0.10.2)
-    cocina-models (0.1.0)
+    cocina-models (0.1.1)
       dry-struct
       dry-types
       zeitwerk (~> 2.1)
@@ -98,7 +98,7 @@ GEM
       capistrano-one_time_key
       capistrano-shared_configs
     docile (1.3.2)
-    dor-services-client (2.5.0)
+    dor-services-client (2.6.2)
       activesupport (>= 4.2, < 7)
       cocina-models (~> 0.1.0)
       faraday (~> 0.15)
