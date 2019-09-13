@@ -69,7 +69,7 @@ class WorkflowsController < ApplicationController
   end
 
   def deprecated_create
-    logger.warn 'Workflows#create with repo parameter and xml body is deprecated. Call /objects/:druid/workflows instead'
+    Honeybadger.notify 'Workflows#create with repo parameter and xml body is deprecated. Call /objects/:druid/workflows instead'
 
     create
   end
