@@ -16,6 +16,8 @@ class StepsController < ApplicationController
 
     return render plain: status_mismatch_error(step), status: :conflict if params['current-status'] && step.status != params['current-status']
 
+    Honeybadger.notify('There is no need to pass "repo" parameter to update a workflow step.') if params[:repo]
+
     step.update(parser.to_h)
 
     # Enqueue next steps
@@ -55,7 +57,6 @@ class StepsController < ApplicationController
   # Returns most recent workflow step
   def find_step_for_process
     WorkflowStep.order(version: :desc).find_by(
-      repository: params[:repo],
       druid: params[:druid],
       workflow: params[:workflow],
       process: params[:process]

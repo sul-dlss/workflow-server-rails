@@ -11,7 +11,7 @@ Rails.application.routes.draw do
       collection do
         # Create should be a POST, but this is what the Java WFS app did.
         put ':workflow', to: 'workflows#deprecated_create'
-        put ':workflow/:process', to: 'steps#update'
+        put ':workflow/:process', to: 'steps#update' # deprecated
         get ':workflow/:process', to: 'steps#show'
       end
     end
@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :workflows, only: %i[index], param: :workflow do
       collection do
         post ':workflow', to: 'workflows#create'
+        put ':workflow/:process', to: 'steps#update'
       end
     end
   end
