@@ -44,7 +44,7 @@ GEM
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    airbrussh (1.3.3)
+    airbrussh (1.3.4)
       sshkit (>= 1.6.1, != 1.7.0)
     arel (9.0.0)
     ast (2.4.0)
@@ -75,7 +75,7 @@ GEM
       capistrano-bundler (~> 1.1)
     capistrano-shared_configs (0.2.2)
     chronic (0.10.2)
-    cocina-models (0.1.0)
+    cocina-models (0.1.1)
       dry-struct
       dry-types
       zeitwerk (~> 2.1)
@@ -98,7 +98,7 @@ GEM
       capistrano-one_time_key
       capistrano-shared_configs
     docile (1.3.2)
-    dor-services-client (2.5.0)
+    dor-services-client (2.6.2)
       activesupport (>= 4.2, < 7)
       cocina-models (~> 0.1.0)
       faraday (~> 0.15)
@@ -209,7 +209,7 @@ GEM
       nokogiri (~> 1.5)
     okcomputer (1.17.4)
     parallel (1.17.0)
-    parser (2.6.4.0)
+    parser (2.6.4.1)
       ast (~> 2.4.0)
     pg (1.1.4)
     puma (3.12.1)
