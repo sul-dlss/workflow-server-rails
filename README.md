@@ -106,6 +106,9 @@ GET    /workflow_queue/all_queued
 GET    /workflow_queue
 ```
 
+## Deploy
+### Logs
+Logs are located in `/var/log/httpd`.
 
 ## TODO
 
