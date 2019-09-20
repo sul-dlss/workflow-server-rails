@@ -5,7 +5,10 @@
 # through the workflow.
 class WorkflowTemplatesController < ApplicationController
   def show
-    template = WorkflowTemplateLoader.load_as_xml(params[:id])
+    loader = WorkflowTemplateLoader.new(params[:id])
+    return head :not_found unless loader.exists?
+
+    template = loader.load_as_xml
     parser = WorkflowTemplateParser.new(template)
     @processes = parser.processes
   end
