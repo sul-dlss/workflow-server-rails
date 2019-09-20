@@ -93,6 +93,9 @@ PUT    /:repo/objects/:druid/workflows/:workflow/:process
 GET    /:repo/objects/:druid/workflows/:workflow/:process
 ```
 
+Return the list of workflow templates
+`GET   /workflow_templates`
+
 Return the list of steps for the given workflow template
 `GET   /workflow_templates/:workflow`
 
