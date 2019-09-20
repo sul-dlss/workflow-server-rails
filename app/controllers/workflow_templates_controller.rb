@@ -12,4 +12,10 @@ class WorkflowTemplatesController < ApplicationController
     parser = WorkflowTemplateParser.new(template)
     @processes = parser.processes
   end
+
+  def index
+    files = Dir.glob("#{WorkflowTemplateLoader::WORKFLOWS_DIR}/**/*.xml")
+    names = files.map { |file| file.sub(%r{#{WorkflowTemplateLoader::WORKFLOWS_DIR}/[^/]*/([^\/]*).xml}, '\1') }.sort
+    render json: names
+  end
 end

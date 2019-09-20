@@ -3,6 +3,7 @@
 ##
 # Loading workflow templates
 class WorkflowTemplateLoader
+  WORKFLOWS_DIR = 'config/workflows'
   # Loads a workflow template from file
   # @param [String] workflow_name name/id of workflow, e.g., accessionWF
   # @param [String] optional repository (sdr or dor). If not provided, will guess.
@@ -61,6 +62,6 @@ class WorkflowTemplateLoader
   end
 
   def construct_filepath(repository)
-    "config/workflows/#{repository}/#{workflow_name}.xml"
+    "#{WORKFLOWS_DIR}/#{repository}/#{workflow_name}.xml"
   end
 end

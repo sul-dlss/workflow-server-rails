@@ -27,7 +27,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :workflow_templates, only: [:show], defaults: { format: :json }
+  resources :workflow_templates, only: %i[show index], defaults: { format: :json }
 
   get '/workflow_archive',
       to: 'workflows#archive',
