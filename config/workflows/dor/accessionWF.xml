@@ -27,27 +27,34 @@
     <label>Shelve content in Digital Stacks</label>
     <prereq>remediate-object</prereq>
   </process>
-  <process batch-limit="100" error-limit="10" lifecycle="published" name="publish" sequence="8">
+  <process batch-limit="1" error-limit="5" name="shelve-complete" sequence="8" skip-queue="true">
+    <label>Signal that object has been shelved</label>
+  </process>
+  <process batch-limit="100" error-limit="10" name="publish" sequence="9">
     <label>Publish Metadata</label>
     <prereq>shelve</prereq>
   </process>
-  <process batch-limit="1" error-limit="5" name="provenance-metadata" sequence="9">
-    <label>Provenance Metadata</label>
-    <prereq>publish</prereq>
+  <process batch-limit="1" error-limit="5" lifecycle="published" name="publish-complete" sequence="10" skip-queue="true">
+    <label>Signal that object has been published</label>
   </process>
-  <process batch-limit="1" error-limit="5" name="sdr-ingest-transfer" sequence="10">
+  <process batch-limit="1" error-limit="5" name="provenance-metadata" sequence="11">
+    <label>Provenance Metadata</label>
+    <prereq>publish-complete</prereq>
+  </process>
+  <process batch-limit="1" error-limit="5" name="sdr-ingest-transfer" sequence="12">
     <label>Initiate Ingest into Preservation</label>
     <prereq>provenance-metadata</prereq>
   </process>
-  <process batch-limit="1" error-limit="5" lifecycle="deposited" name="sdr-ingest-received" sequence="11" skip-queue="true">
+  <process batch-limit="1" error-limit="5" lifecycle="deposited" name="sdr-ingest-received" sequence="13" skip-queue="true">
     <label>Signal from SDR that object has been received</label>
   </process>
-  <process batch-limit="1" error-limit="5" name="reset-workspace" sequence="12">
+  <process batch-limit="1" error-limit="5" name="reset-workspace" sequence="14">
     <label>Reset workspace by renaming the druid-tree to a versioned directory</label>
     <prereq>sdr-ingest-received</prereq>
     <prereq>provenance-metadata</prereq>
+    <prereq>shelve-complete</prereq>
   </process>
-  <process batch-limit="1" error-limit="5" lifecycle="accessioned" name="end-accession" sequence="13">
+  <process batch-limit="1" error-limit="5" lifecycle="accessioned" name="end-accession" sequence="15">
     <label>Clean up any diff caches and set disseminationWF:cleanup to waiting</label>
     <prereq>reset-workspace</prereq>
   </process>

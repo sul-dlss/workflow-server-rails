@@ -44,7 +44,7 @@ RSpec.describe WorkflowsController do
       it 'creates new workflows' do
         expect do
           put :deprecated_create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
-        end.to change(WorkflowStep, :count).by(13)
+        end.to change(WorkflowStep, :count).by(15)
 
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end
@@ -54,7 +54,7 @@ RSpec.describe WorkflowsController do
         it 'returns a 400 error' do
           expect do
             put :deprecated_create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
-          end.to change(WorkflowStep, :count).by(13)
+          end.to change(WorkflowStep, :count).by(15)
         end
       end
     end
@@ -69,7 +69,7 @@ RSpec.describe WorkflowsController do
       it 'creates new workflows' do
         expect do
           put :deprecated_create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
-        end.to change(WorkflowStep, :count).by(13)
+        end.to change(WorkflowStep, :count).by(15)
 
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end
@@ -89,7 +89,7 @@ RSpec.describe WorkflowsController do
       it 'creates new workflows' do
         expect do
           post :create, params: { druid: druid, workflow: workflow, format: :xml }
-        end.to change(WorkflowStep, :count).by(13)
+        end.to change(WorkflowStep, :count).by(15)
         expect(WorkflowStep.last.lane_id).to eq('default')
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end
@@ -120,7 +120,7 @@ RSpec.describe WorkflowsController do
       it 'creates new workflows' do
         expect do
           post :create, params: { druid: druid, workflow: workflow, format: :xml }
-        end.to change(WorkflowStep, :count).by(13)
+        end.to change(WorkflowStep, :count).by(15)
 
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end
