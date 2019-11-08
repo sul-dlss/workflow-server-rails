@@ -14,8 +14,8 @@
   <process name="publish-complete" sequence="4" skip-queue="true">
     <label>Signal that object has been published</label>
   </process>
-  <process name="publish-complete" sequence="5">
-    <prereq>release-publish</prereq>
+  <process name="update-marc" sequence="5">
+    <prereq>publish-complete</prereq>
     <label>Generates Symphony record with PURL URI</label>
   </process>
 </workflow-def>
