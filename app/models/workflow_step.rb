@@ -6,6 +6,7 @@ class WorkflowStep < ApplicationRecord
   validates :workflow, presence: true
   validates :process, presence: true
   validates :version, presence: true
+  validates :repository, presence: true
 
   scope :lifecycle, -> { where.not(lifecycle: nil) }
   scope :incomplete, -> { where.not(status: %w[completed skipped]) }
