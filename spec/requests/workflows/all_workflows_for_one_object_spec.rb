@@ -20,7 +20,7 @@ RSpec.describe 'Get the steps for one object', type: :request do
       expect(response).to be_successful
       expect(response.body).to be_equivalent_to <<~XML
         <workflows objectId="#{druid}">
-          <workflow repository="dor" objectId="#{druid}" id="accessionWF">
+          <workflow objectId="#{druid}" id="accessionWF">
             <process version="1" note="" lifecycle="" laneId="default"
               elapsed="" attempts="0" datetime="#{date}"
               status="error" name="start-accession" errorMessage="it just broke"/>
@@ -42,7 +42,7 @@ RSpec.describe 'Get the steps for one object', type: :request do
       expect(response).to be_successful
       expect(response.body).to be_equivalent_to <<~XML
         <workflows objectId="#{druid}">
-          <workflow repository="dor" objectId="#{druid}" id="accessionWF">
+          <workflow objectId="#{druid}" id="accessionWF">
             <process version="1" note="" lifecycle="" laneId="default"
               elapsed="" attempts="0" datetime="#{date}"
               status="completed" name="start-accession"/>
@@ -67,7 +67,7 @@ RSpec.describe 'Get the steps for one object', type: :request do
       expect(response).to be_successful
       expect(response.body).to be_equivalent_to <<~XML
         <workflows objectId="#{druid}">
-          <workflow repository="dor" objectId="#{druid}" id="accessionWF">
+          <workflow objectId="#{druid}" id="accessionWF">
             <process version="1" note="" lifecycle="" laneId="default"
               elapsed="" attempts="0" datetime="#{date}"
               status="completed" name="start-accession"/>

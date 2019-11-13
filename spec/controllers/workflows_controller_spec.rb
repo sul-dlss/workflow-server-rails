@@ -3,12 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe WorkflowsController do
-  let(:repository) { 'dor' }
   let(:client) { instance_double(Dor::Services::Client::Object, version: version_client) }
   let(:version_client) { instance_double(Dor::Services::Client::ObjectVersion, current: '1') }
   let(:wf) { FactoryBot.create(:workflow_step) }
   let(:druid) { wf.druid }
-  let(:workflow_template) { WorkflowTemplateLoader.load_as_xml('accessionWF', 'dor') }
+  let(:workflow_template) { WorkflowTemplateLoader.load_as_xml('accessionWF') }
 
   before do
     allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
@@ -17,7 +16,7 @@ RSpec.describe WorkflowsController do
 
   describe 'GET archive' do
     it 'loads count of workflows' do
-      get :archive, params: { repository: wf.repository, workflow: wf.workflow, format: :xml }
+      get :archive, params: { repository: 'dor', workflow: wf.workflow, format: :xml }
       expect(assigns(:objects)).to eq 1
       expect(response).to render_template 'archive'
     end
@@ -25,7 +24,7 @@ RSpec.describe WorkflowsController do
 
   describe 'DELETE destroy' do
     it 'deletes workflows' do
-      delete :destroy, params: { repo: wf.repository, druid: wf.druid, workflow: wf.workflow, format: :xml }
+      delete :destroy, params: { repo: 'dor', druid: wf.druid, workflow: wf.workflow, format: :xml }
       expect(response).to be_no_content
     end
   end

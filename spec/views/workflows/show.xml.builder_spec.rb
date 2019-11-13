@@ -4,12 +4,10 @@ require 'rails_helper'
 
 RSpec.describe 'workflows/index' do
   let(:druid) { 'druid:bb123bb1234' }
-  let(:repo) { 'dor' }
 
   let(:step) do
     FactoryBot.build(
       :workflow_step,
-      repository: repo,
       druid: druid,
       updated_at: Date.today,
       workflow: 'accessionWF'
@@ -17,14 +15,13 @@ RSpec.describe 'workflows/index' do
   end
 
   before do
-    @workflow = Workflow.new(repository: repo, druid: druid, name: 'accessionWF', steps: [step])
+    @workflow = Workflow.new(druid: druid, name: 'accessionWF', steps: [step])
   end
 
   it 'renders a workflows document' do
     render template: 'workflows/show'
     doc = Nokogiri::XML.parse(rendered)
     expect(doc.at_xpath('//workflow')).to include(
-      %w[repository dor],
       %w[objectId druid:bb123bb1234],
       %w[id accessionWF]
     )

@@ -2,9 +2,8 @@
 
 namespace :workflow do
   desc 'Update a workflow step'
-  task :step, %i[repo druid workflow process version status] => :environment do |_task, args|
+  task :step, %i[druid workflow process version status] => :environment do |_task, args|
     step = WorkflowStep.find_by(
-      repository: args[:repo],
       druid: args[:druid],
       workflow: args[:workflow],
       process: args[:process],

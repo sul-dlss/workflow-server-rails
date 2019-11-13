@@ -18,7 +18,7 @@ RSpec.describe 'Get a single workflow for an object', type: :request do
         get "/dor/objects/#{druid}/workflows/accessionWF"
         expect(response).to be_successful
         expect(response.body).to be_equivalent_to <<~XML
-          <workflow repository="dor" objectId="#{druid}" id="accessionWF">
+          <workflow objectId="#{druid}" id="accessionWF">
             <process version="1" note="" lifecycle="" laneId="default"
               elapsed="" attempts="0" datetime="#{date}"
               status="waiting" name="start-accession"/>
@@ -34,7 +34,7 @@ RSpec.describe 'Get a single workflow for an object', type: :request do
         get "/dor/objects/#{druid}/workflows/accessionWF"
         expect(response).to be_successful
         expect(response.body).to be_equivalent_to <<~XML
-          <workflow repository="dor" objectId="#{druid}" id="accessionWF" />
+          <workflow objectId="#{druid}" id="accessionWF" />
         XML
       end
     end

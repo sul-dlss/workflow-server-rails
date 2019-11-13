@@ -3,25 +3,22 @@
 require 'rails_helper'
 
 RSpec.describe WorkflowTemplateLoader do
-  let(:loader) { described_class.new(workflow_name, repository) }
+  let(:loader) { described_class.new(workflow_name) }
 
   let(:workflow_name) { 'assemblyWF' }
-
-  let(:repository) { nil }
 
   describe '#workflow_filepath' do
     let(:workflow_filepath) { loader.workflow_filepath }
 
     context 'when workflow and repo provided' do
-      let(:repository) { 'dor' }
       it 'finds filepath' do
-        expect(workflow_filepath).to eq("config/workflows/#{repository}/#{workflow_name}.xml")
+        expect(workflow_filepath).to eq("config/workflows/#{workflow_name}.xml")
       end
     end
 
     context 'when only workflow provided' do
       it 'finds filepath' do
-        expect(workflow_filepath).to eq("config/workflows/dor/#{workflow_name}.xml")
+        expect(workflow_filepath).to eq("config/workflows/#{workflow_name}.xml")
       end
     end
   end

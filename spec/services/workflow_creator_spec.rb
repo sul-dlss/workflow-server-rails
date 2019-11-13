@@ -4,9 +4,8 @@ require 'rails_helper'
 
 RSpec.describe WorkflowCreator do
   let(:druid) { 'druid:bb123bb1234' }
-  let(:repository) { 'dor' }
   let(:xml) do
-    workflow_template = WorkflowTemplateLoader.load_as_xml('accessionWF', 'dor')
+    workflow_template = WorkflowTemplateLoader.load_as_xml('accessionWF')
     WorkflowTransformer.initial_workflow(workflow_template)
   end
   let(:wf_parser) do
@@ -17,9 +16,7 @@ RSpec.describe WorkflowCreator do
     described_class.new(
       workflow_id: wf_parser.workflow_id,
       processes: wf_parser.processes,
-      version: Version.new(druid: druid,
-                           repository: repository,
-                           version: 1)
+      version: Version.new(druid: druid, version: 1)
     )
   end
 
@@ -35,7 +32,6 @@ RSpec.describe WorkflowCreator do
         create_workflow_steps
       end.to change(WorkflowStep, :count).by(16)
       expect(WorkflowStep.last.druid).to eq druid
-      expect(WorkflowStep.last.repository).to eq repository
       expect(QueueService).to have_received(:enqueue).with(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata'))
     end
 

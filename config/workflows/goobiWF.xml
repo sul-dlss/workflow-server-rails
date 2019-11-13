@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<workflow-def id="goobiWF" repository="dor">
+<workflow-def id="goobiWF">
   <process lifecycle="registered" name="register" sequence="1" status="completed">
     <label>Register an object</label>
   </process>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<workflow-def id="wasCrawlDisseminationWF" repository="dor">
+<workflow-def id="wasCrawlDisseminationWF">
   <process name="start" sequence="1" status="completed">
     <label>Initiate was crawl disseminationWF of the object</label>
   </process>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<workflow-def id="accessionWF" repository="dor">
+<workflow-def id="accessionWF">
   <process lifecycle="submitted" name="start-accession" sequence="1" status="completed">
     <label>Start Accessioning</label>
   </process>

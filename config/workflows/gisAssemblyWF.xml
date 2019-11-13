@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<workflow-def id="gisAssemblyWF" repository="dor">
-  
+<workflow-def id="gisAssemblyWF">
+
   <process name="start-gis-assembly-workflow" sequence="1" status="completed">
     <label>Initiate assembly workflow for the object</label>
   </process>
@@ -48,7 +48,7 @@
   </process>
   <process name="package-data" sequence="13">
     <prereq>wrangle-data</prereq>
-    
+
     <label>Package the digital work</label>
   </process>
   <process name="normalize-data" sequence="14">

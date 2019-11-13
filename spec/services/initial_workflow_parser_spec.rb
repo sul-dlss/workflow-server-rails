@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe InitialWorkflowParser do
   let(:xml) do
-    workflow_template = WorkflowTemplateLoader.load_as_xml('accessionWF', 'dor')
+    workflow_template = WorkflowTemplateLoader.load_as_xml('accessionWF')
     WorkflowTransformer.initial_workflow(workflow_template)
   end
   let(:wf_parser) do

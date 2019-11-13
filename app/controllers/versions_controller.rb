@@ -19,8 +19,7 @@ class VersionsController < ApplicationController
   end
 
   def find_versioning_steps
-    obj = Version.new(repository: params[:repo],
-                      druid: params[:druid],
+    obj = Version.new(druid: params[:druid],
                       version: current_version)
     obj.workflow_steps.where(
       workflow: 'versioningWF',
@@ -29,8 +28,7 @@ class VersionsController < ApplicationController
   end
 
   def initialize_workflow
-    obj = Version.new(repository: 'dor',
-                      druid: params[:druid],
+    obj = Version.new(druid: params[:druid],
                       version: current_version)
 
     parser = InitialWorkflowParser.new(initial_workflow)
@@ -47,7 +45,7 @@ class VersionsController < ApplicationController
   end
 
   def initial_workflow
-    template = WorkflowTemplateLoader.load_as_xml('accessionWF', 'dor')
+    template = WorkflowTemplateLoader.load_as_xml('accessionWF')
     WorkflowTransformer.initial_workflow(template)
   end
 end

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<workflow-def id="wasDisseminationWF" repository="dor">
+<workflow-def id="wasDisseminationWF">
   <process name="start" sequence="1" skip-queue="true" status="completed">
     <label>Initiate was DisseminationWF of the object</label>
   </process>
