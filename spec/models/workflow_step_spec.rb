@@ -48,6 +48,22 @@ RSpec.describe WorkflowStep do
       expect(dupe_step.errors.messages).to include(process: ['has already been taken'])
     end
   end
+  context 'without valid version' do
+    it 'is not valid if the version is nil' do
+      expect(subject.valid?).to be true
+      subject.version = nil
+      expect(subject.valid?).to be false
+    end
+    it 'is not valid if the version is not an integer' do
+      expect(subject.valid?).to be true
+      subject.version = 'bogus'
+      expect(subject.valid?).to be false
+      subject.version = 4.3
+      expect(subject.valid?).to be false
+      subject.version = ''
+      expect(subject.valid?).to be false
+    end
+  end
   describe '#as_milestone' do
     builder = {}
     before do
