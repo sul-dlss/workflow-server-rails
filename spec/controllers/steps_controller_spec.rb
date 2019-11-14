@@ -20,14 +20,15 @@ RSpec.describe StepsController do
 
   describe 'PUT update' do
     context 'when updating a step' do
-      let(:body) { '<process name="descriptive-metadata" status="test" />' }
+      let(:body) { '<process name="descriptive-metadata" status="error" />' }
 
       it 'updates the step with repository (Deprecated)' do
         put :update, body: body, params: { repo: repository, druid: druid, workflow: workflow_id,
                                            process: 'descriptive-metadata', format: :xml }
+        puts response.body
         expect(response.body).to eq('{"next_steps":[]}')
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
-        expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('test')
+        expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('error')
         expect(QueueService).to_not have_received(:enqueue)
       end
 
@@ -49,14 +50,13 @@ RSpec.describe StepsController do
     end
 
     context 'when updating a step without a repository' do
-      let(:body) { '<process name="descriptive-metadata" status="test" />' }
+      let(:body) { '<process name="descriptive-metadata" status="error" />' }
 
       it 'updates the step' do
         put :update, body: body, params: { druid: druid, workflow: workflow_id,
                                            process: 'descriptive-metadata', format: :xml }
-        expect(response.body).to eq('{"next_steps":[]}')
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
-        expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('test')
+        expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('error')
         expect(QueueService).to_not have_received(:enqueue)
       end
 

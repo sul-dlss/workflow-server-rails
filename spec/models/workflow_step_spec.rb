@@ -22,6 +22,18 @@ RSpec.describe WorkflowStep do
       expect(subject.valid?).to be false
     end
   end
+  context 'without valid status' do
+    it 'is not valid if the status is nil' do
+      expect(subject.valid?).to be true
+      subject.status = nil
+      expect(subject.valid?).to be false
+    end
+    it 'is not valid if the status is a bogus value' do
+      expect(subject.valid?).to be true
+      subject.status = 'bogus'
+      expect(subject.valid?).to be false
+    end
+  end
   describe '#as_milestone' do
     builder = {}
     before do
