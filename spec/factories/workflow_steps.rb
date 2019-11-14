@@ -7,7 +7,6 @@ FactoryBot.define do
     end
     workflow { 'accessionWF' }
     process { 'start-accession' }
-    repository { 'dor' }
     version { 1 }
     lane_id { 'default' }
     status { 'waiting' }

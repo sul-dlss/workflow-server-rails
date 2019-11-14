@@ -46,8 +46,7 @@ RSpec.describe WorkflowStep do
         workflow: step.workflow,
         process: step.process,
         version: step.version,
-        status: 'completed',
-        repository: 'dor'
+        status: 'completed'
       )
     end
 
@@ -64,8 +63,7 @@ RSpec.describe WorkflowStep do
         workflow: 'bogusWF',
         process: step.process,
         version: step.version,
-        status: step.status,
-        repository: step.repository
+        status: step.status
       )
     end
 
@@ -82,8 +80,7 @@ RSpec.describe WorkflowStep do
         workflow: nil,
         process: step.process,
         version: step.version,
-        status: step.status,
-        repository: step.repository
+        status: step.status
       )
     end
 
@@ -100,8 +97,7 @@ RSpec.describe WorkflowStep do
         workflow: step.workflow,
         process: 'bogus-step',
         version: step.version,
-        status: step.status,
-        repository: step.repository
+        status: step.status
       )
     end
 
@@ -118,8 +114,7 @@ RSpec.describe WorkflowStep do
         workflow: step.workflow,
         process: nil,
         version: step.version,
-        status: step.status,
-        repository: step.repository
+        status: step.status
       )
     end
 

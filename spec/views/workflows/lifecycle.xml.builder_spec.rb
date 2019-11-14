@@ -4,13 +4,11 @@ require 'rails_helper'
 
 RSpec.describe 'workflows/lifecycle' do
   let(:druid) { 'druid:bb123bb1234' }
-  let(:repo) { 'dor' }
-  let(:params) { { druid: druid, repo: repo } }
+  let(:params) { { druid: druid } }
 
   it 'renders a workflows document' do
     FactoryBot.create(
       :workflow_step,
-      repository: repo,
       druid: druid,
       workflow: 'accessionWF'
     )
