@@ -8,6 +8,7 @@ class WorkflowStep < ApplicationRecord
   validates :version, presence: true
   validates :repository, presence: true
   validates :status, inclusion: { in: %w[waiting completed queued error skipped] }
+  validates :process, uniqueness: { scope: %w[version workflow druid] }
 
   scope :lifecycle, -> { where.not(lifecycle: nil) }
   scope :incomplete, -> { where.not(status: %w[completed skipped]) }

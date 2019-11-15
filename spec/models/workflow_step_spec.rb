@@ -34,6 +34,20 @@ RSpec.describe WorkflowStep do
       expect(subject.valid?).to be false
     end
   end
+  context 'duplicate step for the same process/version' do
+    it 'is not valid if the step already exists for the same druid/workflow/version' do
+      dupe_step = described_class.new(
+        druid: subject.druid,
+        workflow: subject.workflow,
+        process: subject.process,
+        version: subject.version,
+        status: 'completed',
+        repository: 'dor'
+      )
+      expect(dupe_step.valid?).to be false
+      expect(dupe_step.errors.messages).to include(process: ['has already been taken'])
+    end
+  end
   describe '#as_milestone' do
     builder = {}
     before do
