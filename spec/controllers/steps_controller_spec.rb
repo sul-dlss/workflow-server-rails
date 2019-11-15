@@ -25,7 +25,6 @@ RSpec.describe StepsController do
       it 'updates the step with repository (Deprecated)' do
         put :update, body: body, params: { repo: repository, druid: druid, workflow: workflow_id,
                                            process: 'descriptive-metadata', format: :xml }
-        puts response.body
         expect(response.body).to eq('{"next_steps":[]}')
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
         expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('error')
