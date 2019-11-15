@@ -15,7 +15,7 @@ RSpec.describe 'Lifecycle', type: :request do
     let(:wf) do
       # This should not appear in the results if they want active-only
       FactoryBot.create(:workflow_step,
-                        process: 'opened',
+                        process: 'start-accession',
                         version: 1,
                         status: 'waiting',
                         lifecycle: 'submitted')
@@ -34,7 +34,7 @@ RSpec.describe 'Lifecycle', type: :request do
         FactoryBot.create(:workflow_step,
                           druid: druid,
                           version: 2,
-                          process: 'verify-agreement',
+                          process: 'remediate-object',
                           status: 'completed')
         allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
       end
@@ -59,7 +59,7 @@ RSpec.describe 'Lifecycle', type: :request do
         FactoryBot.create(:workflow_step,
                           druid: druid,
                           version: 2,
-                          process: 'verify-agreement',
+                          process: 'remediate-object',
                           status: 'waiting')
         allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
       end
@@ -76,7 +76,7 @@ RSpec.describe 'Lifecycle', type: :request do
   context 'when active-only is not set' do
     let(:wf) do
       FactoryBot.create(:workflow_step,
-                        process: 'opened',
+                        process: 'start-accession',
                         version: 1,
                         lane_id: 'default',
                         status: 'completed',
@@ -87,7 +87,7 @@ RSpec.describe 'Lifecycle', type: :request do
       FactoryBot.create(:workflow_step,
                         druid: druid,
                         version: 2,
-                        process: 'opened',
+                        process: 'start-accession',
                         status: 'completed',
                         lifecycle: 'submitted')
 
@@ -95,7 +95,7 @@ RSpec.describe 'Lifecycle', type: :request do
       FactoryBot.create(:workflow_step,
                         druid: druid,
                         version: 2,
-                        process: 'start-accession',
+                        process: 'rights-metadata',
                         lane_id: 'fast',
                         status: 'completed')
 
@@ -103,7 +103,7 @@ RSpec.describe 'Lifecycle', type: :request do
       FactoryBot.create(:workflow_step,
                         druid: druid,
                         version: 2,
-                        process: 'index',
+                        process: 'sdr-ingest-transfer',
                         status: 'waiting',
                         lifecycle: 'indexed')
     end
