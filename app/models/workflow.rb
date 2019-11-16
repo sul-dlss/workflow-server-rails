@@ -6,7 +6,7 @@ class Workflow
   # @param druid [String] the identifier for the object
   # @param repository [String] the identifier of the repository (e.g. 'dor')
   # @param steps [Array<WorkflowStep>] the steps that belong to this workflow
-  def initialize(name:, druid:, repository:, steps: [])
+  def initialize(name:, druid:, repository: nil, steps: [])
     @name = name
     @druid = druid
     @repository = repository
