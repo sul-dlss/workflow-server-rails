@@ -9,6 +9,8 @@ class WorkflowStep < ApplicationRecord
   validates :repository, presence: true
   validates :status, inclusion: { in: %w[waiting completed queued error skipped] }
   validates :process, uniqueness: { scope: %w[version workflow druid] }
+  validate  :workflow_exists, on: :create
+  validate  :process_exists_for_workflow, on: :create
 
   scope :lifecycle, -> { where.not(lifecycle: nil) }
   scope :incomplete, -> { where.not(status: %w[completed skipped]) }
@@ -26,6 +28,33 @@ class WorkflowStep < ApplicationRecord
     xml.milestone(lifecycle,
                   date: updated_at.to_time.iso8601,
                   version: version)
+  end
+
+  ##
+  # check if the named workflow has a current definition
+  # @return [boolean]
+  def valid_workflow?
+    WorkflowTemplateLoader.new(workflow).exists?
+  end
+
+  ##
+  # check if the named process step is currently defined in the named workflow
+  # @return [boolean]
+  def valid_process_for_workflow?
+    return false unless valid_workflow?
+
+    wtp = WorkflowTemplateParser.new(WorkflowTemplateLoader.new(workflow).load_as_xml)
+    wtp.processes.map(&:name).include? process
+  end
+
+  # ensure we have a valid workflow before creating a new step
+  def workflow_exists
+    errors.add(:workflow, 'is not valid') unless valid_workflow?
+  end
+
+  # ensure we have a valid process before creating a new step
+  def process_exists_for_workflow
+    errors.add(:process, 'is not valid') unless valid_process_for_workflow?
   end
 
   # rubocop:disable Metrics/MethodLength

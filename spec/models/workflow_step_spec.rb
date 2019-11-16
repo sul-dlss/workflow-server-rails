@@ -48,6 +48,38 @@ RSpec.describe WorkflowStep do
       expect(dupe_step.errors.messages).to include(process: ['has already been taken'])
     end
   end
+  context 'without valid workflow name' do
+    it 'is not possible to create a new workflow step for a non-existent or missing workflow value' do
+      bogus_workflow = described_class.new(
+        druid: subject.druid,
+        workflow: 'bogusWF',
+        process: subject.process,
+        version: subject.version,
+        status: subject.status,
+        repository: subject.repository
+      )
+      expect(bogus_workflow.valid?).to be false
+      expect(bogus_workflow.errors.messages).to include(workflow: ['is not valid'])
+      bogus_workflow.workflow = nil
+      expect(bogus_workflow.valid?).to be false
+    end
+  end
+  context 'without valid process name' do
+    it 'is not possible to create a new workflow step for a non-existent or missing process value' do
+      bogus_process = described_class.new(
+        druid: subject.druid,
+        workflow: subject.workflow,
+        process: 'bogus-step',
+        version: subject.version,
+        status: subject.status,
+        repository: subject.repository
+      )
+      expect(bogus_process.valid?).to be false
+      expect(bogus_process.errors.messages).to include(process: ['is not valid'])
+      bogus_process.process = nil
+      expect(bogus_process.valid?).to be false
+    end
+  end
   context 'without valid version' do
     it 'is not valid if the version is nil' do
       expect(subject.valid?).to be true
