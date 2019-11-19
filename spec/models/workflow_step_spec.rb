@@ -11,110 +11,141 @@ RSpec.describe WorkflowStep do
       lifecycle: 'submitted'
     )
   end
-  context 'with required values' do
-    it 'is valid' do
-      expect(subject.valid?).to be true
-    end
-  end
+
+  it { is_expected.to be_valid }
+
   context 'without required values' do
     subject { described_class.create }
-    it 'is not valid' do
-      expect(subject.valid?).to be false
-    end
+
+    it { is_expected.not_to be_valid }
   end
+
   context 'without valid status' do
     it 'is not valid if the status is nil' do
-      expect(subject.valid?).to be true
-      subject.status = nil
-      expect(subject.valid?).to be false
+      expect { step.status = nil }.to change { step.valid? }.from(true).to(false)
     end
+
     it 'is not valid if the status is a bogus value' do
-      expect(subject.valid?).to be true
-      subject.status = 'bogus'
-      expect(subject.valid?).to be false
+      expect { step.status = 'bogus' }.to change { step.valid? }.from(true).to(false)
     end
   end
-  context 'duplicate step for the same process/version' do
-    it 'is not valid if the step already exists for the same druid/workflow/version' do
-      dupe_step = described_class.new(
-        druid: subject.druid,
-        workflow: subject.workflow,
-        process: subject.process,
-        version: subject.version,
+
+  context 'when step already exists for the same druid/workflow/version' do
+    subject(:dupe_step) do
+      described_class.new(
+        druid: step.druid,
+        workflow: step.workflow,
+        process: step.process,
+        version: step.version,
         status: 'completed',
         repository: 'dor'
       )
-      expect(dupe_step.valid?).to be false
+    end
+
+    it 'includes an informative error message' do
+      expect(dupe_step).not_to be_valid
       expect(dupe_step.errors.messages).to include(process: ['has already been taken'])
     end
   end
-  context 'without valid workflow name' do
-    it 'is not possible to create a new workflow step for a non-existent or missing workflow value' do
-      bogus_workflow = described_class.new(
-        druid: subject.druid,
+
+  context 'with non-existent workflow name' do
+    subject(:bogus_workflow) do
+      described_class.new(
+        druid: step.druid,
         workflow: 'bogusWF',
-        process: subject.process,
-        version: subject.version,
-        status: subject.status,
-        repository: subject.repository
+        process: step.process,
+        version: step.version,
+        status: step.status,
+        repository: step.repository
       )
-      expect(bogus_workflow.valid?).to be false
+    end
+
+    it 'does not create a new workflow step' do
+      expect(bogus_workflow).not_to be_valid
       expect(bogus_workflow.errors.messages).to include(workflow: ['is not valid'])
-      bogus_workflow.workflow = nil
-      expect(bogus_workflow.valid?).to be false
     end
   end
-  context 'without valid process name' do
-    it 'is not possible to create a new workflow step for a non-existent or missing process value' do
-      bogus_process = described_class.new(
-        druid: subject.druid,
-        workflow: subject.workflow,
-        process: 'bogus-step',
-        version: subject.version,
-        status: subject.status,
-        repository: subject.repository
+
+  context 'with nil workflow name' do
+    subject(:bogus_workflow) do
+      described_class.new(
+        druid: step.druid,
+        workflow: nil,
+        process: step.process,
+        version: step.version,
+        status: step.status,
+        repository: step.repository
       )
-      expect(bogus_process.valid?).to be false
+    end
+
+    it 'does not create a new workflow step' do
+      expect(bogus_workflow).not_to be_valid
+      expect(bogus_workflow.errors.messages).to include(workflow: ['can\'t be blank', 'is not valid'])
+    end
+  end
+
+  context 'with non-existent process name' do
+    subject(:bogus_process) do
+      described_class.new(
+        druid: step.druid,
+        workflow: step.workflow,
+        process: 'bogus-step',
+        version: step.version,
+        status: step.status,
+        repository: step.repository
+      )
+    end
+
+    it 'is not possible to create a new workflow step for a non-existent or missing process value' do
+      expect(bogus_process).not_to be_valid
       expect(bogus_process.errors.messages).to include(process: ['is not valid'])
-      bogus_process.process = nil
-      expect(bogus_process.valid?).to be false
     end
   end
-  context 'without valid version' do
-    it 'is not valid if the version is nil' do
-      expect(subject.valid?).to be true
-      subject.version = nil
-      expect(subject.valid?).to be false
+
+  context 'with nil process name' do
+    subject(:bogus_process) do
+      described_class.new(
+        druid: step.druid,
+        workflow: step.workflow,
+        process: nil,
+        version: step.version,
+        status: step.status,
+        repository: step.repository
+      )
     end
-    it 'is not valid if the version is not an integer' do
-      expect(subject.valid?).to be true
-      subject.version = 'bogus'
-      expect(subject.valid?).to be false
-      subject.version = 4.3
-      expect(subject.valid?).to be false
-      subject.version = ''
-      expect(subject.valid?).to be false
+
+    it 'is not possible to create a new workflow step for a non-existent or missing process value' do
+      expect(bogus_process).not_to be_valid
+      expect(bogus_process.errors.messages).to include(process: ['can\'t be blank', 'is not valid'])
     end
   end
-  describe '#as_milestone' do
-    builder = {}
-    before do
-      builder = Nokogiri::XML::Builder.new do |xml|
-        subject.as_milestone(xml)
+
+  context 'with invalid version' do
+    [nil, 'bogus', 4.3, ''].each do |invalid_version|
+      it "is not valid if the version is #{invalid_version}" do
+        expect { step.version = invalid_version }.to change { step.valid? }.from(true).to(false)
       end
     end
-    let(:parsed_xml) { Nokogiri::XML(builder.to_xml) }
+  end
+
+  describe '#as_milestone' do
+    subject(:parsed_xml) { Nokogiri::XML(builder.to_xml) }
+
+    let!(:builder) do
+      Nokogiri::XML::Builder.new do |xml|
+        step.as_milestone(xml)
+      end
+    end
+
     it 'serializes a Workflow as a milestone' do
-      expect(parsed_xml.at_xpath('//milestone'))
-        .to include ['date', //], ['version', /1/]
+      expect(parsed_xml.at_xpath('//milestone')).to include ['date', //], ['version', /1/]
       expect(parsed_xml.at_xpath('//milestone').content).to eq 'submitted'
     end
   end
 
   describe '#attributes_for_process' do
-    subject { step.attributes_for_process }
-    it {
-      is_expected.to include(
+    it 'includes the expected values' do
+      expect(step.attributes_for_process).to include(
         version: 1,
         note: nil,
         lifecycle: 'submitted',
@@ -125,6 +156,6 @@ RSpec.describe WorkflowStep do
         status: 'waiting',
         name: 'start-accession'
       )
-    }
+    end
   end
 end

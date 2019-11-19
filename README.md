@@ -29,7 +29,7 @@ disseminationWF_low
 ## Developers
 
 ### Build
-Build the production image
+Build the production image:
 ```
 docker build -t suldlss/workflow-server:latest .
 ```
