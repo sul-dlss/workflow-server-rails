@@ -208,7 +208,7 @@ GEM
     nokogiri-happymapper (0.8.1)
       nokogiri (~> 1.5)
     okcomputer (1.18.0)
-    parallel (1.19.0)
+    parallel (1.19.1)
     parser (2.6.5.0)
       ast (~> 2.4.0)
     pg (1.1.4)
