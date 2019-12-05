@@ -42,7 +42,6 @@ class WorkflowsController < ApplicationController
   end
 
   # Display all steps for all workflows for all versions of a given object
-  # rubocop:disable Metrics/MethodLength
   def show
     workflow_props = { name: params[:workflow], druid: params[:druid] }
     scope = WorkflowStep.where(
@@ -50,7 +49,6 @@ class WorkflowsController < ApplicationController
       workflow: params[:workflow]
     )
     if params[:repo]
-      Honeybadger.notify('The repository parameter was passed, but this is not necessary')
       scope.where(repository: params[:repo])
       workflow_props[:repository] = params[:repo]
     end
@@ -58,7 +56,6 @@ class WorkflowsController < ApplicationController
 
     @workflow = Workflow.new(workflow_props.merge(steps: workflow_steps))
   end
-  # rubocop:enable Metrics/MethodLength
 
   def destroy
     obj = Version.new(
