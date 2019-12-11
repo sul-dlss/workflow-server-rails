@@ -24,6 +24,7 @@ RSpec.describe WorkflowTransformer do
           <process name="publish-complete" status="waiting" lifecycle="published"/>
           <process name="provenance-metadata" status="waiting"/>
           <process name="sdr-ingest-transfer" status="waiting"/>
+          <process name="preservation-ingest-initiated" status="waiting"/>
           <process name="sdr-ingest-received" status="waiting" lifecycle="deposited"/>
           <process name="reset-workspace" status="waiting"/>
           <process name="end-accession" status="waiting" lifecycle="accessioned"/>
