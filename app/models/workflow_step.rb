@@ -2,7 +2,7 @@
 
 # Models a process that occurred for a digital object. Basically a log entry.
 class WorkflowStep < ApplicationRecord
-  validates :druid, presence: true
+  validates :druid, format: { with: /\Adruid:[a-zA-Z]{2}\d{3}[a-zA-Z]{2}\d{4}/, message: 'is invalid format or missing prefix' }
   validates :workflow, presence: true
   validates :process, presence: true
   validates :version, numericality: { only_integer: true }

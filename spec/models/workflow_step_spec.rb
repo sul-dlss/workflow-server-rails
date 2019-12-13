@@ -20,6 +20,15 @@ RSpec.describe WorkflowStep do
     it { is_expected.not_to be_valid }
   end
 
+  context 'without valid druid' do
+    it 'is not valid if the druid is missing the prefix' do
+      expect { step.druid = step.druid.delete('druid:') }.to change { step.valid? }.from(true).to(false)
+    end
+    it 'is not valid if the druid is a bogus value' do
+      expect { step.druid = 'bogus' }.to change { step.valid? }.from(true).to(false)
+    end
+  end
+
   context 'without valid status' do
     it 'is not valid if the status is nil' do
       expect { step.status = nil }.to change { step.valid? }.from(true).to(false)

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'workflows/index' do
-  let(:druid) { 'druid:abc123' }
+  let(:druid) { 'druid:ab123ab1234' }
   let(:repo) { 'dor' }
 
   let(:step) do
@@ -25,7 +25,7 @@ RSpec.describe 'workflows/index' do
     doc = Nokogiri::XML.parse(rendered)
     expect(doc.at_xpath('//workflow')).to include(
       %w[repository dor],
-      %w[objectId druid:abc123],
+      %w[objectId druid:ab123ab1234],
       %w[id accessionWF]
     )
     expect(doc.at_xpath('//process')).to include(

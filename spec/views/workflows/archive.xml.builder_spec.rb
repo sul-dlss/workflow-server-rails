@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'workflows/archive' do
-  let(:druid) { 'druid:abc123' }
+  let(:druid) { 'druid:ab123ab1234' }
   let(:repo) { 'dor' }
   let(:params) { { druid: druid, repo: repo } }
   it 'renders a workflows document' do
