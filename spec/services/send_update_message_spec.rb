@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe SendUpdateMessage do
-  let(:druid) { 'druid:ab123ab1234' }
+  let(:druid) { 'druid:bb123bb1234' }
 
   describe '#publish' do
     let(:sender) { described_class.new(druid: druid) }
@@ -23,7 +23,7 @@ RSpec.describe SendUpdateMessage do
       expect(mock_client).to have_received(:publish)
         .with('/topic/fedora.apim.update',
               'hello',
-              'methodName' => 'modifyObject', 'pid' => 'druid:ab123ab1234')
+              'methodName' => 'modifyObject', 'pid' => 'druid:bb123bb1234')
     end
   end
 
@@ -49,7 +49,7 @@ RSpec.describe SendUpdateMessage do
                   <uri>https://dor-test.stanford.edu</uri>
               </author>
               <title type="text">modifyObject</title>
-              <summary type="text">druid:ab123ab1234</summary>
+              <summary type="text">druid:bb123bb1234</summary>
               <content type="text">2019-01-25T15:18:32Z</content>
           </entry>
         XML

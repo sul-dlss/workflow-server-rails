@@ -65,7 +65,7 @@ RSpec.describe 'Get a single workflow for an object', type: :request do
     end
 
     context 'when no workflow exists' do
-      let(:druid) { 'druid:ab123ab12342' }
+      let(:druid) { 'druid:bb123bb12342' }
 
       it 'returns an empy workflow node' do
         get "/objects/#{druid}/workflows/accessionWF"

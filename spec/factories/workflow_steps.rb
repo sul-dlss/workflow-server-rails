@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :workflow_step do
     sequence :druid do |n|
-      "druid:ab123bb#{n.to_s.rjust(4, '0')}" # ensure we always have a valid druid format
+      "druid:bb123bc#{n.to_s.rjust(4, '0')}" # ensure we always have a valid druid format
     end
     workflow { 'accessionWF' }
     process { 'start-accession' }

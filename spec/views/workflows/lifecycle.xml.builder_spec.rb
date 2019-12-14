@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'workflows/lifecycle' do
-  let(:druid) { 'druid:ab123ab1234' }
+  let(:druid) { 'druid:bb123bb1234' }
   let(:repo) { 'dor' }
   let(:params) { { druid: druid, repo: repo } }
 
@@ -18,7 +18,7 @@ RSpec.describe 'workflows/lifecycle' do
 
     render template: 'workflows/lifecycle', locals: { params: params }
     doc = Nokogiri::XML.parse(rendered)
-    expect(doc.at_xpath('//lifecycle')).to include %w[objectId druid:ab123ab1234]
+    expect(doc.at_xpath('//lifecycle')).to include %w[objectId druid:bb123bb1234]
     expect(doc.at_xpath('//milestone')).to include(
       ['version', /1/],
       ['date', //]
