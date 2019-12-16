@@ -2,7 +2,7 @@
 
 # Models a process that occurred for a digital object. Basically a log entry.
 class WorkflowStep < ApplicationRecord
-  validates :druid, presence: true
+  validate :druid_is_valid
   validates :workflow, presence: true
   validates :process, presence: true
   validates :version, numericality: { only_integer: true }
@@ -31,6 +31,13 @@ class WorkflowStep < ApplicationRecord
   end
 
   ##
+  # check if we have a valid druid with prefix
+  # @return [boolean]
+  def valid_druid?
+    DruidTools::Druid.valid?(druid, true) && druid.starts_with?('druid:')
+  end
+
+  ##
   # check if the named workflow has a current definition
   # @return [boolean]
   def valid_workflow?
@@ -45,6 +52,11 @@ class WorkflowStep < ApplicationRecord
 
     wtp = WorkflowTemplateParser.new(WorkflowTemplateLoader.new(workflow).load_as_xml)
     wtp.processes.map(&:name).include? process
+  end
+
+  # ensure we have a valid druid with prefix
+  def druid_is_valid
+    errors.add(:druid, 'is not valid') unless valid_druid?
   end
 
   # ensure we have a valid workflow before creating a new step

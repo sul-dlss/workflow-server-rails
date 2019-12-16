@@ -31,7 +31,7 @@ RSpec.describe WorkflowsController do
   end
 
   describe 'deprecated PUT create' do
-    let(:druid) { 'druid:abc123' }
+    let(:druid) { 'druid:bb123bb1234' }
     let(:workflow) { 'accessionWF' }
     let(:repository) { 'dor' }
     let(:request_data) { workflow_template }
@@ -77,7 +77,7 @@ RSpec.describe WorkflowsController do
   end
 
   describe 'POST create' do
-    let(:druid) { 'druid:abc123' }
+    let(:druid) { 'druid:bb123bb1234' }
     let(:workflow) { 'accessionWF' }
     let(:lane_id) { 'foo' }
 

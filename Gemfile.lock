@@ -342,6 +342,7 @@ DEPENDENCIES
   dlss-capistrano
   dor-services-client (~> 2.0)
   dor-workflow-service (~> 2.3)
+  druid-tools
   equivalent-xml
   factory_bot_rails
   honeybadger (~> 4.1)

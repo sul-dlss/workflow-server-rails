@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe WorkflowCreator do
-  let(:druid) { 'druid:abc123' }
+  let(:druid) { 'druid:bb123bb1234' }
   let(:repository) { 'dor' }
   let(:xml) do
     workflow_template = WorkflowTemplateLoader.load_as_xml('accessionWF', 'dor')
