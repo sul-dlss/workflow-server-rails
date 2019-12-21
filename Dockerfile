@@ -6,6 +6,8 @@ RUN apk --no-cache add \
   postgresql-client \
   tzdata
 
+RUN gem install bundler:2.1.1
+
 RUN mkdir /app
 WORKDIR /app
 
