@@ -14,8 +14,12 @@
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
+/tmp/pids/*
 !/log/.keep
 !/tmp/.keep
+!/tmp/pids
+# Required for puma to have a place to put the pid file
+!/tmp/pids/.keep
 
 /spec/examples.txt
 
