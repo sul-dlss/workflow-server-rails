@@ -8,21 +8,29 @@ RSpec.describe 'List the workflow templates', type: :request do
     expect(response).to have_http_status(:ok)
     json = JSON.parse(response.body)
     expect(json).to eq %w[
+      accession2WF
       accessionWF
       assemblyWF
       digitizationWF
       disseminationWF
+      dpgImageWF
+      eemsAccessionWF
       etdSubmitWF
       gisAssemblyWF
       gisDeliveryWF
       gisDiscoveryWF
       goobiWF
+      googleScannedBookWF
       hydrusAssemblyWF
       preservationAuditWF
       preservationIngestWF
       registrationWF
       releaseWF
+      sdrAuditWF
       sdrIngestWF
+      sdrMigrationWF
+      sdrRecoveryWF
+      swIndexWF
       versioningWF
       wasCrawlDisseminationWF
       wasCrawlPreassemblyWF
