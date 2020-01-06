@@ -12,8 +12,16 @@ RSpec.describe 'Close a version', type: :request do
     allow(QueueService).to receive(:enqueue)
   end
 
+  context 'deprecated route' do
+    it 'closes the version' do
+      post "/dor/objects/#{druid}/versionClose"
+      expect(response).to be_successful
+      expect(WorkflowStep.where(druid: druid).count).to eq 16
+    end
+  end
+
   it 'closes the version' do
-    post "/dor/objects/#{druid}/versionClose"
+    post "/objects/#{druid}/versionClose"
     expect(response).to be_successful
     expect(WorkflowStep.where(druid: druid).count).to eq 16
   end

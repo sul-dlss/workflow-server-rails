@@ -20,6 +20,8 @@ Rails.application.routes.draw do
 
   scope 'objects/:druid', constraints: { druid: %r{[^\/]+} }, defaults: { format: :xml } do
     delete 'workflows', to: 'steps#destroy_all'
+    post 'versionClose', to: 'versions#close'
+
     resources :workflows, only: %i[show index], param: :workflow do
       collection do
         post ':workflow', to: 'workflows#create'

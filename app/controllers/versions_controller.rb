@@ -29,7 +29,7 @@ class VersionsController < ApplicationController
   end
 
   def initialize_workflow
-    obj = Version.new(repository: params[:repo],
+    obj = Version.new(repository: 'dor',
                       druid: params[:druid],
                       version: current_version)
 
