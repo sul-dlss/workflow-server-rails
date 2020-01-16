@@ -2,7 +2,7 @@
 
 # Gets stuck workflows moving again by changing things to waiting
 class Sweeper
-  # Look for "queued" steps that are more than 24hours old
+  # Look for "queued" steps that are more than 12 hours old
   def self.sweep
     new.sweep
   end
