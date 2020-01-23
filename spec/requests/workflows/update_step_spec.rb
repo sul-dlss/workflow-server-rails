@@ -147,4 +147,82 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
       end
     end
   end
+
+  describe 'PUT update' do
+    let(:client) { instance_double(Dor::Services::Client::Object, version: version_client) }
+    let(:version_client) { instance_double(Dor::Services::Client::ObjectVersion, current: '1') }
+    let(:druid) { first_step.druid }
+    let(:workflow_id) { 'accessionWF' }
+    let(:first_step) { FactoryBot.create(:workflow_step, status: 'completed') } # start-accession, which is already completed
+
+    before do
+      FactoryBot.create(:workflow_step, druid: druid, process: 'descriptive-metadata')
+      FactoryBot.create(:workflow_step, druid: druid, process: 'rights-metadata')
+      allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
+      allow(SendUpdateMessage).to receive(:publish)
+      allow(QueueService).to receive(:enqueue)
+    end
+
+    context 'when updating a step' do
+      let(:body) { '<process name="descriptive-metadata" status="error" />' }
+
+      it 'updates the step with repository (Deprecated)' do
+        put "/dor/objects/#{druid}/workflows/#{workflow_id}/descriptive-metadata", params: body
+        expect(response.body).to eq('{"next_steps":[]}')
+        expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
+        expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('error')
+        expect(QueueService).to_not have_received(:enqueue)
+      end
+
+      it 'verifies the current status' do
+        put "/dor/objects/#{druid}/workflows/#{workflow_id}/descriptive-metadata?current-status=not-waiting", params: body
+        expect(response.body).to eq('Status in params (not-waiting) does not match current status (waiting)')
+        expect(response.code).to eq('409')
+      end
+
+      it 'verifies that process in url and body match' do
+        put "/dor/objects/#{druid}/workflows/#{workflow_id}/rights-metadata", params: body
+        expect(response.body).to eq('Process name in body (descriptive-metadata) does not match process name in URI ' \
+                                    '(rights-metadata)')
+        expect(response.code).to eq('400')
+      end
+    end
+
+    context 'when updating a step without a repository' do
+      let(:body) { '<process name="descriptive-metadata" status="error" />' }
+
+      it 'updates the step' do
+        put "/objects/#{druid}/workflows/#{workflow_id}/descriptive-metadata", params: body
+
+        expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
+        expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('error')
+        expect(QueueService).to_not have_received(:enqueue)
+      end
+
+      it 'verifies the current status' do
+        put "/objects/#{druid}/workflows/#{workflow_id}/descriptive-metadata?current-status=not-waiting", params: body
+        expect(response.body).to eq('Status in params (not-waiting) does not match current status (waiting)')
+        expect(response.code).to eq('409')
+      end
+
+      it 'verifies that process in url and body match' do
+        put "/objects/#{druid}/workflows/#{workflow_id}/rights-metadata", params: body
+        expect(response.body).to eq('Process name in body (descriptive-metadata) does not match process name in URI ' \
+                                    '(rights-metadata)')
+        expect(response.code).to eq('400')
+      end
+    end
+
+    context 'when completing a step' do
+      let(:body) { '<process name="descriptive-metadata" status="completed" />' }
+      it 'updates the step and enqueues next step' do
+        put "/dor/objects/#{druid}/workflows/#{workflow_id}/descriptive-metadata", params: body
+        expect(response.body).to match(/rights-metadata/)
+        expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
+        expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('completed')
+        expect(QueueService).to have_received(:enqueue).with(WorkflowStep.find_by(druid: druid,
+                                                                                  process: 'rights-metadata'))
+      end
+    end
+  end
 end

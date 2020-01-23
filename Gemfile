@@ -25,8 +25,7 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'equivalent-xml'
   gem 'factory_bot_rails'
-  gem 'rails-controller-testing'
-  gem 'rspec-rails', '4.0.0.beta3'
+  gem 'rspec-rails', '4.0.0.beta4'
   gem 'rspec_junit_formatter'
   gem 'rubocop'
   gem 'simplecov'

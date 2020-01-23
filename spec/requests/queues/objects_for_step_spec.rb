@@ -95,7 +95,6 @@ RSpec.describe 'Objects for workstep', type: :request do
         get '/workflow_queue?waiting=dor%3AaccessionWF%3Areset-workspace&' \
             'completed=dor%3AaccessionWF%3Asdr-ingest-received&' \
             'completed=dor%3AaccessionWF%3Aprovenance-metadata&limit=100&lane-id=default'
-        expect(response).to render_template(:show)
 
         expect(response.body).to be_equivalent_to <<~XML
           <objects count="2">
@@ -165,7 +164,6 @@ RSpec.describe 'Objects for workstep', type: :request do
       it 'only shows items that are complete for the most recent version' do
         get '/workflow_queue?completed=dor:accessionWF:descriptive-metadata&' \
             'waiting=dor:accessionWF:rights-metadata'
-        expect(response).to render_template(:show)
 
         expect(response.body).to be_equivalent_to <<~XML
           <objects count="1">
@@ -187,7 +185,6 @@ RSpec.describe 'Objects for workstep', type: :request do
     it 'shows the items that have completed' do
       get '/workflow_queue?completed=complete-ingest&' \
           'repository=sdr&workflow=preservationIngestWF'
-      expect(response).to render_template(:show)
 
       expect(response.body).to be_equivalent_to <<~XML
         <objects count="1">
@@ -225,7 +222,6 @@ RSpec.describe 'Objects for workstep', type: :request do
 
     it 'shows the items that are waiting' do
       get '/workflow_queue?waiting=dor%3AversioningWF%3Astart-accession'
-      expect(response).to render_template(:show)
 
       expect(response.body).to be_equivalent_to <<~XML
         <objects count="2">

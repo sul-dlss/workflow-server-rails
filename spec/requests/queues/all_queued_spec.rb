@@ -33,7 +33,6 @@ RSpec.describe 'All queued steps', type: :request do
 
   it 'shows all the queued items' do
     get '/workflow_queue/all_queued?repository=dor&limit=3&hours-ago=24'
-    expect(response).to render_template(:all_queued)
 
     expect(response.body).to be_equivalent_to <<~XML
       <workflows>
