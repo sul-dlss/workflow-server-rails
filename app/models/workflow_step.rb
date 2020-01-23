@@ -7,7 +7,7 @@ class WorkflowStep < ApplicationRecord
   validates :process, presence: true
   validates :version, numericality: { only_integer: true }
   validates :repository, presence: true
-  validates :status, inclusion: { in: %w[waiting completed queued error skipped] }
+  validates :status, inclusion: { in: %w[waiting started completed queued error skipped] }
   validates :process, uniqueness: { scope: %w[version workflow druid] }
   validate  :workflow_exists, on: :create
   validate  :process_exists_for_workflow, on: :create
