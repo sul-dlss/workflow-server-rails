@@ -23,13 +23,24 @@ RSpec.describe QueueService do
       end
     end
 
-    context 'for other classes' do
+    context 'for DorRepo classes' do
       let(:step) { FactoryBot.create(:workflow_step, workflow: 'accessionWF', process: 'descriptive-metadata') }
 
       it 'enqueues to Resque and updates status' do
         service.enqueue
         expect(Resque).to have_received(:enqueue_to).with('accessionWF_default',
                                                           'Robots::DorRepo::Accession::DescriptiveMetadata', step.druid)
+        expect(step.status).to eq('queued')
+      end
+    end
+
+    context 'for SdrRepo classes' do
+      let(:step) { FactoryBot.create(:workflow_step, workflow: 'preservationIngestWF', process: 'transfer-object') }
+
+      it 'enqueues to Resque and updates status' do
+        service.enqueue
+        expect(Resque).to have_received(:enqueue_to).with('preservationIngestWF_default',
+                                                          'Robots::SdrRepo::PreservationIngest::TransferObject', step.druid)
         expect(step.status).to eq('queued')
       end
     end
