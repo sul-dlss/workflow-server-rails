@@ -24,11 +24,23 @@ RSpec.describe 'Create a workflow' do
       allow(SendUpdateMessage).to receive(:publish)
     end
 
-    context 'when the version exists' do
+    context 'when the version is passed' do
       it 'creates new workflows' do
         headers = { 'CONTENT_TYPE' => 'application/xml' }
         expect do
-          put "/#{repository}/objects/#{druid}/workflows/#{workflow}", params: request_data, headers: headers
+          put "/#{repository}/objects/#{druid}/workflows/#{workflow}?version=1", params: request_data, headers: headers
+        end.to change(WorkflowStep, :count).by(16)
+
+        expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
+      end
+    end
+
+    context 'when the version exists in dor-services-app (deprecated)' do
+      it 'creates new workflows and notifies honeybadger' do
+        expect(Honeybadger).to receive(:notify).twice
+
+        expect do
+          put "/#{repository}/objects/#{druid}/workflows/#{workflow}", params: request_data
         end.to change(WorkflowStep, :count).by(16)
 
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
@@ -36,7 +48,9 @@ RSpec.describe 'Create a workflow' do
 
       context 'and ignores bad request data' do
         let(:request_data) { '<foo></foo>' }
-        it 'returns a 400 error' do
+        it 'returns a 400 error and notifies honeybadger' do
+          expect(Honeybadger).to receive(:notify).twice
+
           expect do
             put "/#{repository}/objects/#{druid}/workflows/#{workflow}", params: request_data
           end.to change(WorkflowStep, :count).by(16)
@@ -44,14 +58,16 @@ RSpec.describe 'Create a workflow' do
       end
     end
 
-    context "when the version doesn't exist" do
+    context "when the version doesn't exist in dor-services-app (deprecated)" do
       let(:version_client) { instance_double(Dor::Services::Client::ObjectVersion) }
 
       before do
         allow(version_client).to receive(:current).and_raise(Dor::Services::Client::NotFoundResponse)
       end
 
-      it 'creates new workflows' do
+      it 'creates new workflows and notifies honeybadger' do
+        expect(Honeybadger).to receive(:notify).twice
+
         expect do
           put "/#{repository}/objects/#{druid}/workflows/#{workflow}", params: request_data
         end.to change(WorkflowStep, :count).by(16)
@@ -70,17 +86,17 @@ RSpec.describe 'Create a workflow' do
       allow(SendUpdateMessage).to receive(:publish)
     end
 
-    context 'when the version exists' do
+    context 'when the version is passed' do
       it 'creates new workflows' do
         expect do
-          post "/objects/#{druid}/workflows/#{workflow}"
+          post "/objects/#{druid}/workflows/#{workflow}?version=1"
         end.to change(WorkflowStep, :count).by(16)
         expect(WorkflowStep.last.lane_id).to eq('default')
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end
 
       it 'sets the lane id' do
-        post "/objects/#{druid}/workflows/#{workflow}?lane_id=#{lane_id}"
+        post "/objects/#{druid}/workflows/#{workflow}?lane_id=#{lane_id}&version=1"
         expect(WorkflowStep.last.lane_id).to eq(lane_id)
       end
 
@@ -88,21 +104,35 @@ RSpec.describe 'Create a workflow' do
         let(:workflow) { 'xaccessionWF' }
         it 'returns a 400 error' do
           expect do
-            post "/objects/#{druid}/workflows/#{workflow}"
+            post "/objects/#{druid}/workflows/#{workflow}?version=1"
           end.not_to change(WorkflowStep, :count)
           expect(response.status).to eq 400
         end
       end
     end
 
-    context "when the version doesn't exist" do
+    context 'when the version exists in dor-services-app (deprecated)' do
+      it 'creates new workflows and notifies honeybadger' do
+        expect(Honeybadger).to receive(:notify)
+
+        expect do
+          post "/objects/#{druid}/workflows/#{workflow}"
+        end.to change(WorkflowStep, :count).by(16)
+        expect(WorkflowStep.last.lane_id).to eq('default')
+        expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
+      end
+    end
+
+    context "when the version doesn't exist in dor-services-app (deprecated)" do
       let(:version_client) { instance_double(Dor::Services::Client::ObjectVersion) }
 
       before do
         allow(version_client).to receive(:current).and_raise(Dor::Services::Client::NotFoundResponse)
       end
 
-      it 'creates new workflows' do
+      it 'creates new workflows and notifies honeybadger' do
+        expect(Honeybadger).to receive(:notify)
+
         expect do
           post "/objects/#{druid}/workflows/#{workflow}"
         end.to change(WorkflowStep, :count).by(16)
