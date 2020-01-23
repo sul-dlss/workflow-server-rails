@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe WorkflowsController do
+RSpec.describe 'Create a workflow' do
   let(:client) { instance_double(Dor::Services::Client::Object, version: version_client) }
   let(:version_client) { instance_double(Dor::Services::Client::ObjectVersion, current: '1') }
   let(:wf) { FactoryBot.create(:workflow_step) }
@@ -14,26 +14,11 @@ RSpec.describe WorkflowsController do
     allow(QueueService).to receive(:enqueue)
   end
 
-  describe 'GET archive' do
-    it 'loads count of workflows' do
-      get :archive, params: { repository: 'dor', workflow: wf.workflow, format: :xml }
-      expect(assigns(:objects)).to eq 1
-      expect(response).to render_template 'archive'
-    end
-  end
-
-  describe 'DELETE destroy' do
-    it 'deletes workflows' do
-      delete :destroy, params: { repo: 'dor', druid: wf.druid, workflow: wf.workflow, format: :xml }
-      expect(response).to be_no_content
-    end
-  end
-
   describe 'deprecated PUT create' do
     let(:druid) { 'druid:bb123bb1234' }
     let(:workflow) { 'accessionWF' }
     let(:repository) { 'dor' }
-    let(:request_data) { workflow_template }
+    let(:request_data) { workflow_template.to_s }
 
     before do
       allow(SendUpdateMessage).to receive(:publish)
@@ -41,8 +26,9 @@ RSpec.describe WorkflowsController do
 
     context 'when the version exists' do
       it 'creates new workflows' do
+        headers = { 'CONTENT_TYPE' => 'application/xml' }
         expect do
-          put :deprecated_create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
+          put "/#{repository}/objects/#{druid}/workflows/#{workflow}", params: request_data, headers: headers
         end.to change(WorkflowStep, :count).by(16)
 
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
@@ -52,14 +38,14 @@ RSpec.describe WorkflowsController do
         let(:request_data) { '<foo></foo>' }
         it 'returns a 400 error' do
           expect do
-            put :deprecated_create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
+            put "/#{repository}/objects/#{druid}/workflows/#{workflow}", params: request_data
           end.to change(WorkflowStep, :count).by(16)
         end
       end
     end
 
     context "when the version doesn't exist" do
-      let(:version_client) { double }
+      let(:version_client) { instance_double(Dor::Services::Client::ObjectVersion) }
 
       before do
         allow(version_client).to receive(:current).and_raise(Dor::Services::Client::NotFoundResponse)
@@ -67,7 +53,7 @@ RSpec.describe WorkflowsController do
 
       it 'creates new workflows' do
         expect do
-          put :deprecated_create, body: request_data, params: { repo: repository, druid: druid, workflow: workflow, format: :xml }
+          put "/#{repository}/objects/#{druid}/workflows/#{workflow}", params: request_data
         end.to change(WorkflowStep, :count).by(16)
 
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
@@ -87,14 +73,14 @@ RSpec.describe WorkflowsController do
     context 'when the version exists' do
       it 'creates new workflows' do
         expect do
-          post :create, params: { druid: druid, workflow: workflow, format: :xml }
+          post "/objects/#{druid}/workflows/#{workflow}"
         end.to change(WorkflowStep, :count).by(16)
         expect(WorkflowStep.last.lane_id).to eq('default')
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end
 
       it 'sets the lane id' do
-        post :create, params: { druid: druid, workflow: workflow, lane_id: lane_id, format: :xml }
+        post "/objects/#{druid}/workflows/#{workflow}?lane_id=#{lane_id}"
         expect(WorkflowStep.last.lane_id).to eq(lane_id)
       end
 
@@ -102,7 +88,7 @@ RSpec.describe WorkflowsController do
         let(:workflow) { 'xaccessionWF' }
         it 'returns a 400 error' do
           expect do
-            post :create, params: { druid: druid, workflow: workflow, format: :xml }
+            post "/objects/#{druid}/workflows/#{workflow}"
           end.not_to change(WorkflowStep, :count)
           expect(response.status).to eq 400
         end
@@ -110,7 +96,7 @@ RSpec.describe WorkflowsController do
     end
 
     context "when the version doesn't exist" do
-      let(:version_client) { double }
+      let(:version_client) { instance_double(Dor::Services::Client::ObjectVersion) }
 
       before do
         allow(version_client).to receive(:current).and_raise(Dor::Services::Client::NotFoundResponse)
@@ -118,7 +104,7 @@ RSpec.describe WorkflowsController do
 
       it 'creates new workflows' do
         expect do
-          post :create, params: { druid: druid, workflow: workflow, format: :xml }
+          post "/objects/#{druid}/workflows/#{workflow}"
         end.to change(WorkflowStep, :count).by(16)
 
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)

@@ -28,7 +28,6 @@ RSpec.describe 'Lanes', type: :request do
 
   it 'shows the lanes' do
     get '/workflow_queue/lane_ids?step=dor:accessionWF:shelve'
-    expect(response).to render_template(:lane_ids)
 
     expect(response.body).to be_equivalent_to '<lanes><lane id="default"/><lane id="fast"/></lanes>'
   end
