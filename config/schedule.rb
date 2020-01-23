@@ -22,5 +22,8 @@
 # Learn more: http://github.com/javan/whenever
 
 every 60.minutes do
-  runner 'Sweeper.sweep'
+  # Currently running Monitor (notification only for stuck workflow steps) instead of Sweeper (notification and requeueing).
+  # If monitoring alone isn't adequate (e.g., due to large numbers of Redis timeouts), we may want to re-enable the sweeper.
+  # runner 'Sweeper.sweep'
+  runner 'WorkflowMonitor.monitor'
 end

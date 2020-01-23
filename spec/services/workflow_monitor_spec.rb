@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe Sweeper do
+RSpec.describe WorkflowMonitor do
   before do
-    allow(QueueService).to receive(:enqueue)
+    allow(Honeybadger).to receive(:notify)
   end
 
-  describe '.sweep' do
+  describe '.monitor' do
     let(:stale) do
       FactoryBot.create(:workflow_step,
                         process: 'start-accession',
@@ -32,15 +32,6 @@ RSpec.describe Sweeper do
                         status: 'completed',
                         active_version: true,
                         updated_at: 1.day.ago)
-    end
-    let!(:less_stale) do
-      FactoryBot.create(:workflow_step,
-                        druid: completed.druid,
-                        process: 'descriptive-metadata',
-                        version: 2,
-                        status: 'queued',
-                        active_version: true,
-                        updated_at: 15.hours.ago)
     end
     let!(:on_deck2) do
       FactoryBot.create(:workflow_step,
@@ -67,12 +58,16 @@ RSpec.describe Sweeper do
                         active_version: true)
     end
 
-    it 'requeues the old steps' do
-      described_class.sweep
-      expect(QueueService).to have_received(:enqueue).exactly(3).times
-      expect(QueueService).to have_received(:enqueue).with(stale)
-      expect(QueueService).to have_received(:enqueue).with(less_stale)
-      expect(QueueService).to have_received(:enqueue).with(stale_started)
+    it 'reports to Honeybadger' do
+      described_class.monitor
+      expect(Honeybadger).to have_received(:notify).exactly(2).times
+
+      stale_started_msg = "Workflow step has been running for more than 24 hours: <druid:\"#{stale_started.druid}\" " \
+        "version:\"3\" workflow:\"#{stale_started.workflow}\" process:\"start-accession\">."
+      expect(Honeybadger).to have_received(:notify).with(/#{stale_started_msg}/)
+
+      stale_msg = '1 workflow steps have been queued for more than 12 hours.'
+      expect(Honeybadger).to have_received(:notify).with(/#{stale_msg}/)
     end
   end
 end
