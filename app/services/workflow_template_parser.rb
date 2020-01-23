@@ -11,16 +11,6 @@ class WorkflowTemplateParser
     @workflow_doc = workflow_doc
   end
 
-  # @return [String] the repository
-  def repo
-    @repo ||= begin
-      node = workflow.attr('repository')
-      raise DataError, 'Workflow did not provide a required @repository attribute' unless node
-
-      node.value
-    end
-  end
-
   def processes
     workflow.xpath('process').map { |process_node| build_process(process_node) }
   end

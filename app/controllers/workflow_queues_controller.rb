@@ -10,8 +10,7 @@ class WorkflowQueuesController < ApplicationController
   # Used by the robot-sweeper cron job:
   # https://github.com/sul-dlss/robot-master/blob/master/bin/robot-sweeper
   def all_queued
-    @workflow_steps = WorkflowStep.where(repository: params[:repository],
-                                         status: 'queued').limit(params[:limit])
+    @workflow_steps = WorkflowStep.where(status: 'queued').limit(params[:limit])
 
     return unless hours_ago
 
@@ -45,20 +44,15 @@ class WorkflowQueuesController < ApplicationController
   end
 
   def find_completed_objects
-    @objects = WorkflowStep.where(repository: params[:repository],
-                                  workflow: params[:workflow],
+    @objects = WorkflowStep.where(workflow: params[:workflow],
                                   process: params[:completed],
                                   status: 'completed').pluck(:druid)
   end
 
   def workflows_for_step_and_scope(step, scope)
-    repository, workflow, process = step.split(':')
+    _repository, workflow, process = step.split(':')
 
-    WorkflowStep.active.public_send(scope).where(
-      repository: repository,
-      workflow: workflow,
-      process: process
-    )
+    WorkflowStep.active.public_send(scope).where(workflow: workflow, process: process)
   end
 
   # Because `completed` can have more than one value, we can't use the rails params parser.

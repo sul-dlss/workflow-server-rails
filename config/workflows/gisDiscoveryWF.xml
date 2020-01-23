@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<workflow-def id="gisDiscoveryWF" repository="dor">
+<workflow-def id="gisDiscoveryWF">
   <process name="start-gis-discovery-workflow" sequence="1" status="completed">
     <label>Initiate GIS discovery workflow for the object</label>
   </process>

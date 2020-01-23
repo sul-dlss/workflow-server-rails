@@ -6,10 +6,7 @@ class WorkflowsController < ApplicationController
   # Used by Dor::VersionService and Dor::StatusService
   # to get lifecycle milestones
   def lifecycle
-    steps = WorkflowStep.where(
-      repository: params[:repo],
-      druid: params[:druid]
-    )
+    steps = WorkflowStep.where(druid: params[:druid])
 
     return @objects = steps.lifecycle.complete unless params['active-only']
 
@@ -35,34 +32,25 @@ class WorkflowsController < ApplicationController
 
     @workflows = object_steps.map do |wf_name, workflow_steps|
       Workflow.new(name: wf_name,
-                   repository: workflow_steps.first.repository,
                    druid: params[:druid],
                    steps: workflow_steps)
     end
   end
 
   # Display all steps for all workflows for all versions of a given object
-  # rubocop:disable Metrics/MethodLength
   def show
-    workflow_props = { name: params[:workflow], druid: params[:druid] }
-    scope = WorkflowStep.where(
+    # I think the only thing that does this is when you access the workflowDatastream (which is external) in the Fedora UI
+    Honeybadger.notify('The repository parameter was passed, but this is not necessary') if params[:repo]
+
+    workflow_steps = WorkflowStep.where(
       druid: params[:druid],
       workflow: params[:workflow]
-    )
-    if params[:repo]
-      Honeybadger.notify('The repository parameter was passed, but this is not necessary')
-      scope.where(repository: params[:repo])
-      workflow_props[:repository] = params[:repo]
-    end
-    workflow_steps = scope.order(:workflow, created_at: :asc)
-
-    @workflow = Workflow.new(workflow_props.merge(steps: workflow_steps))
+    ).order(:workflow, created_at: :asc)
+    @workflow = Workflow.new(name: params[:workflow], druid: params[:druid], steps: workflow_steps)
   end
-  # rubocop:enable Metrics/MethodLength
 
   def destroy
     obj = Version.new(
-      repository: params[:repo],
       druid: params[:druid],
       version: current_version
     )
@@ -71,10 +59,7 @@ class WorkflowsController < ApplicationController
   end
 
   def archive
-    @objects = WorkflowStep.where(
-      repository: params[:repository],
-      workflow: params[:workflow]
-    ).count
+    @objects = WorkflowStep.where(workflow: params[:workflow]).count
   end
 
   def deprecated_create
@@ -90,7 +75,6 @@ class WorkflowsController < ApplicationController
       workflow_id: initial_parser.workflow_id,
       processes: initial_parser.processes,
       version: Version.new(
-        repository: template_parser.repo,
         druid: params[:druid],
         version: current_version
       )

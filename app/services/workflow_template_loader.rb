@@ -6,40 +6,31 @@ class WorkflowTemplateLoader
   WORKFLOWS_DIR = 'config/workflows'
   # Loads a workflow template from file
   # @param [String] workflow_name name/id of workflow, e.g., accessionWF
-  # @param [String] optional repository (sdr or dor). If not provided, will guess.
   # @return [String or nil] the workflow as a string or nil if not found
-  def self.load(workflow_name, repository = nil)
-    WorkflowTemplateLoader.new(workflow_name, repository).load
+  def self.load(workflow_name)
+    WorkflowTemplateLoader.new(workflow_name).load
   end
 
   # Loads a workflow template from file as XML
   # @param [String] workflow_name name/id of workflow, e.g., accessionWF
-  # @param [String] optional repository (sdr or dor). If not provided, will guess.
   # @return [Nokogiri::XML::Document or nil] the workflow as XML or nil if not found
-  def self.load_as_xml(workflow_name, repository = nil)
-    WorkflowTemplateLoader.new(workflow_name, repository).load_as_xml
+  def self.load_as_xml(workflow_name)
+    WorkflowTemplateLoader.new(workflow_name).load_as_xml
   end
 
   # @param [String] workflow_name name/id of workflow, e.g., accessionWF
-  # @param [String] optional repository (sdr or dor). If not provided, will guess.
-  def initialize(workflow_name, repository = nil)
+  def initialize(workflow_name)
     @workflow_name = workflow_name
-    @repository = repository
   end
 
   # @return [String or nil] the filepath of the workflow file or nil if not found
   def workflow_filepath
-    @workflow_filepath ||= begin
-      possible_filepaths.each do |filepath|
-        return filepath if File.exist?(filepath)
-      end
-      nil
-    end
+    @workflow_filepath ||= "#{WORKFLOWS_DIR}/#{workflow_name}.xml"
   end
 
   # @return [boolean] true if the workflow file is found
   def exists?
-    !workflow_filepath.nil?
+    File.exist?(workflow_filepath)
   end
 
   # @return [String or nil] contents of the workflow file or nil if not found
@@ -52,16 +43,5 @@ class WorkflowTemplateLoader
     exists? ? Nokogiri::XML(load) : nil
   end
 
-  attr_reader :workflow_name, :repository
-
-  private
-
-  def possible_filepaths
-    construct_filepath(repository) unless repository.nil?
-    [construct_filepath('dor'), construct_filepath('sdr')]
-  end
-
-  def construct_filepath(repository)
-    "#{WORKFLOWS_DIR}/#{repository}/#{workflow_name}.xml"
-  end
+  attr_reader :workflow_name
 end

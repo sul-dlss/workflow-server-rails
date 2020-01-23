@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<workflow-def id="gisDeliveryWF" repository="dor">
+<workflow-def id="gisDeliveryWF">
   <process name="start-gis-delivery-workflow" sequence="1" status="completed">
     <label>Initiate delivery workflow for the object</label>
   </process>

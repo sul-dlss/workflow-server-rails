@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<workflow-def id="assemblyWF" repository="dor">
+<workflow-def id="assemblyWF">
   <process name="start-assembly" sequence="1" status="completed">
     <label>Initiate assembly of the object</label>
   </process>

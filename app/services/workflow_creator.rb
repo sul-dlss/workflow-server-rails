@@ -53,7 +53,6 @@ class WorkflowCreator
       process: process.process,
       status: process.status,
       lane_id: process.lane_id,
-      repository: version.repository,
       lifecycle: process.lifecycle,
       version: version.version_id,
       active_version: true

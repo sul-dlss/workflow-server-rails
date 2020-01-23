@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<workflow-def id="hydrusAssemblyWF" repository="dor">
+<workflow-def id="hydrusAssemblyWF">
   <process lifecycle="registered" name="start-deposit" sequence="1" status="completed" skip-queue="true">
     <label>Initiate assembly of the hydrus object</label>
   </process>

@@ -9,7 +9,6 @@ RSpec.describe 'workflows/index' do
   let(:step) do
     FactoryBot.build(
       :workflow_step,
-      repository: repo,
       druid: druid,
       updated_at: Date.today,
       workflow: 'accessionWF'
@@ -21,7 +20,6 @@ RSpec.describe 'workflows/index' do
 
     @workflows = [
       Workflow.new(
-        repository: repo,
         druid: druid,
         name: 'accessionWF',
         steps: [step]
@@ -34,7 +32,6 @@ RSpec.describe 'workflows/index' do
     doc = Nokogiri::XML.parse(rendered)
     expect(doc.at_xpath('//workflows')).to include %w[objectId druid:bb123bb1234]
     expect(doc.at_xpath('//workflow')).to include(
-      %w[repository dor],
       %w[objectId druid:bb123bb1234],
       %w[id accessionWF]
     )

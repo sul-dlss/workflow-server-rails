@@ -179,7 +179,6 @@ RSpec.describe 'Objects for workstep', type: :request do
   context 'without waiting' do
     let!(:complete) do
       FactoryBot.create(:workflow_step,
-                        repository: 'sdr',
                         workflow: 'preservationIngestWF',
                         process: 'complete-ingest',
                         status: 'completed',

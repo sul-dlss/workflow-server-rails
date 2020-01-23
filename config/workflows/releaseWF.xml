@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<workflow-def id="releaseWF" repository="dor">
+<workflow-def id="releaseWF">
   <process name="start" sequence="1" skip-queue="true" status="completed">
     <label>Initiate item release of the object</label>
   </process>

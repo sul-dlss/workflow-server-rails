@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe WorkflowTransformer do
   let(:transformer) { described_class.new workflow_template }
 
-  let(:workflow_template) { WorkflowTemplateLoader.load_as_xml('accessionWF', 'dor') }
+  let(:workflow_template) { WorkflowTemplateLoader.load_as_xml('accessionWF') }
 
   context '#initial_workflow' do
     it 'transforms to initial workflow' do
