@@ -47,7 +47,7 @@ class QueueService
   #     => 'Robots::DorRepo::Assembly::Jp2Create'
   def class_name
     @class_name ||= begin
-      repo = %w[presevationIngestWF sdrIngestWF].include?(step.workflow) ? 'Sdr' : 'Dor'
+      repo = %w[preservationIngestWF sdrIngestWF].include?(step.workflow) ? 'Sdr' : 'Dor'
       workflow = step.workflow.sub('WF', '').camelize
       process = step.process.tr('-', '_').camelize
       "Robots::#{repo}Repo::#{workflow}::#{process}"
