@@ -39,9 +39,19 @@ RSpec.describe 'Lifecycle', type: :request do
         allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
       end
 
-      it 'draws an empty set of milestones' do
-        get "/dor/objects/#{druid}/lifecycle?active-only=true"
-        expect(returned_milestone_versions).to eq []
+      context 'when version is not passed (deprecated)' do
+        it 'draws an empty set of milestones and notifies honeybadger' do
+          expect(Honeybadger).to receive(:notify)
+          get "/dor/objects/#{druid}/lifecycle?active-only=true"
+          expect(returned_milestone_versions).to eq []
+        end
+      end
+
+      context 'when version is passed' do
+        it 'draws an empty set of milestones' do
+          get "/dor/objects/#{druid}/lifecycle?active-only=true&version=2"
+          expect(returned_milestone_versions).to eq []
+        end
       end
     end
 
@@ -63,10 +73,22 @@ RSpec.describe 'Lifecycle', type: :request do
         allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
       end
 
-      it 'draws milestones from the current version' do
-        get "/dor/objects/#{druid}/lifecycle?active-only=true"
-        expect(returned_milestone_versions).to eq ['2']
-        expect(returned_milestone_text).to eq ['submitted']
+      context 'when version is not passed (deprecated)' do
+        it 'draws milestones from the current version and notifies honeybadger' do
+          expect(Honeybadger).to receive(:notify)
+
+          get "/dor/objects/#{druid}/lifecycle?active-only=true"
+          expect(returned_milestone_versions).to eq ['2']
+          expect(returned_milestone_text).to eq ['submitted']
+        end
+      end
+
+      context 'when version is passed' do
+        it 'draws milestones from the current version' do
+          get "/dor/objects/#{druid}/lifecycle?active-only=true&version=2"
+          expect(returned_milestone_versions).to eq ['2']
+          expect(returned_milestone_text).to eq ['submitted']
+        end
       end
     end
   end
