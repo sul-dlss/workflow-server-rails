@@ -3,8 +3,8 @@
 ##
 # API for handling requests about a specific object's workflow.
 class WorkflowsController < ApplicationController
-  # Used by Dor::VersionService and Dor::StatusService
-  # to get lifecycle milestones
+  # Used by Dor::Workflow::Client::LifecycleRoutes
+  # to get lifecycle milestones and object status (e.g. "In accessioning")
   def lifecycle
     steps = WorkflowStep.where(druid: params[:druid])
 
