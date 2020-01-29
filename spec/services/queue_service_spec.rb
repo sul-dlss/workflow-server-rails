@@ -9,7 +9,7 @@ RSpec.describe QueueService do
 
   describe '#enqueue' do
     before do
-      allow(Resque).to receive(:enqueue_to)
+      allow(Resque).to receive(:enqueue_to).and_return(true)
     end
 
     context 'for JP2 robot (special case)' do
@@ -42,6 +42,18 @@ RSpec.describe QueueService do
         expect(Resque).to have_received(:enqueue_to).with('preservationIngestWF_default',
                                                           'Robots::SdrRepo::PreservationIngest::TransferObject', step.druid)
         expect(step.status).to eq('queued')
+      end
+    end
+
+    context 'when .enqueue_to returns false' do
+      before do
+        allow(Resque).to receive(:enqueue_to).and_return(false)
+      end
+
+      let(:step) { FactoryBot.create(:workflow_step, workflow: 'assemblyWF', process: 'jp2-create') }
+
+      it 'raises' do
+        expect { service.enqueue }.to raise_error(/Enqueueing/)
       end
     end
   end
