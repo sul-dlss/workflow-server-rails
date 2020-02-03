@@ -21,16 +21,25 @@ RSpec.describe Sweeper do
     let(:stale) do
       FactoryBot.create(:workflow_step,
                         process: 'start-accession',
-                        version: 1,
+                        version: 2,
                         status: 'queued',
                         active_version: true,
+                        updated_at: 2.days.ago)
+    end
+    let!(:stale_version) do
+      FactoryBot.create(:workflow_step,
+                        druid: stale.druid,
+                        process: 'start-accession',
+                        version: 1,
+                        status: 'queued',
+                        active_version: false,
                         updated_at: 2.days.ago)
     end
     let!(:on_deck) do
       FactoryBot.create(:workflow_step,
                         druid: stale.druid,
                         process: 'descriptive-metadata',
-                        version: 1,
+                        version: 2,
                         status: 'waiting',
                         active_version: true)
     end
