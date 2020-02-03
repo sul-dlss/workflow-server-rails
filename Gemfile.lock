@@ -302,10 +302,11 @@ GEM
     ruby-progressbar (1.10.1)
     ruby2_keywords (0.0.2)
     ruby_dep (1.5.0)
-    simplecov (0.18.1)
+    simplecov (0.17.1)
       docile (~> 1.1)
-      simplecov-html (~> 0.11.0)
-    simplecov-html (0.11.0)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.2)
     sinatra (2.0.8.1)
       mustermann (~> 1.0)
       rack (~> 2.0)
@@ -368,7 +369,7 @@ DEPENDENCIES
   rspec-rails (= 4.0.0.beta4)
   rspec_junit_formatter
   rubocop
-  simplecov
+  simplecov (~> 0.17.1)
   spring
   spring-watcher-listen (~> 2.0.0)
   stomp (~> 1.4)
