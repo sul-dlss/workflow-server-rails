@@ -17,14 +17,14 @@ class QueueService
 
   # Enqueue the provided step
   def enqueue
+    # Update status
+    step.update(status: 'queued')
+
     # .enqueue_to will return false if a pre-queue hook prevented it from queueing.
     # Don't necessarily expect this to occur, but want to prevent from failing silently.
     raise "Enqueueing #{class_name} for #{step.druid} to #{queue_name} failed." unless Resque.enqueue_to(queue_name, class_name, step.druid)
 
     Rails.logger.info "Enqueued #{class_name} for #{step.druid} to #{queue_name}"
-
-    # Update status
-    step.update(status: 'queued')
   end
 
   private
