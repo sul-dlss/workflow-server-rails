@@ -15,7 +15,7 @@ class ObjectVersionService
     # raise
     Honeybadger.notify('[WARN] Deprecated call to ObjectVersionService.  ' \
       'This happens when a version was not passed to the workflow service.  ' \
-      'We would like to elimnate any call that requires a version and does not provide one.')
+      'We would like to eliminate any call that requires a version and does not provide one.')
     client.object(druid).version.current
   rescue Dor::Services::Client::NotFoundResponse # A 404 error
     1
