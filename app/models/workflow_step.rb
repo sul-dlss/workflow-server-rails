@@ -16,6 +16,7 @@ class WorkflowStep < ApplicationRecord
   scope :complete, -> { where(status: %w[completed skipped]) }
   scope :waiting, -> { where(status: 'waiting') }
   scope :queued, -> { where(status: 'queued') }
+  scope :started, -> { where(status: 'started') }
   scope :active, -> { where(active_version: true) }
 
   scope :for_version, ->(version) { where(version: version) }
