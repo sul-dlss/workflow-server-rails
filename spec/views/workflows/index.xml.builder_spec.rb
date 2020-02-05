@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe 'workflows/index' do
   let(:druid) { 'druid:bb123bb1234' }
-  let(:repo) { 'dor' }
 
   let(:step) do
     FactoryBot.build(

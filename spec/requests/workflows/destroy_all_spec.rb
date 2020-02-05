@@ -10,7 +10,6 @@ RSpec.describe 'Get a single workflow for an object', type: :request do
 
     let!(:item2) do
       FactoryBot.create(:workflow_step,
-                        repository: 'sdr',
                         process: 'publish',
                         druid: druid)
     end
