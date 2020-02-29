@@ -226,7 +226,7 @@ GEM
     parser (2.7.0.2)
       ast (~> 2.4.0)
     pg (1.2.2)
-    puma (3.12.2)
+    puma (3.12.3)
     rack (2.2.2)
     rack-protection (2.0.8.1)
       rack
@@ -366,7 +366,7 @@ DEPENDENCIES
   lograge
   okcomputer
   pg
-  puma (~> 3.11)
+  puma (~> 3.12)
   rails (~> 6.0.2)
   resque (~> 2.0)
   rspec-rails (= 4.0.0.beta4)
