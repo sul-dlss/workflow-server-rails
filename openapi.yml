@@ -1,0 +1,422 @@
+openapi: 3.0.0
+info:
+  description: Workflow Server HTTP API
+  version: 1.0.0
+  title: Workflow Server HTTP API
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: 'https://workflow-service-prod.stanford.edu'
+    description: Production service
+    variables:
+      env:
+        default: prod
+  - url: 'https://workflow-service-stage.stanford.edu'
+    description: Staging service
+    variables:
+      env:
+        default: stage
+paths:
+  /{repo}/objects/{druid}/lifecycle: # get - https://workflow-service-stage.stanford.edu/dor/objects/druid:nr660vn1106/lifecycle
+    get:
+      summary: Retrieve workflow lifecycle for an object
+      responses:
+        '200':
+          description: Workflow lifecycle found
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: active-only
+          in: query
+          required: false
+          schema:
+            type: boolean
+  /{repo}/objects/{druid}/versionClose: # post - DO NOT SEE THIS ONE IN THE LOGS
+    post:
+      summary: TODO
+      responses:
+        '200':
+          description: Request succeeded
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: create-accession
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: version
+          in: query
+          required: true
+          schema:
+            type: integer 
+  /{repo}/objects/{druid}/workflows: # get - //dor/objects/druid:qr379tv2596/workflows
+    get:
+      summary: Retrieve workflow datastream for an object
+      responses:
+        '200':
+          description: Workflow datastream found
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+    delete:
+      summary: Delete all of the workflows for an object
+      responses:
+        '204':
+          description: No Content
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+  /{repo}/objects/{druid}/workflows/{workflow}: # put - DO NOT SEE THIS IN THE LOGS
+    put:
+      summary: Add provided workflow to object
+      responses:
+        '200':
+          description: Request succeeded
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'  
+  /{repo}/objects/{druid}/workflows/{workflow}/{process}: # put | get - DO NOT SEE THIS ONE IN THE LOGS
+    get:
+      summary: TODO
+      responses:
+        '200':
+          description: List of process steps
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'  
+        - name: process
+          in: path
+          required: true
+          example: publish
+          schema:
+            $ref: '#/components/schemas/Process'          
+    put:
+      summary: TODO
+      responses:
+        '200':
+          description: Request succeeded
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'  
+        - name: process
+          in: path
+          required: true
+          example: publish
+          schema:
+            $ref: '#/components/schemas/Process'
+  /objects/{druid}/workflows: # get | delete - //objects/druid:nw213cx6035/workflows 
+    get:
+      summary: Retrieve workflow datastream for an object
+      responses:
+        '200':
+          description: Workflow datastream found
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+    delete:
+      summary: Delete all of the workflows for an object
+      responses:
+        '204':
+          description: No Content
+      parameters:
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+  /objects/{druid}/versionClose: # post - //objects/druid:vy293gd2473/versionClose?create-accession=false&version=16
+    post:
+      summary: TODO
+      responses:
+        '200':
+          description: Request succeeded
+      parameters:
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: create-accession
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: version
+          in: query
+          required: true
+          schema:
+            type: integer 
+  /objects/{druid}/workflows/{workflow}: # post - //objects/druid:qr023rk8145/workflows/registrationWF?lane-id=default&version=1
+    post:
+      summary: Add provided workflow to object
+      responses:
+        '200':
+          description: Request succeeded
+      parameters:
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'  
+  /objects/{druid}/workflows/{workflow}/{process}: # put - //objects/druid:vy293gd2473/workflows/assemblyWF/content-metadata-create
+    put:
+      summary: TODO
+      responses:
+        '200':
+          description: Request succeeded
+      parameters:
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'  
+        - name: process
+          in: path
+          required: true
+          example: publish
+          schema:
+            $ref: '#/components/schemas/Process'
+  /workflow_templates/{workflow}: # get - //workflow_templates/registrationWF
+    get:
+      summary: Retrieve workflow template for given workflow
+      responses:
+        '200':
+          description: Workflow datastream found
+          content:
+            application/json:
+              schema:
+                type: string
+      parameters:
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'
+  /workflow_archive: # get - DOES NOT LOOK USED
+    get:
+      summary: TODO
+      responses:
+        '200':
+          description: TODO
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: workflow
+          in: query
+          required: false
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'
+  /workflow_queue: # get - //workflow_queue?completed=dor%3AetdSubmitWF%3Asubmit-marc&lane-id=default&waiting=dor%3AetdSubmitWF%3Acheck-marc
+    get:
+      summary: TODO
+      responses:
+        '200':
+          description: TODO
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: completed
+          in: query
+          required: true
+          example: dor:etdSubmitWF:catalog-status
+          schema:
+            type: string
+        - name: waiting
+          in: query
+          required: false
+          example: dor:etdSubmitWF:catalog-status
+          schema:
+            type: string
+  /workflow_queue/lane_ids: # get - //workflow_queue/lane_ids?step=dor%3AetdSubmitWF%3Acheck-marc (dor:etdSubmit:check-marc)
+    get:
+      summary: TODO
+      responses:
+        '200':
+          description: TODO
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: step
+          in: query
+          required: true
+          example: dor:etdSubmitWF:catalog-status
+          schema:
+            type: string
+  /workflow_queue/all_queued: # get - DO NOT SEE IN LOGS
+    get:
+      summary: TODO
+      responses:
+        '200':
+          description: TODO
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          example: '10'
+          schema:
+            type: string
+components:
+  schemas:
+    Druid:
+      description: Digital Repository Unique Identifier (bare or prefixed)
+      type: string
+      pattern: '^(druid:)?[b-df-hjkmnp-tv-z]{2}[0-9]{3}[b-df-hjkmnp-tv-z]{2}[0-9]{4}$'
+      example: 'druid:bc123df4567'
+    Process:
+      description: Process name
+      type: string
+      enum: [accessioning-initiate, approve, check-marc, checksum-compute, complete-ingest, content-metadata,
+              content-metadata-create, descriptive-metadata, end-accession, exif-collect, jp2-create, preservation-ingest-initiated,
+              provenance-metadata, publish, publish-complete, reader-approval, registrar-approval, remediate-object,
+              reset-workspace, rights-metadata, sdr-ingest-received, sdr-ingest-transfer, shelve, shelve-complete,
+              start-assembly, submit, technical-metadata, transfer-object, update-catalog, update-moab, validate-bag, verify-apo]
+    Repository:
+      description: Repository Identifier
+      type: string
+      enum: [dor]
+    Workflow:
+      description: Workflow name
+      type: string
+      enum: [accession2WF, dpgImageWF, gisDiscoveryWF, preservationIngestWF, sdrMigrationWF, wasCrawlPreassemblyWF,
+             accessionWF, eemsAccessionWF, goobiWF, registrationWF, sdrRecoveryWF, wasDisseminationWF,
+             assemblyWF, etdSubmitWF, googleScannedBookWF, releaseWF, swIndexWF, wasSeedDisseminationWF,
+             digitizationWF, gisAssemblyWF, hydrusAssemblyWF, sdrAuditWF, versioningWF, wasSeedPreassemblyWF,
+             disseminationWF, gisDeliveryWF, preservationAuditWF, sdrIngestWF, wasCrawlDisseminationWF]
