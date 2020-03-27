@@ -462,6 +462,18 @@ paths:
           example: dor:etdSubmitWF:catalog-status
           schema:
             type: string
+        - name: lane-id
+          in: query
+          required: false
+          example: default
+          schema:
+            type: string
+        - name: workflow
+          in: query
+          required: false
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'
   /workflow_queue/lane_ids:
     get:
       summary: Retrieve the workflow queue based on the provided lane_id
@@ -496,6 +508,12 @@ paths:
           example: '10'
           schema:
             type: string
+        - name: hours-ago
+          in: query
+          required: false
+          example: 1
+          schema:
+            type: integer
 components:
   schemas:
     Druid:
