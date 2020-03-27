@@ -31,6 +31,7 @@ paths:
   /{repo}/objects/{druid}/lifecycle:
     get:
       summary: Retrieve workflow lifecycle for an object
+      deprecated: true
       responses:
         '200':
           description: Workflow lifecycle found
@@ -59,6 +60,7 @@ paths:
   /{repo}/objects/{druid}/versionClose:
     post:
       summary: Close the current version of the provided druid
+      deprecated: true
       responses:
         '200':
           description: Request succeeded
@@ -88,6 +90,7 @@ paths:
   /{repo}/objects/{druid}/workflows:
     get:
       summary: Retrieve workflow datastream for an object
+      deprecated: true
       responses:
         '200':
           description: Workflow datastream found
@@ -110,6 +113,7 @@ paths:
             $ref: '#/components/schemas/Druid'
     delete:
       summary: Delete all of the workflows for an object
+      deprecated: true
       responses:
         '204':
           description: No Content
@@ -129,6 +133,7 @@ paths:
   /{repo}/objects/{druid}/workflows/{workflow}:
     get:
       summary: Show the named workflow for a given druid
+      deprecated: true
       responses:
         '200':
           description: List of workflow steps
@@ -157,6 +162,7 @@ paths:
             $ref: '#/components/schemas/Workflow'  
     put:
       summary: Add provided workflow to object
+      deprecated: true
       responses:
         '200':
           description: Request succeeded
@@ -181,6 +187,7 @@ paths:
             $ref: '#/components/schemas/Workflow'
     delete:
       summary: Delete the workflow from the object
+      deprecated: true
       responses:
         '200':
           description: Request succeeded
@@ -206,6 +213,7 @@ paths:
   /{repo}/objects/{druid}/workflows/{workflow}/{process}:
     get:
       summary: Retrieve the process steps for the provided workflow and druid
+      deprecated: true
       responses:
         '200':
           description: List of process steps
@@ -240,6 +248,7 @@ paths:
             $ref: '#/components/schemas/Process'          
     put:
       summary: Add a process to the provided workflow and druid
+      deprecated: true
       responses:
         '200':
           description: Request succeeded
@@ -505,6 +514,7 @@ components:
              update-catalog, update-moab, validate-bag, verify-apo]
     Repository:
       description: Repository Identifier
+      deprecated: true
       type: string
       enum: [dor]
     Workflow:
