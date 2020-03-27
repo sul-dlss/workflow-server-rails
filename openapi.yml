@@ -404,7 +404,12 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                type: array
+                items:
+                  type: object
+                  properties:
+                    externalIdentifier:
+                      $ref: '#/components/schemas/Workflow'
   /workflow_templates/{workflow}:
     get:
       summary: Retrieve workflow template for given workflow
