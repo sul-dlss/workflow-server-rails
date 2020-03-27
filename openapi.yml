@@ -7,17 +7,27 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
-  - url: 'https://workflow-service-prod.stanford.edu'
+  - url: 'https://workflow-service-{env}.stanford.edu'
     description: Production service
     variables:
       env:
         default: prod
-  - url: 'https://workflow-service-stage.stanford.edu'
+  - url: 'https://workflow-service-{env}.stanford.edu'
     description: Staging service
     variables:
       env:
         default: stage
 paths:
+  /status:
+    get:
+      summary: OKComputer route for status checks
+      responses:
+        '200':
+          description: Response succeeded
+          content:
+            text/plain:
+              schema:
+                type: string
   /{repo}/objects/{druid}/lifecycle:
     get:
       summary: Retrieve workflow lifecycle for an object

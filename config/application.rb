@@ -52,7 +52,6 @@ module WorkflowServer
       config.logger    = ActiveSupport::TaggedLogging.new(logger)
     end
 
-    # accept_request_filter omits OKComputer & Resque routes
     accept_proc = proc { |request| request.path.start_with?('/') }
     config.middleware.use Committee::Middleware::RequestValidation, schema_path: 'openapi.yml',
                                                                     strict: true, error_class: JSONAPIError,
