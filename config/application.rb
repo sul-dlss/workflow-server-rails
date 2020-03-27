@@ -19,6 +19,7 @@ require 'action_controller/railtie'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# JSONAPIError class for returning properly formatted errors in openapi
 class JSONAPIError < Committee::ValidationError
   def error_body
     {
@@ -61,7 +62,6 @@ module WorkflowServer
     #       failures. See https://github.com/sul-dlss/preservation_catalog/issues/1407
     #
     # config.middleware.use Committee::Middleware::ResponseValidation, schema_path: 'openapi.yml'
-
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

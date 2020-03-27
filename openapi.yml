@@ -18,7 +18,7 @@ servers:
       env:
         default: stage
 paths:
-  /{repo}/objects/{druid}/lifecycle: # get - https://workflow-service-stage.stanford.edu/dor/objects/druid:nr660vn1106/lifecycle
+  /{repo}/objects/{druid}/lifecycle:
     get:
       summary: Retrieve workflow lifecycle for an object
       responses:
@@ -46,7 +46,7 @@ paths:
           required: false
           schema:
             type: boolean
-  /{repo}/objects/{druid}/versionClose: # post - DO NOT SEE THIS ONE IN THE LOGS
+  /{repo}/objects/{druid}/versionClose:
     post:
       summary: TODO
       responses:
@@ -72,10 +72,10 @@ paths:
             type: boolean
         - name: version
           in: query
-          required: true
+          required: false
           schema:
             type: integer 
-  /{repo}/objects/{druid}/workflows: # get - //dor/objects/druid:qr379tv2596/workflows
+  /{repo}/objects/{druid}/workflows:
     get:
       summary: Retrieve workflow datastream for an object
       responses:
@@ -116,7 +116,35 @@ paths:
           example: druid:bc123df4567
           schema:
             $ref: '#/components/schemas/Druid'
-  /{repo}/objects/{druid}/workflows/{workflow}: # put - DO NOT SEE THIS IN THE LOGS
+  /{repo}/objects/{druid}/workflows/{workflow}:
+    get:
+      summary: Show the named workflow for a given druid
+      responses:
+        '200':
+          description: List of workflow steps
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'  
     put:
       summary: Add provided workflow to object
       responses:
@@ -140,8 +168,32 @@ paths:
           required: true
           example: accessionWF
           schema:
-            $ref: '#/components/schemas/Workflow'  
-  /{repo}/objects/{druid}/workflows/{workflow}/{process}: # put | get - DO NOT SEE THIS ONE IN THE LOGS
+            $ref: '#/components/schemas/Workflow'
+    delete:
+      summary: Delete the workflow from the object
+      responses:
+        '200':
+          description: Request succeeded
+      parameters:
+        - name: repo
+          in: path
+          required: true
+          example: dor
+          schema:
+            $ref: '#/components/schemas/Repository'
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'
+  /{repo}/objects/{druid}/workflows/{workflow}/{process}:
     get:
       summary: TODO
       responses:
@@ -206,7 +258,7 @@ paths:
           example: publish
           schema:
             $ref: '#/components/schemas/Process'
-  /objects/{druid}/workflows: # get | delete - //objects/druid:nw213cx6035/workflows 
+  /objects/{druid}/workflows:
     get:
       summary: Retrieve workflow datastream for an object
       responses:
@@ -235,7 +287,7 @@ paths:
           example: druid:bc123df4567
           schema:
             $ref: '#/components/schemas/Druid'
-  /objects/{druid}/versionClose: # post - //objects/druid:vy293gd2473/versionClose?create-accession=false&version=16
+  /objects/{druid}/versionClose:
     post:
       summary: TODO
       responses:
@@ -255,10 +307,32 @@ paths:
             type: boolean
         - name: version
           in: query
-          required: true
+          required: false
           schema:
             type: integer 
-  /objects/{druid}/workflows/{workflow}: # post - //objects/druid:qr023rk8145/workflows/registrationWF?lane-id=default&version=1
+  /objects/{druid}/workflows/{workflow}:
+    get:
+      summary: Show the named workflow for a given druid
+      responses:
+        '200':
+          description: List of workflow steps
+          content:
+            application/xml:
+              schema:
+                type: string
+      parameters:
+        - name: druid
+          in: path
+          required: true
+          example: druid:bc123df4567
+          schema:
+            $ref: '#/components/schemas/Druid'
+        - name: workflow
+          in: path
+          required: true
+          example: accessionWF
+          schema:
+            $ref: '#/components/schemas/Workflow'  
     post:
       summary: Add provided workflow to object
       responses:
@@ -277,7 +351,7 @@ paths:
           example: accessionWF
           schema:
             $ref: '#/components/schemas/Workflow'  
-  /objects/{druid}/workflows/{workflow}/{process}: # put - //objects/druid:vy293gd2473/workflows/assemblyWF/content-metadata-create
+  /objects/{druid}/workflows/{workflow}/{process}:
     put:
       summary: TODO
       responses:
@@ -302,7 +376,17 @@ paths:
           example: publish
           schema:
             $ref: '#/components/schemas/Process'
-  /workflow_templates/{workflow}: # get - //workflow_templates/registrationWF
+  /workflow_templates:
+    get:
+      summary: Retrieve workflow template for given workflow
+      responses:
+        '200':
+          description: Workflow datastreams found
+          content:
+            application/json:
+              schema:
+                type: string
+  /workflow_templates/{workflow}:
     get:
       summary: Retrieve workflow template for given workflow
       responses:
@@ -319,7 +403,7 @@ paths:
           example: accessionWF
           schema:
             $ref: '#/components/schemas/Workflow'
-  /workflow_archive: # get - DOES NOT LOOK USED
+  /workflow_archive:
     get:
       summary: TODO
       responses:
@@ -336,7 +420,7 @@ paths:
           example: accessionWF
           schema:
             $ref: '#/components/schemas/Workflow'
-  /workflow_queue: # get - //workflow_queue?completed=dor%3AetdSubmitWF%3Asubmit-marc&lane-id=default&waiting=dor%3AetdSubmitWF%3Acheck-marc
+  /workflow_queue:
     get:
       summary: TODO
       responses:
@@ -349,7 +433,7 @@ paths:
       parameters:
         - name: completed
           in: query
-          required: true
+          required: false
           example: dor:etdSubmitWF:catalog-status
           schema:
             type: string
@@ -359,7 +443,7 @@ paths:
           example: dor:etdSubmitWF:catalog-status
           schema:
             type: string
-  /workflow_queue/lane_ids: # get - //workflow_queue/lane_ids?step=dor%3AetdSubmitWF%3Acheck-marc (dor:etdSubmit:check-marc)
+  /workflow_queue/lane_ids:
     get:
       summary: TODO
       responses:
@@ -376,7 +460,7 @@ paths:
           example: dor:etdSubmitWF:catalog-status
           schema:
             type: string
-  /workflow_queue/all_queued: # get - DO NOT SEE IN LOGS
+  /workflow_queue/all_queued:
     get:
       summary: TODO
       responses:
@@ -403,11 +487,11 @@ components:
     Process:
       description: Process name
       type: string
-      enum: [accessioning-initiate, approve, check-marc, checksum-compute, complete-ingest, content-metadata,
-              content-metadata-create, descriptive-metadata, end-accession, exif-collect, jp2-create, preservation-ingest-initiated,
-              provenance-metadata, publish, publish-complete, reader-approval, registrar-approval, remediate-object,
-              reset-workspace, rights-metadata, sdr-ingest-received, sdr-ingest-transfer, shelve, shelve-complete,
-              start-assembly, submit, technical-metadata, transfer-object, update-catalog, update-moab, validate-bag, verify-apo]
+      enum: [start-accession, accessioning-initiate, approve, check-marc, checksum-compute, complete-ingest, content-metadata,
+             content-metadata-create, descriptive-metadata, end-accession, exif-collect, jp2-create, preservation-ingest-initiated,
+             provenance-metadata, publish, publish-complete, reader-approval, registrar-approval, remediate-object,
+             reset-workspace, rights-metadata, sdr-ingest-received, sdr-ingest-transfer, shelve, shelve-complete,
+             start-assembly, submit, technical-metadata, transfer-object, update-catalog, update-moab, validate-bag, verify-apo]
     Repository:
       description: Repository Identifier
       type: string
