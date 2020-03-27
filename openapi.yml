@@ -487,11 +487,12 @@ components:
     Process:
       description: Process name
       type: string
-      enum: [start-accession, accessioning-initiate, approve, check-marc, checksum-compute, complete-ingest, content-metadata,
-             content-metadata-create, descriptive-metadata, end-accession, exif-collect, jp2-create, preservation-ingest-initiated,
-             provenance-metadata, publish, publish-complete, reader-approval, registrar-approval, remediate-object,
-             reset-workspace, rights-metadata, sdr-ingest-received, sdr-ingest-transfer, shelve, shelve-complete,
-             start-assembly, submit, technical-metadata, transfer-object, update-catalog, update-moab, validate-bag, verify-apo]
+      enum: [accessioning-initiate, approve, check-marc, checksum-compute, complete-ingest, content-metadata,
+             content-metadata-create, descriptive-metadata, end-accession, exif-collect, jp2-create,
+             preservation-ingest-initiated, provenance-metadata, publish, publish-complete, reader-approval,
+             registrar-approval, remediate-object, reset-workspace, rights-metadata, sdr-ingest-received, sdr-ingest-transfer,
+             shelve, shelve-complete, start-accession, start-assembly, submit, technical-metadata, transfer-object, 
+             update-catalog, update-moab, validate-bag, verify-apo]
     Repository:
       description: Repository Identifier
       type: string
@@ -499,8 +500,7 @@ components:
     Workflow:
       description: Workflow name
       type: string
-      enum: [accession2WF, dpgImageWF, gisDiscoveryWF, preservationIngestWF, sdrMigrationWF, wasCrawlPreassemblyWF,
-             accessionWF, eemsAccessionWF, goobiWF, registrationWF, sdrRecoveryWF, wasDisseminationWF,
-             assemblyWF, etdSubmitWF, googleScannedBookWF, releaseWF, swIndexWF, wasSeedDisseminationWF,
-             digitizationWF, gisAssemblyWF, hydrusAssemblyWF, sdrAuditWF, versioningWF, wasSeedPreassemblyWF,
-             disseminationWF, gisDeliveryWF, preservationAuditWF, sdrIngestWF, wasCrawlDisseminationWF]
+      enum: [accession2WF, accessionWF, assemblyWF, digitizationWF, disseminationWF, dpgImageWF, eemsAccessionWF, etdSubmitWF,
+             gisAssemblyWF, gisDeliveryWF, gisDiscoveryWF, goobiWF, googleScannedBookWF, hydrusAssemblyWF, preservationAuditWF,
+             preservationIngestWF, registrationWF, releaseWF, sdrAuditWF, sdrIngestWF, sdrMigrationWF, sdrRecoveryWF, swIndexWF,
+             versioningWF, wasCrawlDisseminationWF, wasCrawlPreassemblyWF, wasDisseminationWF, wasSeedDisseminationWF, wasSeedPreassemblyWF]

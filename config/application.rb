@@ -58,7 +58,7 @@ module WorkflowServer
                                                                     strict: true, error_class: JSONAPIError,
                                                                     accept_request_filter: accept_proc
     # TODO: we can uncomment this at a later date to ensure we are passing back
-    #       valid responses. 
+    #       valid responses.
     #
     # config.middleware.use Committee::Middleware::ResponseValidation, schema_path: 'openapi.yml'
 
