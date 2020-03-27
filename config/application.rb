@@ -58,8 +58,7 @@ module WorkflowServer
                                                                     strict: true, error_class: JSONAPIError,
                                                                     accept_request_filter: accept_proc
     # TODO: we can uncomment this at a later date to ensure we are passing back
-    #       valid responses. Currently, uncommenting this line causes 24 spec
-    #       failures. See https://github.com/sul-dlss/preservation_catalog/issues/1407
+    #       valid responses. 
     #
     # config.middleware.use Committee::Middleware::ResponseValidation, schema_path: 'openapi.yml'
 

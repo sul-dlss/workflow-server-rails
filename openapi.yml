@@ -48,7 +48,7 @@ paths:
             type: boolean
   /{repo}/objects/{druid}/versionClose:
     post:
-      summary: TODO
+      summary: Close the current version of the provided druid
       responses:
         '200':
           description: Request succeeded
@@ -195,7 +195,7 @@ paths:
             $ref: '#/components/schemas/Workflow'
   /{repo}/objects/{druid}/workflows/{workflow}/{process}:
     get:
-      summary: TODO
+      summary: Retrieve the process steps for the provided workflow and druid
       responses:
         '200':
           description: List of process steps
@@ -229,7 +229,7 @@ paths:
           schema:
             $ref: '#/components/schemas/Process'          
     put:
-      summary: TODO
+      summary: Add a process to the provided workflow and druid
       responses:
         '200':
           description: Request succeeded
@@ -289,7 +289,7 @@ paths:
             $ref: '#/components/schemas/Druid'
   /objects/{druid}/versionClose:
     post:
-      summary: TODO
+      summary: Close the current version of the provided druid
       responses:
         '200':
           description: Request succeeded
@@ -353,7 +353,7 @@ paths:
             $ref: '#/components/schemas/Workflow'  
   /objects/{druid}/workflows/{workflow}/{process}:
     put:
-      summary: TODO
+      summary: Add a process to the provided workflow and druid
       responses:
         '200':
           description: Request succeeded
@@ -405,10 +405,10 @@ paths:
             $ref: '#/components/schemas/Workflow'
   /workflow_archive:
     get:
-      summary: TODO
+      summary: Retrieve archived workflows
       responses:
         '200':
-          description: TODO
+          description: Request succeeded
           content:
             application/xml:
               schema:
@@ -422,10 +422,10 @@ paths:
             $ref: '#/components/schemas/Workflow'
   /workflow_queue:
     get:
-      summary: TODO
+      summary: Retrieve the workflow queue
       responses:
         '200':
-          description: TODO
+          description: Request succeeded
           content:
             application/xml:
               schema:
@@ -445,10 +445,10 @@ paths:
             type: string
   /workflow_queue/lane_ids:
     get:
-      summary: TODO
+      summary: Retrieve the workflow queue based on the provided lane_id
       responses:
         '200':
-          description: TODO
+          description: Request succeeded
           content:
             application/xml:
               schema:
@@ -462,10 +462,10 @@ paths:
             type: string
   /workflow_queue/all_queued:
     get:
-      summary: TODO
+      summary: Retrieve the workflow queue for all queues
       responses:
         '200':
-          description: TODO
+          description: Request succeeded
           content:
             application/xml:
               schema:
