@@ -19,6 +19,24 @@ require 'action_controller/railtie'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+class JSONAPIError < Committee::ValidationError
+  def error_body
+    {
+      errors: [
+        { status: id, detail: message }
+      ]
+    }
+  end
+
+  def render
+    [
+      status,
+      { 'Content-Type' => 'application/vnd.api+json' },
+      [JSON.generate(error_body)]
+    ]
+  end
+end
+
 module WorkflowServer
   # Base Application
   class Application < Rails::Application
@@ -32,6 +50,18 @@ module WorkflowServer
       config.log_tags  = %i[subdomain uuid]
       config.logger    = ActiveSupport::TaggedLogging.new(logger)
     end
+
+    # accept_request_filter omits OKComputer & Resque routes
+    accept_proc = proc { |request| request.path.start_with?('/') }
+    config.middleware.use Committee::Middleware::RequestValidation, schema_path: 'openapi.yml',
+                                                                    strict: true, error_class: JSONAPIError,
+                                                                    accept_request_filter: accept_proc
+    # TODO: we can uncomment this at a later date to ensure we are passing back
+    #       valid responses. Currently, uncommenting this line causes 24 spec
+    #       failures. See https://github.com/sul-dlss/preservation_catalog/issues/1407
+    #
+    # config.middleware.use Committee::Middleware::ResponseValidation, schema_path: 'openapi.yml'
+
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
