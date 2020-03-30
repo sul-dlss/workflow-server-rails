@@ -78,6 +78,8 @@ To shut down postgres afterwards,
 ## Routes:
 `GET    /:repo/objects/:druid/lifecycle` - Returns the milestones in the lifecycle that have been completed
 
+`GET    /objects/:druid/lifecycle` - Returns the milestones in the lifecycle that have been completed
+
 
 `POST   /:repo/objects/:druid/versionClose` - Set all versioningWF steps to 'complete' and starts a new accessionWF unless `create-accession=false` is passed as a parameter.
 
