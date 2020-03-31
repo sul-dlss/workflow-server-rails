@@ -42,14 +42,14 @@ RSpec.describe 'Lifecycle', type: :request do
       context 'when version is not passed (deprecated)' do
         it 'draws an empty set of milestones and notifies honeybadger' do
           expect(Honeybadger).to receive(:notify)
-          get "/dor/objects/#{druid}/lifecycle?active-only=true"
+          get "/objects/#{druid}/lifecycle?active-only=true"
           expect(returned_milestone_versions).to eq []
         end
       end
 
       context 'when version is passed' do
         it 'draws an empty set of milestones' do
-          get "/dor/objects/#{druid}/lifecycle?active-only=true&version=2"
+          get "/objects/#{druid}/lifecycle?active-only=true&version=2"
           expect(returned_milestone_versions).to eq []
         end
       end
@@ -77,7 +77,7 @@ RSpec.describe 'Lifecycle', type: :request do
         it 'draws milestones from the current version and notifies honeybadger' do
           expect(Honeybadger).to receive(:notify)
 
-          get "/dor/objects/#{druid}/lifecycle?active-only=true"
+          get "/objects/#{druid}/lifecycle?active-only=true"
           expect(returned_milestone_versions).to eq ['2']
           expect(returned_milestone_text).to eq ['submitted']
         end
@@ -85,7 +85,7 @@ RSpec.describe 'Lifecycle', type: :request do
 
       context 'when version is passed' do
         it 'draws milestones from the current version' do
-          get "/dor/objects/#{druid}/lifecycle?active-only=true&version=2"
+          get "/objects/#{druid}/lifecycle?active-only=true&version=2"
           expect(returned_milestone_versions).to eq ['2']
           expect(returned_milestone_text).to eq ['submitted']
         end
@@ -129,7 +129,7 @@ RSpec.describe 'Lifecycle', type: :request do
     end
 
     it 'draws milestones from the all versions' do
-      get "/dor/objects/#{druid}/lifecycle"
+      get "/objects/#{druid}/lifecycle"
       expect(returned_milestone_versions).to match_array %w[1 2]
       expect(returned_milestone_text).to match_array %w[submitted submitted]
     end

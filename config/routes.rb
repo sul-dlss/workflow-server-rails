@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   end
 
   scope 'objects/:druid', constraints: { druid: %r{[^\/]+} }, defaults: { format: :xml } do
+    get 'lifecycle', to: 'workflows#lifecycle'
     delete 'workflows', to: 'steps#destroy_all'
     post 'versionClose', to: 'versions#close'
 
