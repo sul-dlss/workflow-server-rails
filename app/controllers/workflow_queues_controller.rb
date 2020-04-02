@@ -19,8 +19,8 @@ class WorkflowQueuesController < ApplicationController
 
   def show
     if params[:waiting].present?
-      # Used by robot-master:
-      # https://github.com/sul-dlss/robot-master/blob/master/lib/robot-master/workflow.rb#L169
+      # Used by hydra_etd:
+      # https://github.com/sul-dlss/hydra_etd/blob/4d19bbbf772cd37c77b7afdf0691966db85d04a3/app/services/cron_base.rb#L10
       find_waiting_objects
     else
       # Used by count_objects_in_step
