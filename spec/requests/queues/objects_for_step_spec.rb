@@ -5,6 +5,15 @@ require 'rails_helper'
 RSpec.describe 'Objects for workstep', type: :request do
   context 'with prerequisites' do
     context 'for one version' do
+      let(:expected_xml) do
+        <<~XML
+          <objects count="2">
+            <object id="#{prereqs_and_waiting.druid}"/>
+            <object id="#{second_prereqs_and_waiting.druid}"/>
+          </objects>
+        XML
+      end
+
       let(:prereqs_and_waiting) do
         FactoryBot.create(:workflow_step,
                           process: 'reset-workspace',
@@ -91,21 +100,36 @@ RSpec.describe 'Objects for workstep', type: :request do
                           active_version: true)
       end
 
-      it 'shows the items that are waiting and have met the prereqs' do
-        get '/workflow_queue?waiting=dor%3AaccessionWF%3Areset-workspace&' \
-            'completed=dor%3AaccessionWF%3Asdr-ingest-received&' \
-            'completed=dor%3AaccessionWF%3Aprovenance-metadata&limit=100&lane-id=default'
+      context 'with repository-qualified step names' do
+        it 'shows the items that are waiting and have met the prereqs' do
+          get '/workflow_queue?waiting=dor%3AaccessionWF%3Areset-workspace&' \
+              'completed=dor%3AaccessionWF%3Asdr-ingest-received&' \
+              'completed=dor%3AaccessionWF%3Aprovenance-metadata&limit=100&lane-id=default'
 
-        expect(response.body).to be_equivalent_to <<~XML
-          <objects count="2">
-            <object id="#{prereqs_and_waiting.druid}"/>
-            <object id="#{second_prereqs_and_waiting.druid}"/>
-          </objects>
-        XML
+          expect(response.body).to be_equivalent_to expected_xml
+        end
+      end
+
+      context 'without repository-qualified step names' do
+        it 'shows the items that are waiting and have met the prereqs' do
+          get '/workflow_queue?waiting=accessionWF%3Areset-workspace&' \
+              'completed=accessionWF%3Asdr-ingest-received&' \
+              'completed=accessionWF%3Aprovenance-metadata&limit=100&lane-id=default'
+
+          expect(response.body).to be_equivalent_to expected_xml
+        end
       end
     end
 
     context 'when there are multiple versions' do
+      let(:expected_xml) do
+        <<~XML
+          <objects count="1">
+            <object id="#{with_preqs_for_current_version.druid}"/>
+          </objects>
+        XML
+      end
+
       let(:not_prereqs_current_version) do
         FactoryBot.create(:workflow_step,
                           process: 'rights-metadata',
@@ -161,20 +185,35 @@ RSpec.describe 'Objects for workstep', type: :request do
                           version: 2)
       end
 
-      it 'only shows items that are complete for the most recent version' do
-        get '/workflow_queue?completed=dor:accessionWF:descriptive-metadata&' \
-            'waiting=dor:accessionWF:rights-metadata'
+      context 'with repository-qualified step names' do
+        it 'only shows items that are complete for the most recent version' do
+          get '/workflow_queue?completed=dor:accessionWF:descriptive-metadata&' \
+              'waiting=dor:accessionWF:rights-metadata'
 
-        expect(response.body).to be_equivalent_to <<~XML
-          <objects count="1">
-            <object id="#{with_preqs_for_current_version.druid}"/>
-          </objects>
-        XML
+          expect(response.body).to be_equivalent_to expected_xml
+        end
+      end
+
+      context 'without repository-qualified step names' do
+        it 'only shows items that are complete for the most recent version' do
+          get '/workflow_queue?completed=accessionWF:descriptive-metadata&' \
+              'waiting=accessionWF:rights-metadata'
+
+          expect(response.body).to be_equivalent_to expected_xml
+        end
       end
     end
   end
 
   context 'without waiting' do
+    let(:expected_xml) do
+      <<~XML
+        <objects count="1">
+          <object id="#{complete.druid}"/>
+        </objects>
+      XML
+    end
+
     let!(:complete) do
       FactoryBot.create(:workflow_step,
                         workflow: 'preservationIngestWF',
@@ -182,19 +221,36 @@ RSpec.describe 'Objects for workstep', type: :request do
                         status: 'completed',
                         active_version: true)
     end
-    it 'shows the items that have completed' do
-      get '/workflow_queue?completed=complete-ingest&' \
-          'repository=sdr&workflow=preservationIngestWF'
 
-      expect(response.body).to be_equivalent_to <<~XML
-        <objects count="1">
-          <object id="#{complete.druid}"/>
-        </objects>
-      XML
+    context 'with repository specified' do
+      it 'shows the items that have completed' do
+        get '/workflow_queue?completed=complete-ingest&' \
+            'repository=sdr&workflow=preservationIngestWF'
+
+        expect(response.body).to be_equivalent_to expected_xml
+      end
+    end
+
+    context 'without repository specified' do
+      it 'shows the items that have completed' do
+        get '/workflow_queue?completed=complete-ingest&' \
+            'workflow=preservationIngestWF'
+
+        expect(response.body).to be_equivalent_to expected_xml
+      end
     end
   end
 
   context 'without prerequisites' do
+    let(:expected_xml) do
+      <<~XML
+        <objects count="2">
+          <object id="#{waiting.druid}"/>
+          <object id="#{second_waiting.druid}"/>
+        </objects>
+      XML
+    end
+
     let!(:waiting) do
       FactoryBot.create(:workflow_step,
                         workflow: 'versioningWF',
@@ -220,15 +276,20 @@ RSpec.describe 'Objects for workstep', type: :request do
                         active_version: true)
     end
 
-    it 'shows the items that are waiting' do
-      get '/workflow_queue?waiting=dor%3AversioningWF%3Astart-accession'
+    context 'with repository-qualified step names' do
+      it 'shows the items that are waiting' do
+        get '/workflow_queue?waiting=dor%3AversioningWF%3Astart-accession'
 
-      expect(response.body).to be_equivalent_to <<~XML
-        <objects count="2">
-          <object id="#{waiting.druid}"/>
-          <object id="#{second_waiting.druid}"/>
-        </objects>
-      XML
+        expect(response.body).to be_equivalent_to expected_xml
+      end
+    end
+
+    context 'without repository-qualified step names' do
+      it 'shows the items that are waiting' do
+        get '/workflow_queue?waiting=versioningWF%3Astart-accession'
+
+        expect(response.body).to be_equivalent_to expected_xml
+      end
     end
   end
 end

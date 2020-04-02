@@ -16,6 +16,15 @@ RSpec.describe 'All queued steps', type: :request do
                       status: 'queued')
   end
 
+  let(:expected_xml) do
+    <<~XML
+      <workflows>
+        <workflow name="accessionWF" process="shelve" druid="#{one.druid}" laneId="default"/>
+        <workflow name="accessionWF" process="shelve-complete" druid="#{two.druid}" laneId="fast"/>
+      </workflows>
+    XML
+  end
+
   let!(:one) do
     FactoryBot.create(:workflow_step,
                       process: 'shelve',
@@ -31,14 +40,19 @@ RSpec.describe 'All queued steps', type: :request do
                       updated_at: 3.days.ago)
   end
 
-  it 'shows all the queued items' do
-    get '/workflow_queue/all_queued?repository=dor&limit=3&hours-ago=24'
+  context 'with repository query arg' do
+    it 'shows all the queued items' do
+      get '/workflow_queue/all_queued?repository=dor&limit=3&hours-ago=24'
 
-    expect(response.body).to be_equivalent_to <<~XML
-      <workflows>
-        <workflow name="accessionWF" process="shelve" druid="#{one.druid}" laneId="default"/>
-        <workflow name="accessionWF" process="shelve-complete" druid="#{two.druid}" laneId="fast"/>
-      </workflows>
-    XML
+      expect(response.body).to be_equivalent_to expected_xml
+    end
+  end
+
+  context 'without repository query arg' do
+    it 'shows all the queued items' do
+      get '/workflow_queue/all_queued?limit=3&hours-ago=24'
+
+      expect(response.body).to be_equivalent_to expected_xml
+    end
   end
 end
