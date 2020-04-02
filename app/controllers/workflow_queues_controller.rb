@@ -50,7 +50,7 @@ class WorkflowQueuesController < ApplicationController
   end
 
   def workflows_for_step_and_scope(step, scope)
-    _repository, workflow, process = step.split(':')
+    workflow, process = step.split(':').last(2)
 
     WorkflowStep.active.public_send(scope).where(workflow: workflow, process: process)
   end

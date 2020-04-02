@@ -26,9 +26,23 @@ RSpec.describe 'Lanes', type: :request do
                       active_version: true)
   end
 
-  it 'shows the lanes' do
-    get '/workflow_queue/lane_ids?step=dor:accessionWF:shelve'
+  let(:expected_xml) do
+    '<lanes><lane id="default"/><lane id="fast"/></lanes>'
+  end
 
-    expect(response.body).to be_equivalent_to '<lanes><lane id="default"/><lane id="fast"/></lanes>'
+  context 'with repository-qualified step names' do
+    it 'shows the lanes' do
+      get '/workflow_queue/lane_ids?step=dor:accessionWF:shelve'
+
+      expect(response.body).to be_equivalent_to expected_xml
+    end
+  end
+
+  context 'without repository-qualified step names' do
+    it 'shows the lanes' do
+      get '/workflow_queue/lane_ids?step=accessionWF:shelve'
+
+      expect(response.body).to be_equivalent_to expected_xml
+    end
   end
 end

@@ -371,7 +371,7 @@ DEPENDENCIES
   resque (~> 2.0)
   rspec-rails (= 4.0.0.beta4)
   rspec_junit_formatter
-  rubocop
+  rubocop (~> 0.80.1)
   simplecov (~> 0.17.1)
   spring
   spring-watcher-listen (~> 2.0.0)
