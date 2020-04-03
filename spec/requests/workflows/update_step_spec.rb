@@ -12,7 +12,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
   end
 
   let(:process_xml) do
-    '<process name="start-accession" status="completed" elapsed="3" laneId="default" note="Yay"/>'
+    '<process name="start-accession" status="completed" elapsed="3" note="Yay"/>'
   end
 
   before do
@@ -36,6 +36,22 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
 
       expect(wf.lifecycle).to eq 'submitted'
 
+      expect(response.body).to eq '{"next_steps":[]}'
+      expect(SendUpdateMessage).to have_received(:publish).with(druid: wf.druid)
+    end
+  end
+
+  context 'with a non-default lane_id' do
+    let(:wf) do
+      FactoryBot.create(:workflow_step, lane_id: 'low')
+    end
+
+    it 'does not change the lane_id' do
+      put "/dor/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}", params: process_xml
+
+      wf.reload
+      expect(wf.status).to eq 'completed'
+      expect(wf.lane_id).to eq 'low'
       expect(response.body).to eq '{"next_steps":[]}'
       expect(SendUpdateMessage).to have_received(:publish).with(druid: wf.druid)
     end
@@ -114,7 +130,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
       end
     end
 
-    context 'when there are multiple versios' do
+    context 'when there are multiple versions' do
       let(:version1_step) do
         FactoryBot.create(:workflow_step,
                           status: 'error',

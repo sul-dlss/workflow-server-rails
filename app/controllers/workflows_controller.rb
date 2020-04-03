@@ -91,7 +91,7 @@ class WorkflowsController < ApplicationController
 
   def initial_parser
     @initial_parser ||= begin
-      initial_workflow = WorkflowTransformer.initial_workflow(template, params[:lane_id])
+      initial_workflow = WorkflowTransformer.initial_workflow(template, params[:'lane-id'])
       InitialWorkflowParser.new(initial_workflow)
     end
   end

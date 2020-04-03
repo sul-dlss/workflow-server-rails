@@ -96,7 +96,7 @@ RSpec.describe 'Create a workflow' do
       end
 
       it 'sets the lane id' do
-        post "/objects/#{druid}/workflows/#{workflow}?lane_id=#{lane_id}&version=1"
+        post "/objects/#{druid}/workflows/#{workflow}?lane-id=#{lane_id}&version=1"
         expect(WorkflowStep.last.lane_id).to eq(lane_id)
       end
 

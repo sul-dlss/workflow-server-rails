@@ -7,7 +7,7 @@ class StepsController < ApplicationController
   # If there are next steps, they are enqueued.
   # rubocop:disable Metrics/AbcSize
   def update
-    parser = ProcessParser.new(process_from_request_body)
+    parser = ProcessParser.new(process_from_request_body, use_default_lane_id: false)
     step = find_step_for_process
 
     return render plain: '', status: :not_found if step.nil?
