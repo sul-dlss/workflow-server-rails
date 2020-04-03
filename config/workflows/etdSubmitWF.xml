@@ -24,11 +24,11 @@
     <label>Monitor Symphony status until Cataloging is done</label>
     <prereq>check-marc</prereq>
   </process>
-  <process name="other-metadata" sequence="8">
+  <process name="other-metadata" sequence="8" skip-queue="true">
     <label>Generate content, technical and rights metadata</label>
     <prereq>catalog-status</prereq>
   </process>
-  <process name="start-accession" sequence="9">
+  <process name="start-accession" sequence="9" skip-queue="true">
     <label>Transfer control to Common Accessioning</label>
     <prereq>other-metadata</prereq>
   </process>
