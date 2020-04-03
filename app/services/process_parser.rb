@@ -3,7 +3,7 @@
 ##
 # Parsing Process creation request
 class ProcessParser
-  attr_reader :process_element
+  attr_reader :process_element, :use_default_lane_id
 
   PROCESS_ATTRIBUTES = %i[
     process
@@ -24,8 +24,10 @@ class ProcessParser
 
   ##
   # @param [Nokogiri::XML::Element] process_element
-  def initialize(process_element)
+  # @param [Boolean] use_default_lane_id provide "default" as lane_id if no lane_id
+  def initialize(process_element, use_default_lane_id: true)
     @process_element = process_element
+    @use_default_lane_id = use_default_lane_id
   end
 
   # Convert the xml to a hash suitable for creating or updating the model.
@@ -50,7 +52,10 @@ class ProcessParser
   end
 
   def lane_id
-    process_element.attr('laneId') || 'default'
+    lane_id_attr = process_element.attr('laneId')
+    return lane_id_attr unless lane_id_attr.nil?
+
+    use_default_lane_id ? 'default' : nil
   end
 
   def lifecycle
