@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Get the steps for one object', type: :request do
-  let(:date) { Time.now.utc.iso8601.sub(/Z/, '+00:00') }
+  let!(:date) { Time.now.utc.iso8601.sub(/Z/, '+00:00') }
 
   let(:druid) { item.druid }
 

@@ -88,10 +88,16 @@ GEM
       capistrano-bundler (~> 1.1)
     capistrano-shared_configs (0.2.2)
     chronic (0.10.2)
-    cocina-models (0.6.0)
+    cocina-models (0.31.1)
+      activesupport
       dry-struct (~> 1.0)
       dry-types (~> 1.1)
+      openapi3_parser
+      openapi_parser
+      thor
       zeitwerk (~> 2.1)
+    commonmarker (0.21.0)
+      ruby-enum (~> 0.5)
     concurrent-ruby (1.1.6)
     config (2.2.1)
       deep_merge (~> 1.2, >= 1.2.1)
@@ -107,13 +113,12 @@ GEM
       capistrano-one_time_key
       capistrano-shared_configs
     docile (1.3.2)
-    dor-services-client (3.9.2)
+    dor-services-client (5.1.0)
       activesupport (>= 4.2, < 7)
-      cocina-models (~> 0.6.0)
+      cocina-models (~> 0.31.0)
       deprecation
-      faraday (~> 0.15)
+      faraday (>= 0.15, < 2)
       moab-versioning (~> 4.0)
-      nokogiri (~> 1.8)
       zeitwerk (~> 2.1)
     druid-tools (2.1.0)
       deprecation
@@ -168,7 +173,7 @@ GEM
     factory_bot_rails (5.1.1)
       factory_bot (~> 5.1.0)
       railties (>= 4.2.0)
-    faraday (0.17.3)
+    faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
     ffi (1.12.2)
     globalid (0.4.2)
@@ -222,10 +227,15 @@ GEM
     nokogiri-happymapper (0.8.1)
       nokogiri (~> 1.5)
     okcomputer (1.18.1)
+    openapi3_parser (0.8.0)
+      commonmarker (~> 0.17)
+      psych (~> 3.1)
+    openapi_parser (0.10.0)
     parallel (1.19.1)
     parser (2.7.1.0)
       ast (~> 2.4.0)
     pg (1.2.3)
+    psych (3.1.0)
     puma (3.12.4)
     rack (2.2.2)
     rack-protection (2.0.8.1)
@@ -302,6 +312,8 @@ GEM
       rexml
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 1.7)
+    ruby-enum (0.8.0)
+      i18n
     ruby-progressbar (1.10.1)
     ruby2_keywords (0.0.2)
     ruby_dep (1.5.0)
@@ -356,7 +368,7 @@ DEPENDENCIES
   capistrano-rails
   config (~> 2.0)
   dlss-capistrano
-  dor-services-client (~> 3.9)
+  dor-services-client (~> 5.1)
   druid-tools
   equivalent-xml
   factory_bot_rails
