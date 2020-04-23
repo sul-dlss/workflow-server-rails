@@ -3,8 +3,6 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.5.3'
-
 gem 'rails', '~> 6.0.2'
 
 gem 'activerecord-import' # we can remove this after we've migrated the data
