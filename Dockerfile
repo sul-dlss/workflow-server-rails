@@ -1,4 +1,4 @@
-FROM ruby:2.7.1
+FROM ruby:2.7.1-alpine
 
 # postgresql-client is required for invoke.sh
 RUN apk --no-cache add \
