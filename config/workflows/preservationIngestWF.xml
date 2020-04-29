@@ -11,19 +11,15 @@
     <label>Verify the bagit/Moab deposit bag structure of new version</label>
     <prereq>transfer-object</prereq>
   </process>
-  <process name="verify-apo" sequence="4">
-    <label>Check that governing APO has been ingested</label>
+  <process name="update-moab" sequence="4">
+    <label>Create/update Moab object from deposit bag</label>
     <prereq>validate-bag</prereq>
   </process>
-  <process name="update-moab" sequence="5">
-    <label>Create/update Moab object from deposit bag</label>
-    <prereq>verify-apo</prereq>
-  </process>
-  <process name="update-catalog" sequence="6">
+  <process name="update-catalog" sequence="5">
     <label>Create/update Preservation Catalog entry</label>
     <prereq>update-moab</prereq>
   </process>
-  <process name="complete-ingest" sequence="7">
+  <process name="complete-ingest" sequence="6">
     <label>Clean up workspace; transfer control back to accessioning</label>
     <prereq>update-catalog</prereq>
   </process>
