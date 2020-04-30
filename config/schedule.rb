@@ -20,7 +20,8 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
+job_type :no_warnings_runner, "cd :path && RUBYOPT='-W0' bundle exec bin/rails runner -e :environment ':task' :output"
 
 every 60.minutes do
-  runner 'Sweeper.sweep'
+  no_warnings_runner 'Sweeper.sweep'
 end
