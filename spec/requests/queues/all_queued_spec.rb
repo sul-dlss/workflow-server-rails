@@ -20,7 +20,7 @@ RSpec.describe 'All queued steps', type: :request do
     <<~XML
       <workflows>
         <workflow name="accessionWF" process="shelve" druid="#{one.druid}" laneId="default"/>
-        <workflow name="accessionWF" process="shelve-complete" druid="#{two.druid}" laneId="fast"/>
+        <workflow name="accessionWF" process="publish" druid="#{two.druid}" laneId="fast"/>
       </workflows>
     XML
   end
@@ -34,7 +34,7 @@ RSpec.describe 'All queued steps', type: :request do
 
   let!(:two) do
     FactoryBot.create(:workflow_step,
-                      process: 'shelve-complete',
+                      process: 'publish',
                       lane_id: 'fast',
                       status: 'queued',
                       updated_at: 3.days.ago)

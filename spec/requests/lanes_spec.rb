@@ -20,7 +20,7 @@ RSpec.describe 'Lanes', type: :request do
                       status: 'completed',
                       active_version: true)
     FactoryBot.create(:workflow_step,
-                      process: 'shelve-complete',
+                      process: 'publish',
                       lane_id: 'fast',
                       status: 'waiting',
                       active_version: true)

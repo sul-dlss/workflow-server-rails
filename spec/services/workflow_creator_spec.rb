@@ -30,7 +30,7 @@ RSpec.describe WorkflowCreator do
     it 'creates a WorkflowStep for each process' do
       expect do
         create_workflow_steps
-      end.to change(WorkflowStep, :count).by(16)
+      end.to change(WorkflowStep, :count).by(14)
       expect(WorkflowStep.last.druid).to eq druid
       expect(QueueService).to have_received(:enqueue).with(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata'))
     end
