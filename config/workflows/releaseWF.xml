@@ -11,11 +11,8 @@
     <prereq>release-members</prereq>
     <label>Determines which items to republish</label>
   </process>
-  <process name="publish-complete" sequence="4" skip-queue="true">
-    <label>Signal that object has been published</label>
-  </process>
-  <process name="update-marc" sequence="5">
-    <prereq>publish-complete</prereq>
+  <process name="update-marc" sequence="4">
+    <prereq>release-publish</prereq>
     <label>Generates Symphony record with PURL URI</label>
   </process>
 </workflow-def>
