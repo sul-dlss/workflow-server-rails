@@ -29,7 +29,7 @@ RSpec.describe 'Create a workflow' do
         headers = { 'CONTENT_TYPE' => 'application/xml' }
         expect do
           put "/#{repository}/objects/#{druid}/workflows/#{workflow}?version=1", params: request_data, headers: headers
-        end.to change(WorkflowStep, :count).by(14)
+        end.to change(WorkflowStep, :count).by(13)
 
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end
@@ -41,7 +41,7 @@ RSpec.describe 'Create a workflow' do
 
         expect do
           put "/#{repository}/objects/#{druid}/workflows/#{workflow}", params: request_data
-        end.to change(WorkflowStep, :count).by(14)
+        end.to change(WorkflowStep, :count).by(13)
 
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end
@@ -53,7 +53,7 @@ RSpec.describe 'Create a workflow' do
 
           expect do
             put "/#{repository}/objects/#{druid}/workflows/#{workflow}", params: request_data
-          end.to change(WorkflowStep, :count).by(14)
+          end.to change(WorkflowStep, :count).by(13)
         end
       end
     end
@@ -70,7 +70,7 @@ RSpec.describe 'Create a workflow' do
 
         expect do
           put "/#{repository}/objects/#{druid}/workflows/#{workflow}", params: request_data
-        end.to change(WorkflowStep, :count).by(14)
+        end.to change(WorkflowStep, :count).by(13)
 
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end
@@ -90,7 +90,7 @@ RSpec.describe 'Create a workflow' do
       it 'creates new workflows' do
         expect do
           post "/objects/#{druid}/workflows/#{workflow}?version=1"
-        end.to change(WorkflowStep, :count).by(14)
+        end.to change(WorkflowStep, :count).by(13)
         expect(WorkflowStep.last.lane_id).to eq('default')
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end
@@ -117,7 +117,7 @@ RSpec.describe 'Create a workflow' do
 
         expect do
           post "/objects/#{druid}/workflows/#{workflow}"
-        end.to change(WorkflowStep, :count).by(14)
+        end.to change(WorkflowStep, :count).by(13)
         expect(WorkflowStep.last.lane_id).to eq('default')
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end
@@ -135,7 +135,7 @@ RSpec.describe 'Create a workflow' do
 
         expect do
           post "/objects/#{druid}/workflows/#{workflow}"
-        end.to change(WorkflowStep, :count).by(14)
+        end.to change(WorkflowStep, :count).by(13)
 
         expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
       end

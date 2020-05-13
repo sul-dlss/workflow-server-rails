@@ -23,14 +23,14 @@ RSpec.describe 'Close a version', type: :request do
 
         post "/dor/objects/#{druid}/versionClose"
         expect(response).to be_successful
-        expect(WorkflowStep.where(druid: druid).count).to eq 14
+        expect(WorkflowStep.where(druid: druid).count).to eq 13
       end
     end
 
     it 'closes the version' do
       post "/objects/#{druid}/versionClose"
       expect(response).to be_successful
-      expect(WorkflowStep.where(druid: druid).count).to eq 14
+      expect(WorkflowStep.where(druid: druid).count).to eq 13
     end
   end
 
@@ -38,7 +38,7 @@ RSpec.describe 'Close a version', type: :request do
     it 'closes the version' do
       post "/objects/#{druid}/versionClose?version=3"
       expect(response).to be_successful
-      expect(WorkflowStep.where(druid: druid).count).to eq 14
+      expect(WorkflowStep.where(druid: druid).count).to eq 13
     end
   end
 end
