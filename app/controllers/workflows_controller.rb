@@ -12,7 +12,7 @@ class WorkflowsController < ApplicationController
 
     # Active means that it's of the current version, and that all the steps in
     # the current version haven't been completed yet.
-    steps = steps.for_version(current_version)
+    steps = steps.for_version(params[:version])
     return @objects = [] unless steps.incomplete.any?
 
     @objects = steps.lifecycle
@@ -52,7 +52,7 @@ class WorkflowsController < ApplicationController
   def destroy
     obj = Version.new(
       druid: params[:druid],
-      version: current_version
+      version: params[:version]
     )
     obj.workflow_steps.where(workflow: params[:workflow]).destroy_all
     head :no_content
@@ -76,18 +76,13 @@ class WorkflowsController < ApplicationController
       processes: initial_parser.processes,
       version: Version.new(
         druid: params[:druid],
-        version: current_version
+        version: params[:version]
       )
     ).create_workflow_steps
     SendUpdateMessage.publish(druid: params[:druid])
   end
 
   private
-
-  def current_version
-    # Providing the version as a param is for local testing without needing to run DOR services.
-    params[:version] || ObjectVersionService.current_version(params[:druid])
-  end
 
   def initial_parser
     @initial_parser ||= begin
