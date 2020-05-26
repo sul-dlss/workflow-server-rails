@@ -7,7 +7,6 @@ gem 'rails', '~> 6.0.2'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'config', '~> 2.0'
-gem 'dor-services-client', '~> 6.0'
 gem 'druid-tools'
 gem 'honeybadger', '~> 4.1'
 gem 'jbuilder', '~> 2.5'

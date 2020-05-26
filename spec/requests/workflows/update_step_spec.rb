@@ -3,13 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Update a workflow step for an object', type: :request do
-  let(:client) { instance_double(Dor::Services::Client::Object, version: version_client) }
-  let(:version_client) { instance_double(Dor::Services::Client::ObjectVersion, current: '1') }
   let(:druid) { wf.druid }
-
-  before do
-    allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
-  end
 
   let(:process_xml) do
     '<process name="start-accession" status="completed" elapsed="3" note="Yay"/>'
@@ -165,8 +159,6 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
   end
 
   describe 'PUT update' do
-    let(:client) { instance_double(Dor::Services::Client::Object, version: version_client) }
-    let(:version_client) { instance_double(Dor::Services::Client::ObjectVersion, current: '1') }
     let(:druid) { first_step.druid }
     let(:workflow_id) { 'accessionWF' }
     let(:first_step) { FactoryBot.create(:workflow_step, status: 'completed') } # start-accession, which is already completed
@@ -174,7 +166,6 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
     before do
       FactoryBot.create(:workflow_step, druid: druid, process: 'descriptive-metadata')
       FactoryBot.create(:workflow_step, druid: druid, process: 'rights-metadata')
-      allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
       allow(SendUpdateMessage).to receive(:publish)
       allow(QueueService).to receive(:enqueue)
     end

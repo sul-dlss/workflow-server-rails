@@ -7,8 +7,6 @@ RSpec.describe 'Lifecycle', type: :request do
   let(:returned_milestones) { xml.xpath('//lifecycle/milestone') }
   let(:returned_milestone_versions) { returned_milestones.map { |node| node.attr('version') } }
   let(:returned_milestone_text) { returned_milestones.map(&:text) }
-  let(:client) { instance_double(Dor::Services::Client::Object, version: version_client) }
-  let(:version_client) { instance_double(Dor::Services::Client::ObjectVersion, current: '2') }
   let(:druid) { wf.druid }
 
   context 'when active-only is set' do
@@ -36,22 +34,11 @@ RSpec.describe 'Lifecycle', type: :request do
                           version: 2,
                           process: 'remediate-object',
                           status: 'completed')
-        allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
       end
 
-      context 'when version is not passed (deprecated)' do
-        it 'draws an empty set of milestones and notifies honeybadger' do
-          expect(Honeybadger).to receive(:notify)
-          get "/objects/#{druid}/lifecycle?active-only=true"
-          expect(returned_milestone_versions).to eq []
-        end
-      end
-
-      context 'when version is passed' do
-        it 'draws an empty set of milestones' do
-          get "/objects/#{druid}/lifecycle?active-only=true&version=2"
-          expect(returned_milestone_versions).to eq []
-        end
+      it 'draws an empty set of milestones' do
+        get "/objects/#{druid}/lifecycle?active-only=true&version=2"
+        expect(returned_milestone_versions).to eq []
       end
     end
 
@@ -70,25 +57,12 @@ RSpec.describe 'Lifecycle', type: :request do
                           version: 2,
                           process: 'remediate-object',
                           status: 'waiting')
-        allow(Dor::Services::Client).to receive(:object).with(druid).and_return(client)
       end
 
-      context 'when version is not passed (deprecated)' do
-        it 'draws milestones from the current version and notifies honeybadger' do
-          expect(Honeybadger).to receive(:notify)
-
-          get "/objects/#{druid}/lifecycle?active-only=true"
-          expect(returned_milestone_versions).to eq ['2']
-          expect(returned_milestone_text).to eq ['submitted']
-        end
-      end
-
-      context 'when version is passed' do
-        it 'draws milestones from the current version' do
-          get "/objects/#{druid}/lifecycle?active-only=true&version=2"
-          expect(returned_milestone_versions).to eq ['2']
-          expect(returned_milestone_text).to eq ['submitted']
-        end
+      it 'draws milestones from the current version' do
+        get "/objects/#{druid}/lifecycle?active-only=true&version=2"
+        expect(returned_milestone_versions).to eq ['2']
+        expect(returned_milestone_text).to eq ['submitted']
       end
     end
   end

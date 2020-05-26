@@ -20,7 +20,7 @@ class VersionsController < ApplicationController
 
   def find_versioning_steps
     obj = Version.new(druid: params[:druid],
-                      version: current_version)
+                      version: params[:version])
     obj.workflow_steps.where(
       workflow: 'versioningWF',
       process: %w[submit-version start-accession]
@@ -29,7 +29,7 @@ class VersionsController < ApplicationController
 
   def initialize_workflow
     obj = Version.new(druid: params[:druid],
-                      version: current_version)
+                      version: params[:version])
 
     parser = InitialWorkflowParser.new(initial_workflow)
     WorkflowCreator.new(
@@ -37,11 +37,6 @@ class VersionsController < ApplicationController
       processes: parser.processes,
       version: obj
     ).create_workflow_steps
-  end
-
-  def current_version
-    # Providing the version as a param is for local testing without needing to run DOR services.
-    @current_version ||= params[:version] || ObjectVersionService.current_version(params[:druid])
   end
 
   def initial_workflow
