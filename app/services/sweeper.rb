@@ -17,9 +17,9 @@ class Sweeper
 
   def sweep_steps(steps)
     steps.each do |step|
-      step.update(status: 'waiting')
+      # step.update(status: 'waiting')
       notify_honeybadger(step)
-      enqueue_next_steps(step)
+      # enqueue_next_steps(step)
     end
   end
 

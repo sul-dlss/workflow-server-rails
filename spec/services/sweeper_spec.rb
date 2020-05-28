@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe Sweeper do
   before do
     allow(QueueService).to receive(:enqueue)
+    allow(Honeybadger).to receive(:notify)
   end
 
   describe '.sweep' do
@@ -76,12 +77,13 @@ RSpec.describe Sweeper do
                         active_version: true)
     end
 
-    it 'requeues the old steps' do
+    it 'notifies Honeybadger' do
       described_class.sweep
-      expect(QueueService).to have_received(:enqueue).exactly(3).times
-      expect(QueueService).to have_received(:enqueue).with(stale)
-      expect(QueueService).to have_received(:enqueue).with(less_stale)
-      expect(QueueService).to have_received(:enqueue).with(stale_started)
+      expect(Honeybadger).to have_received(:notify).exactly(3).times
+      # expect(QueueService).to have_received(:enqueue).exactly(3).times
+      # expect(QueueService).to have_received(:enqueue).with(stale)
+      # expect(QueueService).to have_received(:enqueue).with(less_stale)
+      # expect(QueueService).to have_received(:enqueue).with(stale_started)
     end
   end
 end
