@@ -13,6 +13,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'lograge'
 gem 'okcomputer'
 gem 'pg'
+gem 'pry-rails' # useful for prod debugging
 gem 'puma', '~> 3.12'
 gem 'resque', '~> 2.0'
 gem 'stomp', '~> 1.4'
