@@ -55,13 +55,20 @@ class StepsController < ApplicationController
   end
 
   # Returns most recent workflow step
+  # rubocop:disable Metrics/AbcSize
   def find_step_for_process
-    WorkflowStep.order(version: :desc).find_by(
-      druid: params[:druid],
-      workflow: params[:workflow],
-      process: params[:process]
-    )
+    query = WorkflowStep.where(druid: params[:druid],
+                               workflow: params[:workflow],
+                               process: params[:process])
+                        .order(version: :desc)
+    # Validate uniqueness until https://github.com/sul-dlss/workflow-server-rails/pull/40 is in place
+    if query.size != query.pluck(:version).uniq.size
+      raise "Duplicate workflow step for #{params[:druid]} #{params[:workflow]} #{params[:process]}"
+    end
+
+    query.first
   end
+  # rubocop:enable Metrics/AbcSize
 
   def process_from_request_body
     # TODO: Confirm we do not have a use case for multiple processes when PUT'ing updates

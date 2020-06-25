@@ -218,6 +218,15 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
                                     '(rights-metadata)')
         expect(response.code).to eq('400')
       end
+
+      it 'verifies that process is unique' do
+        duplicate = FactoryBot.build(:workflow_step, druid: druid, process: 'rights-metadata', version: first_step.version)
+        duplicate.save(validate: false)
+
+        expect do
+          put "/objects/#{druid}/workflows/#{workflow_id}/rights-metadata", params: body
+        end.to raise_error "Duplicate workflow step for #{first_step.druid} accessionWF rights-metadata"
+      end
     end
 
     context 'when completing a step' do
