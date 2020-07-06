@@ -95,7 +95,7 @@ GEM
     deep_merge (1.2.1)
     deprecation (1.0.0)
       activesupport
-    diff-lcs (1.4.3)
+    diff-lcs (1.4.4)
     dlss-capistrano (3.9.0)
       capistrano (~> 3.0)
       capistrano-bundle_audit (>= 0.3.0)
@@ -159,7 +159,7 @@ GEM
     jaro_winkler (1.5.4)
     jbuilder (2.10.0)
       activesupport (>= 5.0.0)
-    json (2.3.0)
+    json (2.3.1)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
