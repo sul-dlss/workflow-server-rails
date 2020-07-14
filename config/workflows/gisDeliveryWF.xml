@@ -15,13 +15,11 @@
     <prereq>load-raster</prereq>
     <label>Load layers into GeoServer</label>
   </process>
-  <process name="load-geowebcache" sequence="5" status="skipped">
-    <label>Load layers into GeoWebCache</label>
+  <process name="reset-geowebcache" sequence="5">
+    <prereq>reset-geowebcache</prereq>
+    <label>Reset GeoWebCache for the layer</label>
   </process>
-  <process name="seed-geowebcache" sequence="6" status="skipped">
-    <label>Generate tiles for GeoWebCache layers</label>
-  </process>
-  <process name="finish-gis-delivery-workflow" sequence="7">
+  <process name="finish-gis-delivery-workflow" sequence="6">
     <prereq>load-geoserver</prereq>
     <label>Finalize delivery workflow for the object</label>
   </process>
