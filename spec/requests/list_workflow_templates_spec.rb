@@ -18,6 +18,7 @@ RSpec.describe 'List the workflow templates', type: :request do
       etdSubmitWF
       gisAssemblyWF
       gisDeliveryWF
+      gisDiscoveryWF
       goobiWF
       googleScannedBookWF
       hydrusAssemblyWF
