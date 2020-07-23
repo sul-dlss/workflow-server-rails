@@ -13,19 +13,19 @@
     <label>Final Registrar approval (signal from PeopleSoft)</label>
   </process>
   <process name="submit-marc" sequence="5" skip-queue="true">
-    <label>Transfer stub MARC record to Symphony (drop off directory)</label>
+    <label>Create stub MARC record for Symphony.  Daily crons run on etd app to aggregate these records and put them on right nfs mount.</label>
     <prereq>registrar-approval</prereq>
   </process>
   <process name="check-marc" sequence="6" skip-queue="true">
-    <label>Daily check to see if MARC record has been created in Symphony</label>
+    <label>Hourly check to see if MARC record has been loaded into Symphony (ILS).  If so, updates identityMetadata with ckey and ETD agreement.</label>
     <prereq>submit-marc</prereq>
   </process>
   <process name="catalog-status" sequence="7" skip-queue="true">
-    <label>Monitor Symphony status until Cataloging is done</label>
+    <label>Hourly check to see if cataloging is done in Symphony (ILD)</label>
     <prereq>check-marc</prereq>
   </process>
   <process name="other-metadata" sequence="8" skip-queue="true">
-    <label>Generate content, technical and rights metadata</label>
+    <label>Update descMetadata from Symphony, generate content, rights metadata, create a tag.</label>
     <prereq>catalog-status</prereq>
   </process>
   <process name="start-accession" sequence="9" skip-queue="true">
@@ -33,6 +33,6 @@
     <prereq>other-metadata</prereq>
   </process>
   <process name="binder-transfer" sequence="10" skip-queue="true" status="skipped">
-    <label>Transfer PDF to binder drop off directory for bound physical copy</label>
+    <label>No longer used.  (Transfer PDF to binder drop off directory for bound physical copy)</label>
   </process>
 </workflow-def>
