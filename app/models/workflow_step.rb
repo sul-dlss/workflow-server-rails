@@ -26,7 +26,7 @@ class WorkflowStep < ApplicationRecord
   # @return [Nokogiri::XML::Builder::NodeBuilder]
   def as_milestone(xml)
     xml.milestone(lifecycle,
-                  date: updated_at.to_time.iso8601,
+                  date: created_at.to_time.iso8601,
                   version: version)
   end
 
