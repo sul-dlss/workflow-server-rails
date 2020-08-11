@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_14_185747) do
+ActiveRecord::Schema.define(version: 2020_08_11_212454) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 2019_11_14_185747) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "active_version", default: false
+    t.datetime "completed_at"
     t.index ["active_version", "status", "workflow", "process"], name: "active_version_step_name_workflow2_idx"
     t.index ["druid", "version"], name: "index_workflow_steps_on_druid_and_version"
     t.index ["druid"], name: "index_workflow_steps_on_druid"
