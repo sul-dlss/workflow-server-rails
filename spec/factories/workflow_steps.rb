@@ -10,5 +10,10 @@ FactoryBot.define do
     version { 1 }
     lane_id { 'default' }
     status { 'waiting' }
+
+    trait :completed do
+      status { 'completed' }
+      completed_at { Time.now }
+    end
   end
 end

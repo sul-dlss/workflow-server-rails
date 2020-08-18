@@ -11,23 +11,49 @@ class WorkflowStep < ApplicationRecord
   validate  :workflow_exists, on: :create
   validate  :process_exists_for_workflow, on: :create
 
+  before_save :set_completed_at, if: :completed?
+
   scope :lifecycle, -> { where.not(lifecycle: nil) }
-  scope :incomplete, -> { where.not(status: %w[completed skipped]) }
-  scope :complete, -> { where(status: %w[completed skipped]) }
+  scope :incomplete, -> { where.not(status: COMPLETED_STATES) }
+  scope :complete, -> { where(status: COMPLETED_STATES) }
   scope :waiting, -> { where(status: 'waiting') }
   scope :queued, -> { where(status: 'queued') }
   scope :started, -> { where(status: 'started') }
   scope :active, -> { where(active_version: true) }
 
   scope :for_version, ->(version) { where(version: version) }
+
+  COMPLETED_STATES = %w[completed skipped].freeze # a list of states that are considered completed
   ##
   # Serialize a WorkflowStep as a milestone
   # @param [Nokogiri::XML::Builder] xml
   # @return [Nokogiri::XML::Builder::NodeBuilder]
   def as_milestone(xml)
     xml.milestone(lifecycle,
-                  date: updated_at.to_time.iso8601,
+                  date: milestone_date,
                   version: version)
+  end
+
+  # callback to set the completed_at column to the current time if we are completing a step
+  def set_completed_at
+    self.completed_at = Time.now
+  end
+
+  ##
+  # indicate if this step is marked as completed
+  # @return [boolean]
+  def completed?
+    COMPLETED_STATES.include? status
+  end
+
+  ##
+  # this is the milestone completion date, which is listed as the date the row was created, or the date it was completed
+  def milestone_date
+    if completed_at
+      completed_at.to_time.iso8601
+    else
+      created_at.to_time.iso8601
+    end
   end
 
   ##

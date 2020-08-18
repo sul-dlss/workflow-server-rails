@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe WorkflowStep do
+  let(:completed_step) { FactoryBot.create(:workflow_step, :completed) }
+
   subject(:step) do
     FactoryBot.create(
       :workflow_step,
@@ -129,6 +131,31 @@ RSpec.describe WorkflowStep do
       it "is not valid if the version is #{invalid_version}" do
         expect { step.version = invalid_version }.to change { step.valid? }.from(true).to(false)
       end
+    end
+  end
+
+  describe '#completed?' do
+    it 'indicates if the step is not completed' do
+      expect(step.completed?).to be_falsey
+    end
+
+    it 'indicates if the step is completed' do
+      expect(completed_step.completed?).to be_truthy
+    end
+  end
+
+  describe '#milestone_date' do
+    it 'returns created_at if completed_at is nil' do
+      expect(step.completed_at).to be_nil
+      expect(step.milestone_date).to eq step.created_at.to_time.iso8601
+    end
+
+    it 'sets completed_at date and returns it as the milestone_date' do
+      expect(step.completed_at).to be_nil
+      step.status = 'completed'
+      step.save
+      expect(step.completed_at).to_not be_nil
+      expect(step.milestone_date).to eq step.created_at.to_time.iso8601
     end
   end
 
