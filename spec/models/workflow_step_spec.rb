@@ -136,11 +136,33 @@ RSpec.describe WorkflowStep do
 
   describe '#completed?' do
     it 'indicates if the step is not completed' do
-      expect(step.completed?).to be_falsey
+      expect(step).not_to be_completed
     end
 
     it 'indicates if the step is completed' do
-      expect(completed_step.completed?).to be_truthy
+      expect(completed_step).to be_completed
+    end
+  end
+
+  describe '#save' do
+    context 'when completed and not already completed' do
+      it 'sets a value for completed_at' do
+        expect(step.completed_at).to be_nil
+        step.status = 'completed'
+        step.save
+        expect(step.completed_at.to_i).to eq(step.updated_at.to_i) # use .to_i to ignore millisecond comparison
+      end
+    end
+
+    context 'when completed and already completed' do
+      let(:completed_at) { completed_step.completed_at }
+
+      it 'leaves completed_at untouched' do
+        expect(completed_step.completed_at).to eq(completed_at)
+        completed_step.active_version = true
+        completed_step.save
+        expect(completed_step.completed_at).to eq(completed_at)
+      end
     end
   end
 
@@ -154,8 +176,8 @@ RSpec.describe WorkflowStep do
       expect(step.completed_at).to be_nil
       step.status = 'completed'
       step.save
-      expect(step.completed_at).to_not be_nil
-      expect(step.milestone_date).to eq step.created_at.to_time.iso8601
+      expect(step.completed_at).not_to be_nil
+      expect(step.milestone_date).to eq step.completed_at.to_time.iso8601
     end
   end
 

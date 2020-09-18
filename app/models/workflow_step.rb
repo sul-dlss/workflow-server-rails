@@ -11,7 +11,7 @@ class WorkflowStep < ApplicationRecord
   validate  :workflow_exists, on: :create
   validate  :process_exists_for_workflow, on: :create
 
-  before_save :set_completed_at, if: :completed?
+  before_save :maybe_set_completed
 
   scope :lifecycle, -> { where.not(lifecycle: nil) }
   scope :incomplete, -> { where.not(status: COMPLETED_STATES) }
@@ -34,16 +34,19 @@ class WorkflowStep < ApplicationRecord
                   version: version)
   end
 
-  # callback to set the completed_at column to the current time if we are completing a step
-  def set_completed_at
-    self.completed_at = Time.now
+  # callback to set the completed_at column to the current time if we are
+  # completing a step. if completed_at is already set, leave the value untouched.
+  def maybe_set_completed
+    return unless completed?
+
+    self.completed_at ||= Time.now
   end
 
   ##
   # indicate if this step is marked as completed
   # @return [boolean]
   def completed?
-    COMPLETED_STATES.include? status
+    COMPLETED_STATES.include?(status)
   end
 
   ##
