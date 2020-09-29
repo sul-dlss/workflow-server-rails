@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+APP_PATH = File.expand_path('../config/application', __dir__)
+require_relative '../config/environment'
+require 'csv'
+
+def fix_one(druid)
+  steps = WorkflowStep.where(druid: druid, workflow: ['accessionWF', 'versioningWF'])
+
+  max_version = steps.pluck(:version).max
+  wrong = steps.where.not(version: max_version)
+  wrong.update_all('completed_at = created_at')
+end
+
+# I generated the source to this by running this on the argo machine:
+# query = 'accessioned_latest_dttsi:[2020-08-18T12:00:00.000Z TO 2020-09-18T23:59:59.000Z] -current_version_isi:1'
+# results = ActiveFedora::SolrService.query query, fl: 'id', rows: 200000
+# pids = results.map { |r| r['id'] }
+# File.open('report.csv', 'w') do |f|
+#   f.puts(pids)
+# end
+CSV.open(ARGV[0], headers: true).each do |row|
+  fix_one(row['Druid'])
+end
