@@ -17,7 +17,7 @@ class StepsController < ApplicationController
     return render plain: status_mismatch_error(step), status: :conflict if params['current-status'] && step.status != params['current-status']
 
     Honeybadger.notify('There is no need to pass "repo" parameter to update a workflow step.') if params[:repo]
-
+    logger.info("Updating #{parser.to_h}")
     step.update(parser.to_h)
 
     # Enqueue next steps
