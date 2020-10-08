@@ -20,6 +20,7 @@ class ProcessParser
   MUTABLE_PROPERTIES = %i[
     status
     error_msg
+    error_txt
   ].freeze
 
   ##

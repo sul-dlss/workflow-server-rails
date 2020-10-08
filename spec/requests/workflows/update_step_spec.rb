@@ -18,6 +18,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
       FactoryBot.create(:workflow_step,
                         status: 'error',
                         error_msg: 'Bang!',
+                        error_txt: 'This is error',
                         lifecycle: 'submitted')
     end
 
@@ -27,6 +28,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
       wf.reload
       expect(wf.status).to eq 'completed'
       expect(wf.error_msg).to be_nil
+      expect(wf.error_txt).to be_nil
 
       expect(wf.lifecycle).to eq 'submitted'
 
