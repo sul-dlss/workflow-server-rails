@@ -12,8 +12,7 @@ namespace :workflow do
 
     raise 'Workflow step does not already exist' if step.nil?
 
-    step.status = args[:status]
-    step.save
+    step.update(status: args[:status], error_msg: nil)
     puts("Setting #{args[:process]} to #{args[:status]}")
 
     # Enqueue next steps
