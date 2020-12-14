@@ -88,7 +88,7 @@ GEM
     chronic (0.10.2)
     coderay (1.1.3)
     concurrent-ruby (1.1.7)
-    config (2.2.1)
+    config (2.2.3)
       deep_merge (~> 1.2, >= 1.2.1)
       dry-validation (~> 1.0, >= 1.0.0)
     crass (1.0.6)
@@ -111,7 +111,7 @@ GEM
     dry-container (0.7.2)
       concurrent-ruby (~> 1.0)
       dry-configurable (~> 0.1, >= 0.1.3)
-    dry-core (0.4.10)
+    dry-core (0.5.0)
       concurrent-ruby (~> 1.0)
     dry-equalizer (0.3.0)
     dry-inflector (0.2.0)
@@ -323,6 +323,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-linux
 
 DEPENDENCIES
   bootsnap (>= 1.1.0)
@@ -354,4 +355,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   2.1.4
+   2.2.0
