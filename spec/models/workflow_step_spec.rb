@@ -54,7 +54,7 @@ RSpec.describe WorkflowStep do
 
     it 'includes an informative error message' do
       expect(dupe_step).not_to be_valid
-      expect(dupe_step.errors.messages).to include(process: ['has already been taken'])
+      expect(dupe_step.errors.messages).to match(hash_including(process: ['has already been taken']))
     end
   end
 
@@ -71,7 +71,7 @@ RSpec.describe WorkflowStep do
 
     it 'does not create a new workflow step' do
       expect(bogus_workflow).not_to be_valid
-      expect(bogus_workflow.errors.messages).to include(workflow: ['is not valid'])
+      expect(bogus_workflow.errors.messages).to match(hash_including(workflow: ['is not valid']))
     end
   end
 
@@ -88,7 +88,7 @@ RSpec.describe WorkflowStep do
 
     it 'does not create a new workflow step' do
       expect(bogus_workflow).not_to be_valid
-      expect(bogus_workflow.errors.messages).to include(workflow: ['can\'t be blank', 'is not valid'])
+      expect(bogus_workflow.errors.messages).to match(hash_including(workflow: ['can\'t be blank', 'is not valid']))
     end
   end
 
@@ -105,7 +105,7 @@ RSpec.describe WorkflowStep do
 
     it 'is not possible to create a new workflow step for a non-existent or missing process value' do
       expect(bogus_process).not_to be_valid
-      expect(bogus_process.errors.messages).to include(process: ['is not valid'])
+      expect(bogus_process.errors.messages).to match(hash_including(process: ['is not valid']))
     end
   end
 
@@ -122,7 +122,7 @@ RSpec.describe WorkflowStep do
 
     it 'is not possible to create a new workflow step for a non-existent or missing process value' do
       expect(bogus_process).not_to be_valid
-      expect(bogus_process.errors.messages).to include(process: ['can\'t be blank', 'is not valid'])
+      expect(bogus_process.errors.messages).to match(hash_including(process: ['can\'t be blank', 'is not valid']))
     end
   end
 
