@@ -6,7 +6,7 @@
 set :application, 'workflow-server-rails'
 set :repo_url, 'https://github.com/sul-dlss-labs/workflow-server-rails.git'
 
-# Default branch is :master
+# Default branch is :main
 ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 set :deploy_to, "/opt/app/workflow/#{fetch(:application)}"
