@@ -17,7 +17,9 @@ class SendRabbitmqMessage
   # put any specific RabbitMQ settings
   # like host or port
   def self.connection
-    @connection ||= Bunny.new(hostname: Settings.rabbitmq.hostname).tap(&:start)
+      @connection ||= Bunny.new(hostname: Settings.rabbitmq.hostname,
+                                username: Settings.rabbitmq.username,
+                                password: Settings.rabbitmq.password).tap(&:start)
   end
 
   def initialize(druid:, channel:)
