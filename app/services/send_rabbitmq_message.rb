@@ -30,7 +30,7 @@ class SendRabbitmqMessage
   def publish
     message = { druid: druid, action: 'workflow updated' }
     # grab the fanout exchange
-    exchange = channel.fanout("blog.#{exchange}")
+    exchange = channel.fanout("sdr.workflow")
     # and simply publish message
     exchange.publish(message.to_json)
   end
