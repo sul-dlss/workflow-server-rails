@@ -27,7 +27,7 @@ RSpec.describe 'Create a workflow' do
         put "/#{repository}/objects/#{druid}/workflows/#{workflow}?version=1", params: request_data, headers: headers
       end.to change(WorkflowStep, :count).by(13)
 
-      expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
+      expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
     end
   end
 
@@ -46,7 +46,7 @@ RSpec.describe 'Create a workflow' do
           post "/objects/#{druid}/workflows/#{workflow}?version=1"
         end.to change(WorkflowStep, :count).by(13)
         expect(WorkflowStep.last.lane_id).to eq('default')
-        expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
+        expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
       end
 
       it 'sets the lane id' do

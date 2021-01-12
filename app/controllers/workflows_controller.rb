@@ -79,7 +79,6 @@ class WorkflowsController < ApplicationController
         version: params[:version]
       )
     ).create_workflow_steps
-    SendUpdateMessage.publish(druid: params[:druid])
   end
 
   private

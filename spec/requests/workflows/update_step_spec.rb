@@ -33,7 +33,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
       expect(wf.lifecycle).to eq 'submitted'
 
       expect(response.body).to eq '{"next_steps":[]}'
-      expect(SendUpdateMessage).to have_received(:publish).with(druid: wf.druid)
+      expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
     end
   end
 
@@ -49,7 +49,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
       expect(wf.status).to eq 'completed'
       expect(wf.lane_id).to eq 'low'
       expect(response.body).to eq '{"next_steps":[]}'
-      expect(SendUpdateMessage).to have_received(:publish).with(druid: wf.druid)
+      expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
     end
   end
 
@@ -62,7 +62,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
       put "/dor/objects/#{druid}/workflows/hydrusAssemblyWF/submit", params: process_xml
 
       expect(response).to be_not_found
-      expect(SendUpdateMessage).not_to have_received(:publish).with(druid: druid)
+      expect(SendUpdateMessage).not_to have_received(:publish)
     end
   end
 
@@ -78,7 +78,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
 
       expect(wf.reload.status).to eq 'error'
       expect(response.body).to eq '{"next_steps":[]}'
-      expect(SendUpdateMessage).to have_received(:publish).with(druid: wf.druid)
+      expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
     end
   end
 
@@ -122,7 +122,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
 
         expect(wf.reload.status).to eq 'completed'
         expect(response.body).to eq '{"next_steps":[]}'
-        expect(SendUpdateMessage).to have_received(:publish).with(druid: wf.druid)
+        expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
       end
     end
 
@@ -155,7 +155,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
         expect(version2_step.status).to eq 'completed'
 
         expect(response.body).to eq '{"next_steps":[]}'
-        expect(SendUpdateMessage).to have_received(:publish).with(druid: version1_step.druid)
+        expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
       end
     end
   end
@@ -178,7 +178,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
       it 'updates the step with repository (Deprecated)' do
         put "/dor/objects/#{druid}/workflows/#{workflow_id}/descriptive-metadata", params: body
         expect(response.body).to eq('{"next_steps":[]}')
-        expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
+        expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
         expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('error')
         expect(QueueService).to_not have_received(:enqueue)
       end
@@ -203,7 +203,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
       it 'updates the step' do
         put "/objects/#{druid}/workflows/#{workflow_id}/descriptive-metadata", params: body
 
-        expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
+        expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
         expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('error')
         expect(QueueService).to_not have_received(:enqueue)
       end
@@ -236,7 +236,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
       it 'updates the step and enqueues next step' do
         put "/dor/objects/#{druid}/workflows/#{workflow_id}/descriptive-metadata", params: body
         expect(response.body).to match(/rights-metadata/)
-        expect(SendUpdateMessage).to have_received(:publish).with(druid: druid)
+        expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
         expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('completed')
         expect(QueueService).to have_received(:enqueue).with(WorkflowStep.find_by(druid: druid,
                                                                                   process: 'rights-metadata'))
