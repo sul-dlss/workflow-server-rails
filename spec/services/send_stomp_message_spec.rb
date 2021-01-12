@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe SendUpdateMessage do
+RSpec.describe SendStompMessage do
   let(:druid) { 'druid:bb123bb1234' }
 
   describe '#publish' do
