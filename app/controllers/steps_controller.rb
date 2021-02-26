@@ -24,7 +24,7 @@ class StepsController < ApplicationController
     next_steps = NextStepService.for(step: step)
     next_steps.each { |next_step| QueueService.enqueue(next_step) }
 
-    SendUpdateMessage.publish(druid: step.druid)
+    SendUpdateMessage.publish(step: step)
     render json: { next_steps: next_steps }
   end
   # rubocop:enable Metrics/AbcSize

@@ -21,6 +21,7 @@ RSpec.describe WorkflowCreator do
   end
 
   before do
+    allow(SendUpdateMessage).to receive(:publish)
     allow(QueueService).to receive(:enqueue)
   end
 
@@ -32,7 +33,9 @@ RSpec.describe WorkflowCreator do
         create_workflow_steps
       end.to change(WorkflowStep, :count).by(13)
       expect(WorkflowStep.last.druid).to eq druid
-      expect(QueueService).to have_received(:enqueue).with(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata'))
+      first_step = WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata')
+      expect(QueueService).to have_received(:enqueue).with(first_step)
+      expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
     end
 
     context 'when workflow steps already exists' do
@@ -44,7 +47,10 @@ RSpec.describe WorkflowCreator do
         expect do
           create_workflow_steps
         end.not_to change(WorkflowStep, :count)
-        expect(QueueService).to have_received(:enqueue).with(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata'))
+        first_step = WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata')
+        expect(QueueService).to have_received(:enqueue).with(first_step)
+        # The first time was for the test setup in the before hook.
+        expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep).twice
       end
     end
   end

@@ -19,6 +19,6 @@ namespace :workflow do
     next_steps = NextStepService.for(step: step)
     next_steps.each { |next_step| QueueService.enqueue(next_step) }
 
-    SendUpdateMessage.publish(druid: step.druid)
+    SendUpdateMessage.publish(step: step)
   end
 end
