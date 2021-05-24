@@ -15,7 +15,7 @@ gem 'lograge'
 gem 'okcomputer'
 gem 'pg'
 gem 'pry-rails' # useful for prod debugging
-gem 'puma', '~> 3.12'
+gem 'puma', '~> 5.3' # app server
 gem 'resque', '~> 2.0'
 gem 'stomp', '~> 1.4'
 gem 'whenever', require: false
