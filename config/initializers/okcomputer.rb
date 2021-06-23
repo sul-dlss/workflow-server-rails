@@ -27,3 +27,11 @@ class TablesHaveDataCheck < OkComputer::Check
 end
 
 OkComputer::Registry.register 'feature-tables-have-data', TablesHaveDataCheck.new
+
+if Settings.rabbitmq.enabled
+  OkComputer::Registry.register 'rabbit',
+                                OkComputer::RabbitmqCheck.new(hostname: Settings.rabbitmq.hostname,
+                                                              vhost: Settings.rabbitmq.vhost,
+                                                              username: Settings.rabbitmq.username,
+                                                              password: Settings.rabbitmq.password)
+end
