@@ -3,6 +3,7 @@
 # Service for add workflow steps to Resqueue queues
 class QueueService
   # Enqueue the provided step
+  # NOTE: This should only be called by one process at a time. Wrap this in a database row lock.
   # @param [WorkflowStep] workflow step to enqueue
   def self.enqueue(step)
     QueueService.new(step).enqueue
@@ -16,6 +17,7 @@ class QueueService
   end
 
   # Enqueue the provided step
+  # NOTE: This should only be called by one process at a time. Wrap this in a database row lock.
   def enqueue
     # Update status
     step.update(status: 'queued')
