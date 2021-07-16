@@ -38,7 +38,7 @@ RSpec.describe InitialWorkflowParser do
 
     it 'is a list of ProcessParsers' do
       expect(processes).to all be_instance_of ProcessParser
-      expect(processes.size).to eq 13
+      expect(processes.size).to eq 14
     end
   end
 end

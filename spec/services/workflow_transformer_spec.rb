@@ -20,6 +20,7 @@ RSpec.describe WorkflowTransformer do
           <process name="remediate-object" status="waiting"/>
           <process name="shelve" status="waiting"/>
           <process name="publish" status="waiting" lifecycle="published"/>
+          <process name="update-doi" status="waiting"/>
           <process name="provenance-metadata" status="waiting"/>
           <process name="sdr-ingest-transfer" status="waiting"/>
           <process name="sdr-ingest-received" status="waiting" lifecycle="deposited"/>
