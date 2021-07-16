@@ -43,6 +43,6 @@ class Sweeper
   end
 
   def enqueue_next_steps(step)
-    NextStepService.for(step: step).each { |next_step| QueueService.enqueue(next_step) }
+    NextStepService.enqueue_next_steps(step: step)
   end
 end

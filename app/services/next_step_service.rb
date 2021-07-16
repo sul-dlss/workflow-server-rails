@@ -5,8 +5,8 @@ class NextStepService
   include Singleton
 
   # @param [WorkflowStep] step
-  def self.for(step:)
-    instance.for(step: step)
+  def self.enqueue_next_steps(step:)
+    instance.enqueue_next_steps(step: step)
   end
 
   def initialize
@@ -14,8 +14,18 @@ class NextStepService
   end
 
   # @param [WorkflowStep] step
+  # @return [ActiveRecord::Relation] a list of WorkflowSteps that have been enqueued
+  def enqueue_next_steps(step:)
+    next_steps = find_next(step: step)
+    next_steps.each { |next_step| QueueService.enqueue(next_step) }
+    next_steps
+  end
+
+  private
+
+  # @param [WorkflowStep] step
   # @return [ActiveRecord::Relation] a list of WorkflowSteps
-  def for(step:)
+  def find_next(step:)
     # Look at this workflow/version/steps and find what we've completed so far.
     steps = Version.new(druid: step.druid, version: step.version).workflow_steps
 
@@ -29,8 +39,6 @@ class NextStepService
 
     steps.waiting.where(process: ready)
   end
-
-  private
 
   def workflow(workflow)
     @workflows[workflow] ||= load_workflow(workflow)

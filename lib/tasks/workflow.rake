@@ -16,8 +16,7 @@ namespace :workflow do
     puts("Setting #{args[:process]} to #{args[:status]}")
 
     # Enqueue next steps
-    next_steps = NextStepService.for(step: step)
-    next_steps.each { |next_step| QueueService.enqueue(next_step) }
+    NextStepService.enqueue_next_steps(step: step)
 
     SendUpdateMessage.publish(step: step)
   end

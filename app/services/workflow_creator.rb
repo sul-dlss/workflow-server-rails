@@ -42,8 +42,8 @@ class WorkflowCreator
                                       process: processes.first.process)
 
     # Enqueue next steps
-    next_steps = NextStepService.for(step: first_step)
-    next_steps.each { |next_step| QueueService.enqueue(next_step) }
+    NextStepService.enqueue_next_steps(step: first_step)
+
     SendUpdateMessage.publish(step: first_step)
   end
 

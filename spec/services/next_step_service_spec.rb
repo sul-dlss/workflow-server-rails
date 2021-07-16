@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe NextStepService do
-  describe '.for' do
-    subject(:next_steps) { described_class.for(step: step) }
+  describe '.enqueue_next_steps' do
+    subject(:next_steps) { described_class.enqueue_next_steps(step: step) }
 
     context "when there is a step that isn't complete" do
       let(:step) do
@@ -32,10 +32,12 @@ RSpec.describe NextStepService do
                           version: 1,
                           status: 'waiting',
                           active_version: true)
+        allow(QueueService).to receive(:enqueue)
       end
 
       it 'returns a list of unblocked statuses' do
         expect(next_steps).to eq [ready]
+        expect(QueueService).to have_received(:enqueue).with(ready)
       end
     end
 
