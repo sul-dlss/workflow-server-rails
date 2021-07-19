@@ -289,7 +289,7 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 1.7)
     ruby-progressbar (1.11.0)
-    ruby2_keywords (0.0.4)
+    ruby2_keywords (0.0.5)
     ruby_dep (1.5.0)
     set (1.0.1)
     simplecov (0.17.1)
