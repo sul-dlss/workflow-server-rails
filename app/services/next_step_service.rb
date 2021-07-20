@@ -34,11 +34,16 @@ class NextStepService
     # Now filter by the steps that we have the prerequisites done for:
     ready = todo.select { |_, process| (process.prerequisites - completed_steps).empty? && !process.skip_queue }.keys
 
-    WorkflowStep.transaction do
-      results = steps.waiting.lock.where(process: ready)
-      results.each { |next_step| QueueService.enqueue(next_step) }
-      results
+    results = WorkflowStep.transaction do
+      set = steps.waiting.lock.where(process: ready)
+      results_before_update = set.to_a
+      set.update_all(status: 'queued')
+      results_before_update
     end
+
+    # We mustn't enqueue steps before the transaction completes, otherwise the workers
+    # could start working on it and find it to still be "waiting".
+    results.each { |next_step| QueueService.enqueue(next_step) }
   end
 
   def workflow(workflow)
