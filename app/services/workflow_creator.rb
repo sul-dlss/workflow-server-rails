@@ -20,7 +20,7 @@ class WorkflowCreator
   # @return [Array]
   def create_workflow_steps
     ActiveRecord::Base.transaction do
-      version.workflow_steps.where(workflow: workflow_id).destroy_all
+      version.workflow_steps(workflow_id).destroy_all
 
       # Any steps for this object/workflow that are not the current version are marked as not active.
       WorkflowStep.where(workflow: workflow_id, druid: version.druid).update(active_version: false)

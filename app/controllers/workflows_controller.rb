@@ -54,7 +54,7 @@ class WorkflowsController < ApplicationController
       druid: params[:druid],
       version: params[:version]
     )
-    obj.workflow_steps.where(workflow: params[:workflow]).destroy_all
+    obj.workflow_steps(params[:workflow]).destroy_all
     head :no_content
   end
 

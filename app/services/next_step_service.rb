@@ -24,7 +24,7 @@ class NextStepService
   # @param [WorkflowStep] step
   # @return [ActiveRecord::Relation] a list of WorkflowSteps
   def find_next(step:) # rubocop:disable Metrics/AbcSize
-    steps = Version.new(druid: step.druid, version: step.version).workflow_steps
+    steps = Version.new(druid: step.druid, version: step.version).workflow_steps(step.workflow)
 
     completed_steps = steps.complete.pluck(:process)
 
