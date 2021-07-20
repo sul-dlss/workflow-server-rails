@@ -17,11 +17,7 @@ class QueueService
   end
 
   # Enqueue the provided step
-  # NOTE: This should only be called by one process at a time. Wrap this in a database row lock.
   def enqueue
-    # Update status
-    step.update(status: 'queued')
-
     # .enqueue_to will return false if a pre-queue hook prevented it from queueing.
     # Don't necessarily expect this to occur, but want to prevent from failing silently.
     raise "Enqueueing #{class_name} for #{step.druid} to #{queue_name} failed." unless Resque.enqueue_to(queue_name, class_name, step.druid)

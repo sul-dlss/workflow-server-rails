@@ -15,33 +15,30 @@ RSpec.describe QueueService do
     context 'for JP2 robot (special case)' do
       let(:step) { FactoryBot.create(:workflow_step, workflow: 'assemblyWF', process: 'jp2-create') }
 
-      it 'enqueues to Resque and updates status' do
+      it 'enqueues to Resque' do
         service.enqueue
         expect(Resque).to have_received(:enqueue_to).with('assemblyWF_jp2',
                                                           'Robots::DorRepo::Assembly::Jp2Create', step.druid)
-        expect(step.status).to eq('queued')
       end
     end
 
     context 'for DorRepo classes' do
       let(:step) { FactoryBot.create(:workflow_step, workflow: 'accessionWF', process: 'descriptive-metadata') }
 
-      it 'enqueues to Resque and updates status' do
+      it 'enqueues to Resque' do
         service.enqueue
         expect(Resque).to have_received(:enqueue_to).with('accessionWF_default',
                                                           'Robots::DorRepo::Accession::DescriptiveMetadata', step.druid)
-        expect(step.status).to eq('queued')
       end
     end
 
     context 'for SdrRepo classes' do
       let(:step) { FactoryBot.create(:workflow_step, workflow: 'preservationIngestWF', process: 'transfer-object') }
 
-      it 'enqueues to Resque and updates status' do
+      it 'enqueues to Resque' do
         service.enqueue
         expect(Resque).to have_received(:enqueue_to).with('preservationIngestWF_default',
                                                           'Robots::SdrRepo::PreservationIngest::TransferObject', step.druid)
-        expect(step.status).to eq('queued')
       end
     end
 
