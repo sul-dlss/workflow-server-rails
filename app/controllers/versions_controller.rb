@@ -21,8 +21,7 @@ class VersionsController < ApplicationController
   def find_versioning_steps
     obj = Version.new(druid: params[:druid],
                       version: params[:version])
-    obj.workflow_steps.where(
-      workflow: 'versioningWF',
+    obj.workflow_steps('versioningWF').where(
       process: %w[submit-version start-accession]
     )
   end
