@@ -79,6 +79,8 @@ class WorkflowsController < ApplicationController
         version: params[:version]
       )
     ).create_workflow_steps
+
+    head :created
   end
 
   private
