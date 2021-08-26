@@ -4,26 +4,11 @@
 class SendRabbitmqMessage
   def self.publish(step:)
     Rails.logger.info "Publishing Rabbitmq Message for #{step.druid}"
-    new(step: step, channel: channel).publish
+    new(step: step).publish
     Rails.logger.info "Published Rabbitmq Message for #{step.druid}"
   end
 
-  def self.channel
-    @channel ||= connection.create_channel
-  end
-
-  # We are using default settings here
-  # The `Bunny.new(...)` is a place to
-  # put any specific RabbitMQ settings
-  # like host or port
-  def self.connection
-    @connection ||= Bunny.new(hostname: Settings.rabbitmq.hostname,
-                              vhost: Settings.rabbitmq.vhost,
-                              username: Settings.rabbitmq.username,
-                              password: Settings.rabbitmq.password).tap(&:start)
-  end
-
-  def initialize(step:, channel:)
+  def initialize(step:, channel: $rabbitmq_channel) # rubocop:disable Style/GlobalVars
     @step = step
     @channel = channel
   end
