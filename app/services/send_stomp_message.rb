@@ -89,6 +89,7 @@ class SendStompMessage
     private
 
     attr_reader :druid
+
     def uuid
       SecureRandom.uuid
     end

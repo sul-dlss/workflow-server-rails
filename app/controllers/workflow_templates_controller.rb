@@ -15,7 +15,7 @@ class WorkflowTemplatesController < ApplicationController
 
   def index
     files = Dir.glob("#{WorkflowTemplateLoader::WORKFLOWS_DIR}/*.xml")
-    names = files.map { |file| file.sub(%r{#{WorkflowTemplateLoader::WORKFLOWS_DIR}/([^\/]*).xml}, '\1') }.sort
+    names = files.map { |file| file.sub(%r{#{WorkflowTemplateLoader::WORKFLOWS_DIR}/([^/]*).xml}, '\1') }.sort
     render json: names
   end
 end

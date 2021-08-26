@@ -22,8 +22,8 @@ class WorkflowMonitor
 
     steps.each do |step|
       Honeybadger.notify("Workflow step has been running for more than 24 hours: <druid:\"#{step.druid}\" " \
-      "version:\"#{step.version}\" workflow:\"#{step.workflow}\" process:\"#{step.process}\">. " \
-      'Perhaps there is a problem with it.')
+                         "version:\"#{step.version}\" workflow:\"#{step.workflow}\" process:\"#{step.process}\">. " \
+                         'Perhaps there is a problem with it.')
     end
   end
 
@@ -33,6 +33,6 @@ class WorkflowMonitor
     return if queued_count.zero?
 
     Honeybadger.notify("#{queued_count} workflow steps have been queued for more than 12 hours. Perhaps there is a " \
-        'problem with the robots.')
+                       'problem with the robots.')
   end
 end

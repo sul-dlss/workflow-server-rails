@@ -24,9 +24,9 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'equivalent-xml'
   gem 'factory_bot_rails'
-  gem 'rspec-rails', '~> 5.0'
   gem 'rspec_junit_formatter'
-  gem 'rubocop', '~> 0.80.1'
+  gem 'rspec-rails', '~> 5.0'
+  gem 'rubocop', '~> 1.0'
   # Codeclimate is not compatible with 0.18+. See https://github.com/codeclimate/test-reporter/issues/413
   gem 'simplecov', '~> 0.17.1'
 end
