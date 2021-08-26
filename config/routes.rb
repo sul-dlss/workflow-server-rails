@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  scope ':repo/objects/:druid', constraints: { druid: %r{[^\/]+} }, defaults: { format: :xml } do
+  scope ':repo/objects/:druid', constraints: { druid: %r{[^/]+} }, defaults: { format: :xml } do
     get 'lifecycle', to: 'workflows#lifecycle'
     post 'versionClose', to: 'versions#close'
 
@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     end
   end
 
-  scope 'objects/:druid', constraints: { druid: %r{[^\/]+} }, defaults: { format: :xml } do
+  scope 'objects/:druid', constraints: { druid: %r{[^/]+} }, defaults: { format: :xml } do
     get 'lifecycle', to: 'workflows#lifecycle'
     delete 'workflows', to: 'steps#destroy_all'
     post 'versionClose', to: 'versions#close'
@@ -35,7 +35,7 @@ Rails.application.routes.draw do
 
   get '/workflow_archive',
       to: 'workflows#archive',
-      constraints: { druid: %r{[^\/]+} },
+      constraints: { druid: %r{[^/]+} },
       defaults: { format: :xml }
 
   resource :workflow_queue, only: :show, defaults: { format: :xml } do

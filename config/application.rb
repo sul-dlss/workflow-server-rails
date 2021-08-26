@@ -27,7 +27,7 @@ module WorkflowServer
 
     # Log to STDOUT
     unless Rails.env.test?
-      logger           = ActiveSupport::Logger.new(STDOUT)
+      logger           = ActiveSupport::Logger.new($stdout)
       logger.formatter = config.log_formatter
       config.log_tags  = %i[subdomain uuid]
       config.logger    = ActiveSupport::TaggedLogging.new(logger)

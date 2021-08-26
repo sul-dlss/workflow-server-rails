@@ -38,8 +38,8 @@ class Sweeper
 
   def notify_honeybadger(step)
     Honeybadger.notify("Stale workflow step found with #{step.status} status: <druid:\"#{step.druid}\" " \
-      "version:\"#{step.version}\" workflow:\"#{step.workflow}\" process:\"#{step.process}\">. " \
-      'Requeuing it.')
+                       "version:\"#{step.version}\" workflow:\"#{step.workflow}\" process:\"#{step.process}\">. " \
+                       'Requeuing it.')
   end
 
   def enqueue_next_steps(step)
