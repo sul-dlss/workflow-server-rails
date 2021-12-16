@@ -55,7 +55,7 @@ RSpec.describe Sweeper do
     let!(:on_deck2) do
       FactoryBot.create(:workflow_step,
                         druid: completed.druid,
-                        process: 'rights-metadata',
+                        process: 'content-metadata',
                         version: 2,
                         status: 'waiting',
                         active_version: true)

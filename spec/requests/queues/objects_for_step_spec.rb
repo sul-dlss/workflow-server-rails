@@ -59,7 +59,7 @@ RSpec.describe 'Objects for workstep', type: :request do
 
         FactoryBot.create(:workflow_step,
                           druid: prereqs_and_waiting.druid,
-                          process: 'provenance-metadata',
+                          process: 'update-doi',
                           status: 'completed',
                           active_version: true)
 
@@ -71,7 +71,7 @@ RSpec.describe 'Objects for workstep', type: :request do
 
         FactoryBot.create(:workflow_step,
                           druid: second_prereqs_and_waiting.druid,
-                          process: 'provenance-metadata',
+                          process: 'update-doi',
                           status: 'completed',
                           active_version: true)
 
@@ -83,7 +83,7 @@ RSpec.describe 'Objects for workstep', type: :request do
 
         FactoryBot.create(:workflow_step,
                           druid: prereqs_and_waiting_and_wrong_lane.druid,
-                          process: 'provenance-metadata',
+                          process: 'update-doi',
                           status: 'completed',
                           active_version: true)
 
@@ -95,7 +95,7 @@ RSpec.describe 'Objects for workstep', type: :request do
 
         FactoryBot.create(:workflow_step,
                           druid: prereqs_and_not_waiting.druid,
-                          process: 'provenance-metadata',
+                          process: 'update-doi',
                           status: 'completed',
                           active_version: true)
       end
@@ -104,7 +104,7 @@ RSpec.describe 'Objects for workstep', type: :request do
         it 'shows the items that are waiting and have met the prereqs' do
           get '/workflow_queue?waiting=dor%3AaccessionWF%3Areset-workspace&' \
               'completed=dor%3AaccessionWF%3Asdr-ingest-received&' \
-              'completed=dor%3AaccessionWF%3Aprovenance-metadata&limit=100&lane-id=default'
+              'completed=dor%3AaccessionWF%3Aupdate-doi&limit=100&lane-id=default'
 
           expect(response.body).to be_equivalent_to expected_xml
         end
@@ -114,7 +114,7 @@ RSpec.describe 'Objects for workstep', type: :request do
         it 'shows the items that are waiting and have met the prereqs' do
           get '/workflow_queue?waiting=accessionWF%3Areset-workspace&' \
               'completed=accessionWF%3Asdr-ingest-received&' \
-              'completed=accessionWF%3Aprovenance-metadata&limit=100&lane-id=default'
+              'completed=accessionWF%3Aupdate-doi&limit=100&lane-id=default'
 
           expect(response.body).to be_equivalent_to expected_xml
         end
@@ -132,14 +132,14 @@ RSpec.describe 'Objects for workstep', type: :request do
 
       let(:not_prereqs_current_version) do
         FactoryBot.create(:workflow_step,
-                          process: 'rights-metadata',
+                          process: 'content-metadata',
                           status: 'waiting',
                           version: 2)
       end
 
       let(:with_preqs_for_current_version) do
         FactoryBot.create(:workflow_step,
-                          process: 'rights-metadata',
+                          process: 'content-metadata',
                           status: 'waiting',
                           active_version: true,
                           version: 2)
@@ -148,7 +148,7 @@ RSpec.describe 'Objects for workstep', type: :request do
       before do
         FactoryBot.create(:workflow_step,
                           druid: not_prereqs_current_version.druid,
-                          process: 'rights-metadata',
+                          process: 'content-metadata',
                           status: 'completed',
                           version: 1)
 
@@ -167,7 +167,7 @@ RSpec.describe 'Objects for workstep', type: :request do
 
         FactoryBot.create(:workflow_step,
                           druid: with_preqs_for_current_version.druid,
-                          process: 'rights-metadata',
+                          process: 'content-metadata',
                           status: 'completed',
                           version: 1)
 
@@ -188,7 +188,7 @@ RSpec.describe 'Objects for workstep', type: :request do
       context 'with repository-qualified step names' do
         it 'only shows items that are complete for the most recent version' do
           get '/workflow_queue?completed=dor:accessionWF:descriptive-metadata&' \
-              'waiting=dor:accessionWF:rights-metadata'
+              'waiting=dor:accessionWF:content-metadata'
 
           expect(response.body).to be_equivalent_to expected_xml
         end
@@ -197,7 +197,7 @@ RSpec.describe 'Objects for workstep', type: :request do
       context 'without repository-qualified step names' do
         it 'only shows items that are complete for the most recent version' do
           get '/workflow_queue?completed=accessionWF:descriptive-metadata&' \
-              'waiting=accessionWF:rights-metadata'
+              'waiting=accessionWF:content-metadata'
 
           expect(response.body).to be_equivalent_to expected_xml
         end

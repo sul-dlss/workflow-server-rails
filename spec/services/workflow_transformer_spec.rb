@@ -14,14 +14,11 @@ RSpec.describe WorkflowTransformer do
         <workflow id="accessionWF">
           <process name="start-accession" status="completed" attempts="1" lifecycle="submitted"/>
           <process name="descriptive-metadata" status="waiting" lifecycle="described"/>
-          <process name="rights-metadata" status="waiting"/>
           <process name="content-metadata" status="waiting"/>
           <process name="technical-metadata" status="waiting"/>
-          <process name="remediate-object" status="waiting"/>
           <process name="shelve" status="waiting"/>
           <process name="publish" status="waiting" lifecycle="published"/>
           <process name="update-doi" status="waiting"/>
-          <process name="provenance-metadata" status="waiting"/>
           <process name="sdr-ingest-transfer" status="waiting"/>
           <process name="sdr-ingest-received" status="waiting" lifecycle="deposited"/>
           <process name="reset-workspace" status="waiting"/>

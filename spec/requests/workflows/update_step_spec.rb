@@ -167,7 +167,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
 
     before do
       FactoryBot.create(:workflow_step, druid: druid, process: 'descriptive-metadata')
-      FactoryBot.create(:workflow_step, druid: druid, process: 'rights-metadata')
+      FactoryBot.create(:workflow_step, druid: druid, process: 'content-metadata')
       allow(SendUpdateMessage).to receive(:publish)
       allow(QueueService).to receive(:enqueue)
     end
@@ -190,9 +190,9 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
       end
 
       it 'verifies that process in url and body match' do
-        put "/dor/objects/#{druid}/workflows/#{workflow_id}/rights-metadata", params: body
+        put "/dor/objects/#{druid}/workflows/#{workflow_id}/content-metadata", params: body
         expect(response.body).to eq('Process name in body (descriptive-metadata) does not match process name in URI ' \
-                                    '(rights-metadata)')
+                                    '(content-metadata)')
         expect(response.code).to eq('400')
       end
     end
@@ -215,19 +215,19 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
       end
 
       it 'verifies that process in url and body match' do
-        put "/objects/#{druid}/workflows/#{workflow_id}/rights-metadata", params: body
+        put "/objects/#{druid}/workflows/#{workflow_id}/content-metadata", params: body
         expect(response.body).to eq('Process name in body (descriptive-metadata) does not match process name in URI ' \
-                                    '(rights-metadata)')
+                                    '(content-metadata)')
         expect(response.code).to eq('400')
       end
 
       it 'verifies that process is unique' do
-        duplicate = FactoryBot.build(:workflow_step, druid: druid, process: 'rights-metadata', version: first_step.version)
+        duplicate = FactoryBot.build(:workflow_step, druid: druid, process: 'content-metadata', version: first_step.version)
         duplicate.save(validate: false)
 
         expect do
-          put "/objects/#{druid}/workflows/#{workflow_id}/rights-metadata", params: body
-        end.to raise_error "Duplicate workflow step for #{first_step.druid} accessionWF rights-metadata"
+          put "/objects/#{druid}/workflows/#{workflow_id}/content-metadata", params: body
+        end.to raise_error "Duplicate workflow step for #{first_step.druid} accessionWF content-metadata"
       end
     end
 
@@ -235,11 +235,11 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
       let(:body) { '<process name="descriptive-metadata" status="completed" />' }
       it 'updates the step and enqueues next step' do
         put "/dor/objects/#{druid}/workflows/#{workflow_id}/descriptive-metadata", params: body
-        expect(response.body).to match(/rights-metadata/)
+        expect(response.body).to match(/content-metadata/)
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
         expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('completed')
         expect(QueueService).to have_received(:enqueue).with(WorkflowStep.find_by(druid: druid,
-                                                                                  process: 'rights-metadata'))
+                                                                                  process: 'content-metadata'))
       end
     end
   end
