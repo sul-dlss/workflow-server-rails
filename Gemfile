@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem 'rails', '~> 6.1.0'
+gem 'rails', '~> 7.0.0'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'bunny', '~> 2.17'
@@ -35,7 +35,4 @@ group :development do
   gem 'capistrano-passenger', require: false
   gem 'capistrano-rails', require: false
   gem 'dlss-capistrano', require: false
-  gem 'listen', '~> 3.7'
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
 end
