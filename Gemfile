@@ -35,7 +35,7 @@ group :development do
   gem 'capistrano-passenger', require: false
   gem 'capistrano-rails', require: false
   gem 'dlss-capistrano', require: false
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'listen', '~> 3.7'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
