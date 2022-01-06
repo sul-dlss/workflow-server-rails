@@ -191,10 +191,6 @@ GEM
     nokogiri (1.12.5)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
-    nokogiri (1.12.5-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.12.5-x86_64-linux)
-      racc (~> 1.4)
     okcomputer (1.18.4)
     parallel (1.21.0)
     parser (3.0.3.2)
@@ -351,7 +347,7 @@ DEPENDENCIES
   factory_bot_rails
   honeybadger (~> 4.1)
   jbuilder (~> 2.5)
-  listen
+  listen (~> 3.7)
   lograge
   okcomputer
   pg
