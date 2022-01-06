@@ -57,8 +57,6 @@ jobs:
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
 
-    - run: sudo apt update && sudo apt install -y postgresql-client || true
-
     - run:
         name: Wait for DB
         command: dockerize -wait tcp://localhost:5432 -timeout 1m
