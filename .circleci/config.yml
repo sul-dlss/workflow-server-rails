@@ -187,7 +187,6 @@ workflows:
           name: publish-latest
           image: suldlss/workflow-server
           requires:
-            - validate
             - lint
             - test
           filters:
