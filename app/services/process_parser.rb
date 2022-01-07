@@ -38,7 +38,7 @@ class ProcessParser
   def to_h
     PROCESS_ATTRIBUTES.each_with_object({}) do |attribute, hash|
       value = public_send(attribute)
-      next if value.nil? && !MUTABLE_PROPERTIES.include?(attribute)
+      next if value.nil? && MUTABLE_PROPERTIES.exclude?(attribute)
 
       hash[attribute] = value
     end

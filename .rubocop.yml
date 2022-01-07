@@ -1,4 +1,6 @@
 inherit_from: .rubocop_todo.yml
+require:
+  - rubocop-rails
 
 AllCops:
   Exclude:
@@ -102,4 +104,82 @@ Style/RedundantSelfAssignmentBranch: # new in 1.19
 Style/StringChars: # new in 1.12
   Enabled: true
 Style/SwapValues: # new in 1.1
+  Enabled: true
+
+Gemspec/RequireMFA: # new in 1.23
+  Enabled: true
+Lint/AmbiguousOperatorPrecedence: # new in 1.21
+  Enabled: true
+Lint/IncompatibleIoSelectWithFiberScheduler: # new in 1.21
+  Enabled: true
+Lint/RequireRelativeSelfPath: # new in 1.22
+  Enabled: true
+Lint/UselessRuby2Keywords: # new in 1.23
+  Enabled: true
+Security/IoMethods: # new in 1.22
+  Enabled: true
+Style/NumberedParameters: # new in 1.22
+  Enabled: true
+Style/NumberedParametersLimit: # new in 1.22
+  Enabled: true
+Style/OpenStructUse: # new in 1.23
+  Enabled: true
+Style/SelectByRegexp: # new in 1.22
+  Enabled: true
+
+Rails/ActiveRecordCallbacksOrder: # new in 2.7
+  Enabled: true
+Rails/AddColumnIndex: # new in 2.11
+  Enabled: true
+Rails/AfterCommitOverride: # new in 2.8
+  Enabled: true
+Rails/AttributeDefaultBlockValue: # new in 2.9
+  Enabled: true
+Rails/CompactBlank: # new in 2.13
+  Enabled: true
+Rails/DurationArithmetic: # new in 2.13
+  Enabled: true
+Rails/EagerEvaluationLogMessage: # new in 2.11
+  Enabled: true
+Rails/ExpandedDateRange: # new in 2.11
+  Enabled: true
+Rails/FindById: # new in 2.7
+  Enabled: true
+Rails/I18nLocaleAssignment: # new in 2.11
+  Enabled: true
+Rails/Inquiry: # new in 2.7
+  Enabled: true
+Rails/MailerName: # new in 2.7
+  Enabled: true
+Rails/MatchRoute: # new in 2.7
+  Enabled: true
+Rails/NegateInclude: # new in 2.7
+  Enabled: true
+Rails/Pluck: # new in 2.7
+  Enabled: true
+Rails/PluckInWhere: # new in 2.7
+  Enabled: true
+Rails/RedundantPresenceValidationOnBelongsTo: # new in 2.13
+  Enabled: true
+Rails/RedundantTravelBack: # new in 2.12
+  Enabled: true
+Rails/RenderInline: # new in 2.7
+  Enabled: true
+Rails/RenderPlainText: # new in 2.7
+  Enabled: true
+Rails/RootJoinChain: # new in 2.13
+  Enabled: true
+Rails/ShortI18n: # new in 2.7
+  Enabled: true
+Rails/SquishedSQLHeredocs: # new in 2.8
+  Enabled: true
+Rails/TimeZoneAssignment: # new in 2.10
+  Enabled: true
+Rails/UnusedIgnoredColumns: # new in 2.11
+  Enabled: true
+Rails/WhereEquals: # new in 2.9
+  Enabled: true
+Rails/WhereExists: # new in 2.7
+  Enabled: true
+Rails/WhereNot: # new in 2.8
   Enabled: true
