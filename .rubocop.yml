@@ -3,6 +3,7 @@ require:
   - rubocop-rails
 
 AllCops:
+  TargetRubyVersion: 3.0
   Exclude:
     - db/schema.rb
     - vendor/bundle/**/*
