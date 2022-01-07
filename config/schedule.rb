@@ -20,7 +20,7 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
-job_type :no_warnings_runner, "cd :path && RUBYOPT='-W0' bundle exec bin/rails runner -e :environment ':task' :output"
+job_type :no_warnings_runner, "cd :path && RUBYOPT='-W0' bin/rails runner -e :environment ':task' :output"
 
 every 60.minutes do
   # Currently running Monitor (notification only for stuck workflow steps) instead of Sweeper (notification and requeueing).
