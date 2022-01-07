@@ -102,7 +102,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
   context 'when current-status is set' do
     let(:wf) { FactoryBot.create(:workflow_step) }
 
-    context 'and it does not match the current status' do
+    context 'when it does not match the current status' do
       it 'does not update the step' do
         expect_any_instance_of(WorkflowStep).not_to receive(:update)
 
@@ -114,7 +114,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
       end
     end
 
-    context 'and it matches the current status' do
+    context 'when it matches the current status' do
       let(:wf) { FactoryBot.create(:workflow_step, status: 'waiting') }
 
       it 'updates the step' do
@@ -180,7 +180,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
         expect(response.body).to eq('{"next_steps":[]}')
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
         expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('error')
-        expect(QueueService).to_not have_received(:enqueue)
+        expect(QueueService).not_to have_received(:enqueue)
       end
 
       it 'verifies the current status' do
@@ -205,7 +205,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
 
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
         expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('error')
-        expect(QueueService).to_not have_received(:enqueue)
+        expect(QueueService).not_to have_received(:enqueue)
       end
 
       it 'verifies the current status' do
@@ -233,6 +233,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
 
     context 'when completing a step' do
       let(:body) { '<process name="descriptive-metadata" status="completed" />' }
+
       it 'updates the step and enqueues next step' do
         put "/dor/objects/#{druid}/workflows/#{workflow_id}/descriptive-metadata", params: body
         expect(response.body).to match(/rights-metadata/)

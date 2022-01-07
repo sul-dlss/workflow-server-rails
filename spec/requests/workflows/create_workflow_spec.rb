@@ -54,8 +54,9 @@ RSpec.describe 'Create a workflow' do
         expect(WorkflowStep.last.lane_id).to eq(lane_id)
       end
 
-      context 'and the request is bad' do
+      context 'with bad request' do
         let(:workflow) { 'xaccessionWF' }
+
         it 'returns a 400 error' do
           expect do
             post "/objects/#{druid}/workflows/#{workflow}?version=1"

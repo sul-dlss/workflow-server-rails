@@ -7,7 +7,7 @@ RSpec.describe 'Get the steps for one object', type: :request do
 
   let(:druid) { item.druid }
 
-  context 'for an error' do
+  context 'when error' do
     let(:item) do
       FactoryBot.create(:workflow_step,
                         status: 'error',
@@ -30,7 +30,7 @@ RSpec.describe 'Get the steps for one object', type: :request do
     end
   end
 
-  context 'for a successful step' do
+  context 'when a successful step' do
     let(:item) do
       FactoryBot.create(:workflow_step,
                         status: 'completed',
@@ -52,7 +52,7 @@ RSpec.describe 'Get the steps for one object', type: :request do
     end
   end
 
-  context 'the deprecated route with the repository' do
+  context 'when using the deprecated route with the repository' do
     let(:item) do
       FactoryBot.create(:workflow_step,
                         status: 'completed',

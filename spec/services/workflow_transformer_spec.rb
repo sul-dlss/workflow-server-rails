@@ -7,7 +7,7 @@ RSpec.describe WorkflowTransformer do
 
   let(:workflow_template) { WorkflowTemplateLoader.load_as_xml('accessionWF') }
 
-  context '#initial_workflow' do
+  describe '#initial_workflow' do
     it 'transforms to initial workflow' do
       expect(transformer.initial_workflow.to_s).to be_equivalent_to <<~XML
         <?xml version="1.0"?>

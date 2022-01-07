@@ -1,6 +1,7 @@
 inherit_from: .rubocop_todo.yml
 require:
   - rubocop-rails
+  - rubocop-rspec
 
 AllCops:
   TargetRubyVersion: 3.0
@@ -183,4 +184,15 @@ Rails/WhereEquals: # new in 2.9
 Rails/WhereExists: # new in 2.7
   Enabled: true
 Rails/WhereNot: # new in 2.8
+  Enabled: true
+
+RSpec/ExcessiveDocstringSpacing: # new in 2.5
+  Enabled: true
+RSpec/IdenticalEqualityAssertion: # new in 2.4
+  Enabled: true
+RSpec/SubjectDeclaration: # new in 2.5
+  Enabled: true
+RSpec/FactoryBot/SyntaxMethods: # new in 2.7
+  Enabled: false
+RSpec/Rails/AvoidSetupHook: # new in 2.4
   Enabled: true

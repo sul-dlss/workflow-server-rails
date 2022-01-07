@@ -25,6 +25,7 @@ RSpec.describe InitialWorkflowParser do
           XML
         )
       end
+
       it 'raises an error' do
         expect do
           workflow_id

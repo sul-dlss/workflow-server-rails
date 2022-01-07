@@ -19,7 +19,7 @@ RSpec.describe 'Lifecycle', type: :request do
                         lifecycle: 'submitted')
     end
 
-    context 'and all steps in the current version are complete' do
+    context 'when all steps in the current version are complete' do
       before do
         FactoryBot.create(:workflow_step,
                           druid: druid,
@@ -42,7 +42,7 @@ RSpec.describe 'Lifecycle', type: :request do
       end
     end
 
-    context 'some steps in the current version are not complete' do
+    context 'when some steps in the current version are not complete' do
       before do
         FactoryBot.create(:workflow_step,
                           druid: druid,

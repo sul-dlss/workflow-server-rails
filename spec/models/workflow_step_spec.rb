@@ -3,8 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe WorkflowStep do
-  let(:completed_step) { FactoryBot.create(:workflow_step, :completed) }
-
   subject(:step) do
     FactoryBot.create(
       :workflow_step,
@@ -13,6 +11,8 @@ RSpec.describe WorkflowStep do
       lifecycle: 'submitted'
     )
   end
+
+  let(:completed_step) { FactoryBot.create(:workflow_step, :completed) }
 
   it { is_expected.to be_valid }
 
@@ -26,6 +26,7 @@ RSpec.describe WorkflowStep do
     it 'is not valid if the druid is missing the prefix' do
       expect { step.druid = step.druid.delete('druid:') }.to change { step.valid? }.from(true).to(false)
     end
+
     it 'is not valid if the druid is a bogus value' do
       expect { step.druid = 'bogus' }.to change { step.valid? }.from(true).to(false)
     end

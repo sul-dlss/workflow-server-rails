@@ -6,12 +6,12 @@ RSpec.describe SendStompMessage do
   let(:druid) { 'druid:bb123bb1234' }
 
   describe '#publish' do
-    let(:sender) { described_class.new(druid: druid) }
     subject(:publish) do
       sender.publish(message: mock_message)
     end
-    let(:mock_message) { instance_double(described_class::UpdateMessage, to_xml: 'hello') }
 
+    let(:sender) { described_class.new(druid: druid) }
+    let(:mock_message) { instance_double(described_class::UpdateMessage, to_xml: 'hello') }
     let(:mock_client) { instance_double(Stomp::Client, publish: true, close: true) }
 
     before do
@@ -29,8 +29,10 @@ RSpec.describe SendStompMessage do
 
   describe described_class::UpdateMessage do
     let(:instance) { described_class.new(druid: druid) }
+
     describe '#to_xml' do
       subject { instance.to_xml }
+
       before do
         allow(instance).to receive(:timestamp).and_return('2019-01-25T15:18:32Z')
         allow(SecureRandom).to receive(:uuid).and_return('d087b3fd-0144-4114-a065-5194088c9ac8')
