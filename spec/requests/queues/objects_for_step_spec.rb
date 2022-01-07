@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Objects for workstep', type: :request do
   context 'with prerequisites' do
-    context 'for one version' do
+    context 'when one version' do
       let(:expected_xml) do
         <<~XML
           <objects count="2">

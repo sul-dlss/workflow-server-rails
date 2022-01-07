@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Show a workflow template', type: :request do
-  context 'for an existent template' do
+  context 'when template exists' do
     it 'draws an empty set of milestones' do
       get '/workflow_templates/assemblyWF'
       expect(response).to have_http_status(:ok)
@@ -25,7 +25,7 @@ RSpec.describe 'Show a workflow template', type: :request do
     end
   end
 
-  context 'for an nonexistent template' do
+  context 'when template does not exist' do
     it 'returns 404' do
       get '/workflow_templates/foo'
 

@@ -12,7 +12,7 @@ RSpec.describe QueueService do
       allow(Resque).to receive(:enqueue_to).and_return(true)
     end
 
-    context 'for JP2 robot (special case)' do
+    context 'when JP2 robot (special case)' do
       let(:step) { FactoryBot.create(:workflow_step, workflow: 'assemblyWF', process: 'jp2-create') }
 
       it 'enqueues to Resque' do
@@ -22,7 +22,7 @@ RSpec.describe QueueService do
       end
     end
 
-    context 'for DorRepo classes' do
+    context 'when DorRepo classes' do
       let(:step) { FactoryBot.create(:workflow_step, workflow: 'accessionWF', process: 'descriptive-metadata') }
 
       it 'enqueues to Resque' do
@@ -32,7 +32,7 @@ RSpec.describe QueueService do
       end
     end
 
-    context 'for SdrRepo classes' do
+    context 'when SdrRepo classes' do
       let(:step) { FactoryBot.create(:workflow_step, workflow: 'preservationIngestWF', process: 'transfer-object') }
 
       it 'enqueues to Resque' do
