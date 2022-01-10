@@ -4,7 +4,7 @@ executors:
     environment:
       IMAGE_NAME: suldlss/workflow-server
     docker:
-    - image: cimg/base
+    - image: circleci/buildpack-deps:stretch
 jobs:
   test:
     docker:
