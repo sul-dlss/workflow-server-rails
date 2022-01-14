@@ -7,52 +7,40 @@
     <label>Descriptive Metadata</label>
     <prereq>start-accession</prereq>
   </process>
-  <process batch-limit="1000" error-limit="10" name="rights-metadata" sequence="3">
-    <label>Rights Metadata</label>
+  <process batch-limit="1000" error-limit="10" name="content-metadata" sequence="3">
+    <label>Content Metadata</label>
     <prereq>descriptive-metadata</prereq>
   </process>
-  <process batch-limit="1000" error-limit="10" name="content-metadata" sequence="4">
-    <label>Content Metadata</label>
-    <prereq>rights-metadata</prereq>
-  </process>
-  <process batch-limit="1000" error-limit="10" name="technical-metadata" sequence="5">
+  <process batch-limit="1000" error-limit="10" name="technical-metadata" sequence="4">
     <label>Technical Metadata</label>
     <prereq>content-metadata</prereq>
   </process>
-  <process batch-limit="100" error-limit="5" name="remediate-object" sequence="6">
-    <label>Ensure object conforms to latest DOR standards and schemas</label>
+  <process batch-limit="1" error-limit="5" name="shelve" sequence="5">
+    <label>Shelve content in Digital Stacks</label>
     <prereq>technical-metadata</prereq>
   </process>
-  <process batch-limit="1" error-limit="5" name="shelve" sequence="7">
-    <label>Shelve content in Digital Stacks</label>
-    <prereq>remediate-object</prereq>
-  </process>
-  <process batch-limit="100" error-limit="10" lifecycle="published" name="publish" sequence="8">
+  <process batch-limit="100" error-limit="10" lifecycle="published" name="publish" sequence="6">
     <label>Publish Metadata</label>
     <prereq>shelve</prereq>
   </process>
-  <process batch-limit="100" error-limit="10" name="update-doi" sequence="9">
+  <process batch-limit="100" error-limit="10" name="update-doi" sequence="7">
     <label>Update DOI Metadata</label>
     <prereq>publish</prereq>
   </process>
-  <process batch-limit="1" error-limit="5" name="provenance-metadata" sequence="10">
-    <label>Provenance Metadata</label>
+  <process batch-limit="1" error-limit="5" name="sdr-ingest-transfer" sequence="8">
+    <label>Initiate Ingest into Preservation</label>
     <prereq>publish</prereq>
   </process>
-  <process batch-limit="1" error-limit="5" name="sdr-ingest-transfer" sequence="11">
-    <label>Initiate Ingest into Preservation</label>
-    <prereq>provenance-metadata</prereq>
-  </process>
-  <process batch-limit="1" error-limit="5" lifecycle="deposited" name="sdr-ingest-received" sequence="12" skip-queue="true">
+  <process batch-limit="1" error-limit="5" lifecycle="deposited" name="sdr-ingest-received" sequence="9" skip-queue="true">
     <label>Signal from SDR that object has been received</label>
   </process>
-  <process batch-limit="1" error-limit="5" name="reset-workspace" sequence="13">
+  <process batch-limit="1" error-limit="5" name="reset-workspace" sequence="10">
     <label>Reset workspace by renaming the druid-tree to a versioned directory</label>
     <prereq>sdr-ingest-received</prereq>
-    <prereq>provenance-metadata</prereq>
+    <prereq>publish</prereq>
     <prereq>shelve</prereq>
   </process>
-  <process batch-limit="1" error-limit="5" lifecycle="accessioned" name="end-accession" sequence="14">
+  <process batch-limit="1" error-limit="5" lifecycle="accessioned" name="end-accession" sequence="11">
     <label>Clean up any diff caches and set disseminationWF:cleanup to waiting</label>
     <prereq>update-doi</prereq>
     <prereq>reset-workspace</prereq>

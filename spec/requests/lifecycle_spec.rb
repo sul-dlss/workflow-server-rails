@@ -32,7 +32,7 @@ RSpec.describe 'Lifecycle', type: :request do
         FactoryBot.create(:workflow_step,
                           druid: druid,
                           version: 2,
-                          process: 'remediate-object',
+                          process: 'technical-metadata',
                           status: 'completed')
       end
 
@@ -55,7 +55,7 @@ RSpec.describe 'Lifecycle', type: :request do
         FactoryBot.create(:workflow_step,
                           druid: druid,
                           version: 2,
-                          process: 'remediate-object',
+                          process: 'technical-metadata',
                           status: 'waiting')
       end
 
@@ -89,7 +89,7 @@ RSpec.describe 'Lifecycle', type: :request do
       FactoryBot.create(:workflow_step,
                         druid: druid,
                         version: 2,
-                        process: 'rights-metadata',
+                        process: 'content-metadata',
                         lane_id: 'fast',
                         status: 'completed')
 
