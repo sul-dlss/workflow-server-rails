@@ -7,6 +7,7 @@ AllCops:
   TargetRubyVersion: 3.0
   Exclude:
     - db/schema.rb
+    - db/migrate/2019*
     - vendor/bundle/**/*
 
 Style/Documentation:
@@ -195,4 +196,13 @@ RSpec/SubjectDeclaration: # new in 2.5
 RSpec/FactoryBot/SyntaxMethods: # new in 2.7
   Enabled: false
 RSpec/Rails/AvoidSetupHook: # new in 2.4
+  Enabled: true
+
+Naming/BlockForwarding: # new in 1.24
+  Enabled: true
+Style/FileRead: # new in 1.24
+  Enabled: true
+Style/FileWrite: # new in 1.24
+  Enabled: true
+Style/MapToHash: # new in 1.24
   Enabled: true

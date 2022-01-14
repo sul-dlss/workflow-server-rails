@@ -56,8 +56,6 @@ class NextStepService
     raise "Workflow #{workflow} not found" if doc.nil?
 
     parser = WorkflowTemplateParser.new(doc)
-    parser.processes.each_with_object({}) do |process, obj|
-      obj[process.name] = process
-    end
+    parser.processes.index_by(&:name)
   end
 end
