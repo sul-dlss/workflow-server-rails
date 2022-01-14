@@ -1,4 +1,4 @@
-FROM ruby:2.5.3-alpine
+FROM ruby:3.0.3-alpine
 
 # The postgres-client could be eliminated in production
 RUN apk --no-cache add \
