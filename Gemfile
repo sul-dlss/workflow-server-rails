@@ -17,7 +17,6 @@ gem 'pg'
 gem 'pry-rails' # useful for prod debugging
 gem 'puma', '~> 5.3' # app server
 gem 'resque', '~> 2.0'
-gem 'stomp', '~> 1.4'
 gem 'whenever', require: false
 
 group :development, :test do

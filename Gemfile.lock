@@ -325,7 +325,6 @@ GEM
     sshkit (1.21.2)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    stomp (1.4.10)
     thor (1.2.1)
     tilt (2.0.10)
     tzinfo (2.0.4)
@@ -374,7 +373,6 @@ DEPENDENCIES
   simplecov
   spring
   spring-watcher-listen (~> 2.0.0)
-  stomp (~> 1.4)
   whenever
 
 BUNDLED WITH

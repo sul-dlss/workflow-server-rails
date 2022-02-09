@@ -21,14 +21,6 @@ RSpec/AnyInstance:
 RSpec/ExampleLength:
   Max: 34
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: single_line_only, single_statement_only, disallow
-RSpec/ImplicitSubject:
-  Exclude:
-    - 'spec/services/send_stomp_message_spec.rb'
-
 # Offense count: 8
 RSpec/LetSetup:
   Exclude:
