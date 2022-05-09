@@ -22,7 +22,7 @@ class WorkflowsController < ApplicationController
   def index
     # This ought to be a redirect, but our infrastructure is making it a
     # challenge to do right now: https://github.com/sul-dlss/workflow-server-rails/pull/162#issuecomment-479191283
-    # so we'll just ignore an log it.
+    # so we'll just ignore and log it.
     # return redirect_to "/objects/#{params[:druid]}/workflows" if params[:repo]
     logger.warn 'Workflows#index with repo parameter is deprecated. Call /objects/:druid/workflows instead' if params[:repo]
 
@@ -37,11 +37,8 @@ class WorkflowsController < ApplicationController
     end
   end
 
-  # Display all steps for all workflows for all versions of a given object
+  # Display all steps for one workflow for all versions of a given object
   def show
-    # I think the only thing that does this is when you access the workflowDatastream (which is external) in the Fedora UI
-    Honeybadger.notify('The repository parameter was passed, but this is not necessary') if params[:repo]
-
     workflow_steps = WorkflowStep.where(
       druid: params[:druid],
       workflow: params[:workflow]
