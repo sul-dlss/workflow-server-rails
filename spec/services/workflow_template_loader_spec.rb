@@ -26,7 +26,7 @@ RSpec.describe WorkflowTemplateLoader do
   describe '#exists?' do
     context 'when file exists' do
       it 'returns true' do
-        expect(loader.exists?).to eq true
+        expect(loader.exists?).to be true
       end
     end
 
@@ -34,7 +34,7 @@ RSpec.describe WorkflowTemplateLoader do
       let(:workflow_name) { 'xassemblyWF' }
 
       it 'returns false' do
-        expect(loader.exists?).to eq false
+        expect(loader.exists?).to be false
       end
     end
   end
