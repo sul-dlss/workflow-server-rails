@@ -117,13 +117,3 @@ GET    /workflow_queue
 ## Deploy
 ### Logs
 Logs are located in `/var/log/httpd`.
-
-## TODO
-
-### Remove the STOMP dependency
-It would be great if we could remove the dependency on STOMP messaging.
-One way we could do this is if we only allow update messages to come from dor-services-app.
-dor-services-app could send a message to STOMP.
-
-Another possibility would be removing the workflow status from the Argo SOLR index.
-If something needs to know about statuses, it should ask the workflow service directly.

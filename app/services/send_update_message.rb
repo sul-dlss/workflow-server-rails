@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 #
-# You may set the environment variable SETTINGS__ENABLE_STOMP=false to
-# prevent sending any Stomp messages.
+# You may set the environment variable SETTINGS__RABBITMQ_ENABLED=false to
+# prevent sending any RabbitMQ messages.
 class SendUpdateMessage
   def self.publish(step:)
     SendRabbitmqMessage.publish(step: step) if Settings.rabbitmq.enabled
