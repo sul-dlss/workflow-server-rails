@@ -25,7 +25,7 @@
   </process>
   <process name="generate-geo-metadata" sequence="7">
     <prereq>extract-iso19139</prereq>
-    <label>Convert ISO 19139 metadata into geoMetadata datastream</label>
+    <label>Convert ISO 19139 metadata into geoMetadata RDF XML file</label>
   </process>
   <process name="generate-mods" sequence="8">
     <prereq>generate-geo-metadata</prereq>
@@ -69,7 +69,7 @@
   </process>
   <process name="load-geo-metadata" sequence="18">
     <prereq>generate-content-metadata</prereq>
-    <label>Accession geoMetadata datastream into DOR repository</label>
+    <label>Accession geoMetadata RDF XML file into SDR</label>
   </process>
   <process name="finish-gis-assembly-workflow" sequence="19">
     <prereq>load-geo-metadata</prereq>
