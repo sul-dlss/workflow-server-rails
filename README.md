@@ -104,7 +104,6 @@ Return the list of workflow templates
 Return the list of steps for the given workflow template
 `GET   /workflow_templates/:workflow`
 
-`GET    /workflow_archive` - Deprecated. Currently just returns a count of the number of items/versions for the workflow
 `PUT    /:repo/objects/:druid/workflows/:workflow` - Deprecated. Use version without repo parameter instead.
 
 These processes are used by robot-master to discover which steps need to be performed.
