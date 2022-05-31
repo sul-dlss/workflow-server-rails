@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     delete 'workflows', to: 'steps#destroy_all'
     post 'versionClose', to: 'versions#close'
 
-    resources :workflows, only: %i[show index], param: :workflow do
+    resources :workflows, only: %i[show index destroy], param: :workflow do
       collection do
         post ':workflow', to: 'workflows#create'
         put ':workflow/:process', to: 'steps#update'
