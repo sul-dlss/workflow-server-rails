@@ -51,29 +51,4 @@ RSpec.describe 'Get the steps for one object', type: :request do
       XML
     end
   end
-
-  context 'when using the deprecated route with the repository' do
-    let(:item) do
-      FactoryBot.create(:workflow_step,
-                        status: 'completed',
-                        created_at: date)
-    end
-
-    it 'redirects to the new route' do
-      get "/dor/objects/#{druid}/workflows"
-      # This ought to be a redirect, but our infrastructure is making it a
-      # challenge to do right now: https://github.com/sul-dlss/workflow-server-rails/pull/162#issuecomment-479191283
-      # expect(response).to redirect_to "/objects/#{druid}/workflows"
-      expect(response).to be_successful
-      expect(response.body).to be_equivalent_to <<~XML
-        <workflows objectId="#{druid}">
-          <workflow objectId="#{druid}" id="accessionWF">
-            <process version="1" note="" lifecycle="" laneId="default"
-              elapsed="" attempts="0" datetime="#{date}"
-              status="completed" name="start-accession"/>
-          </workflow>
-        </workflows>
-      XML
-    end
-  end
 end

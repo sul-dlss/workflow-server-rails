@@ -20,12 +20,6 @@ class WorkflowsController < ApplicationController
 
   # Display all steps for all versions of a given object
   def index
-    # This ought to be a redirect, but our infrastructure is making it a
-    # challenge to do right now: https://github.com/sul-dlss/workflow-server-rails/pull/162#issuecomment-479191283
-    # so we'll just ignore and log it.
-    # return redirect_to "/objects/#{params[:druid]}/workflows" if params[:repo]
-    logger.warn 'Workflows#index with repo parameter is deprecated. Call /objects/:druid/workflows instead' if params[:repo]
-
     object_steps = WorkflowStep.where(druid: params[:druid])
                                .order(:workflow, created_at: :asc)
                                .group_by(&:workflow)
@@ -53,16 +47,6 @@ class WorkflowsController < ApplicationController
     )
     obj.workflow_steps(params[:workflow]).destroy_all
     head :no_content
-  end
-
-  def archive
-    @objects = WorkflowStep.where(workflow: params[:workflow]).count
-  end
-
-  def deprecated_create
-    Honeybadger.notify 'Workflows#create with repo parameter and xml body is deprecated. Call /objects/:druid/workflows instead'
-
-    create
   end
 
   def create

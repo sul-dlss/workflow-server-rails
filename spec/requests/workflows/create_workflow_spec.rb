@@ -11,26 +11,6 @@ RSpec.describe 'Create a workflow' do
     allow(QueueService).to receive(:enqueue)
   end
 
-  describe 'deprecated PUT create' do
-    let(:druid) { 'druid:bb123bb1234' }
-    let(:workflow) { 'accessionWF' }
-    let(:repository) { 'dor' }
-    let(:request_data) { workflow_template.to_s }
-
-    before do
-      allow(SendUpdateMessage).to receive(:publish)
-    end
-
-    it 'creates new workflows' do
-      headers = { 'CONTENT_TYPE' => 'application/xml' }
-      expect do
-        put "/#{repository}/objects/#{druid}/workflows/#{workflow}?version=1", params: request_data, headers: headers
-      end.to change(WorkflowStep, :count).by(11)
-
-      expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
-    end
-  end
-
   describe 'POST create' do
     let(:druid) { 'druid:bb123bb1234' }
     let(:workflow) { 'accessionWF' }

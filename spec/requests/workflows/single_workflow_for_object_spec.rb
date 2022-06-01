@@ -15,7 +15,7 @@ RSpec.describe 'Get a single workflow for an object', type: :request do
       let(:druid) { item.druid }
 
       it 'shows the workflow' do
-        get "/dor/objects/#{druid}/workflows/accessionWF"
+        get "/objects/#{druid}/workflows/accessionWF"
         expect(response).to be_successful
         expect(response.body).to be_equivalent_to <<~XML
           <workflow objectId="#{druid}" id="accessionWF">
@@ -31,7 +31,7 @@ RSpec.describe 'Get a single workflow for an object', type: :request do
       let(:druid) { 'druid:abc1232' }
 
       it 'returns an empy workflow node' do
-        get "/dor/objects/#{druid}/workflows/accessionWF"
+        get "/objects/#{druid}/workflows/accessionWF"
         expect(response).to be_successful
         expect(response.body).to be_equivalent_to <<~XML
           <workflow objectId="#{druid}" id="accessionWF" />
