@@ -15,4 +15,12 @@
     <prereq>cdx-merge-sort-publish</prereq>
     <label>Update the path index with the new (W)ARCs</label>
   </process>
+  <process name="cdxj-generator" sequence="5">
+    <prereq>path-indexer</prereq>
+    <label>Generate CDXJ files for WARCs</label>
+  </process>
+  <process name="cdxj-merge" sequence="6">
+    <prereq>cdxj-generator</prereq>
+    <label>Merge new CDX into existing pywb CDX file</label>
+  </process>
 </workflow-def>
