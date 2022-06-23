@@ -75,12 +75,4 @@
     <prereq>load-geo-metadata</prereq>
     <label>Finalize assembly workflow to prepare for assembly/delivery/discovery</label>
   </process>
-  <process name="start-assembly-workflow" sequence="20" status="skipped">
-    <prereq>finish-gis-assembly-workflow</prereq>
-    <label>Kickstart the core assembly workflow at assemblyWF</label>
-  </process>
-  <process name="start-delivery-workflow" sequence="21" status="skipped">
-    <prereq>start-assembly-workflow</prereq>
-    <label>Kickstart the GIS delivery workflow at gisDeliveryWF</label>
-  </process>
 </workflow-def>
