@@ -11,13 +11,14 @@ RSpec.describe 'Show a workflow template', type: :request do
       expect(json['processes']).to eq [
         { 'label' => 'Initiate assembly of the object',
           'name' => 'start-assembly' },
-        { 'label' => 'Create content-metadata from stub content metadata if it exists',
+        { 'label' =>
+          'Create contentMetadata.xml from stub (from Goobi) if it exists; any contentMetadata.xml is converted and posted to cocina object',
           'name' => 'content-metadata-create' },
-        { 'label' => 'Create JP2 derivatives for any images in object',
+        { 'label' => 'Create JP2 derivatives for images in object',
           'name' => 'jp2-create' },
-        { 'label' => 'Compute and compare checksums for any files referenced in contentMetadata',
+        { 'label' => 'Compute and compare checksums for any files referenced in cocina',
           'name' => 'checksum-compute' },
-        { 'label' => 'Calculate and add exif, mimetype, file size and other attributes to each file node in contentMetadata',
+        { 'label' => 'Calculate and add exif, mimetype, file size and other attributes to each file in cocina',
           'name' => 'exif-collect' },
         { 'label' => 'Initiate workspace and start common accessioning',
           'name' => 'accessioning-initiate' }
