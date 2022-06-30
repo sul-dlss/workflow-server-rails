@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
 <workflow-def id="assemblyWF">
-  <process name="start-assembly" sequence="1" status="completed">
+  <process name="start-assembly" status="completed">
     <label>Initiate assembly of the object</label>
   </process>
-  <process name="content-metadata-create" sequence="2">
+  <process name="content-metadata-create">
     <prereq>start-assembly</prereq>
     <label>Create contentMetadata.xml from stub (from Goobi) if it exists; any contentMetadata.xml is converted and posted to cocina object</label>
   </process>
-  <process name="jp2-create" sequence="3">
+  <process name="jp2-create">
     <prereq>content-metadata-create</prereq>
     <label>Create JP2 derivatives for images in object</label>
   </process>
-  <process name="checksum-compute" sequence="4">
+  <process name="checksum-compute">
     <prereq>jp2-create</prereq>
     <label>Compute and compare checksums for any files referenced in cocina</label>
   </process>
-  <process name="exif-collect" sequence="5">
+  <process name="exif-collect">
     <prereq>checksum-compute</prereq>
     <label>Calculate and add exif, mimetype, file size and other attributes to each file in cocina</label>
   </process>
-  <process name="accessioning-initiate" sequence="6">
+  <process name="accessioning-initiate">
     <prereq>exif-collect</prereq>
     <label>Initiate workspace and start common accessioning</label>
   </process>

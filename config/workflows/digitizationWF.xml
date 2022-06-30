@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <workflow-def id="digitizationWF">
-  <process lifecycle="registered" name="initiate" sequence="1" status="completed">
+  <process lifecycle="registered" name="initiate" status="completed">
     <label>Initiate digitization workflow</label>
   </process>
-  <process lifecycle="digitized" name="digitize" sequence="2">
+  <process lifecycle="digitized" name="digitize">
     <prereq>initiate</prereq>
     <label>Place-holder step for digitization processes</label>
   </process>
-  <process name="start-accession" sequence="3">
+  <process name="start-accession">
     <prereq>digitize</prereq>
     <label>Start accessioning</label>
   </process>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <workflow-def id="disseminationWF">
-  <process name="cleanup" sequence="1" status="waiting">
+  <process name="cleanup" status="waiting">
     <label>IClean up DOR workspace after accessioning</label>
   </process>
 </workflow-def>
