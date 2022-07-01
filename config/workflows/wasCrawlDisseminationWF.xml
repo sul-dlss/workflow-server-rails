@@ -1,29 +1,29 @@
 <?xml version="1.0"?>
 <workflow-def id="wasCrawlDisseminationWF">
-  <process name="start" sequence="1" status="completed">
+  <process name="start" status="completed">
     <label>Initiate was crawl disseminationWF of the object</label>
   </process>
-  <process name="warc-extractor" sequence="2">
+  <process name="warc-extractor">
     <prereq>start</prereq>
     <label>Extracts WARC files from WACZ files</label>
   </process>
-  <process name="cdx-generator" sequence="3">
+  <process name="cdx-generator">
     <prereq>warc-extractor</prereq>
     <label>Generate CDX files for (W)ARCs</label>
   </process>
-  <process name="cdx-merge-sort-publish" sequence="4">
+  <process name="cdx-merge-sort-publish">
     <prereq>cdx-generator</prereq>
     <label>Sort individual new CDX files, merge into existing openwayback cdx file</label>
   </process>
-  <process name="path-indexer" sequence="5">
+  <process name="path-indexer">
     <prereq>cdx-merge-sort-publish</prereq>
     <label>Update the path index with the new (W)ARCs</label>
   </process>
-  <process name="cdxj-generator" sequence="6">
+  <process name="cdxj-generator">
     <prereq>path-indexer</prereq>
     <label>Generate CDXJ files for WARCs</label>
   </process>
-  <process name="cdxj-merge" sequence="7">
+  <process name="cdxj-merge">
     <prereq>cdxj-generator</prereq>
     <label>Merge new CDX into existing pywb CDX file</label>
   </process>
