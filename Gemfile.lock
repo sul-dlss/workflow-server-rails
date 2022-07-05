@@ -111,7 +111,7 @@ GEM
       activesupport
     diff-lcs (1.5.0)
     digest (3.1.0)
-    dlss-capistrano (4.2.1)
+    dlss-capistrano (4.3.0)
       capistrano (~> 3.0)
       capistrano-bundle_audit (>= 0.3.0)
       capistrano-one_time_key
@@ -167,6 +167,7 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    json (2.6.2)
     lograge (0.12.0)
       actionpack (>= 4)
       activesupport (>= 4)
@@ -181,9 +182,9 @@ GEM
     method_source (1.0.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
-    minitest (5.16.1)
+    minitest (5.16.2)
     mono_logger (1.1.1)
-    msgpack (1.5.2)
+    msgpack (1.5.3)
     multi_json (1.15.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
@@ -225,10 +226,10 @@ GEM
     puma (5.6.4)
       nio4r (~> 2.0)
     racc (1.6.0)
-    rack (2.2.3.1)
+    rack (2.2.4)
     rack-protection (2.2.0)
       rack
-    rack-test (2.0.1)
+    rack-test (2.0.2)
       rack (>= 1.3)
     rails (7.0.3)
       actioncable (= 7.0.3)
@@ -259,7 +260,7 @@ GEM
     rainbow (3.1.1)
     rake (13.0.6)
     rbtree (0.4.5)
-    redis (4.7.0)
+    redis (4.7.1)
     redis-namespace (1.8.2)
       redis (>= 3.0.4)
     regexp_parser (2.5.0)
@@ -290,7 +291,8 @@ GEM
     rspec-support (3.11.0)
     rspec_junit_formatter (0.5.1)
       rspec-core (>= 2, < 4, != 2.12.0)
-    rubocop (1.31.0)
+    rubocop (1.31.1)
+      json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -305,8 +307,8 @@ GEM
       activesupport (>= 4.2.0)
       rack (>= 1.1)
       rubocop (>= 1.7.0, < 2.0)
-    rubocop-rspec (2.11.1)
-      rubocop (~> 1.19)
+    rubocop-rspec (2.12.1)
+      rubocop (~> 1.31)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
     set (1.0.2)
@@ -375,4 +377,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   2.3.13
+   2.3.17
