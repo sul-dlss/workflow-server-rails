@@ -76,26 +76,24 @@ To shut down postgres afterwards,
 - ```docker-compose down``` afterwards
 
 ## Routes:
-`GET    /:repo/objects/:druid/lifecycle` - Returns the milestones in the lifecycle that have been completed
-
 `GET    /objects/:druid/lifecycle` - Returns the milestones in the lifecycle that have been completed
 
 
-`POST   /:repo/objects/:druid/versionClose` - Set all versioningWF steps to 'complete' and starts a new accessionWF unless `create-accession=false` is passed as a parameter.
+`POST   /objects/:druid/versionClose` - Set all versioningWF steps to 'complete' and starts a new accessionWF unless `create-accession=false` is passed as a parameter.
 
 
 These methods deal with the workflow for a single object
 ```
 POST   /objects/:druid/workflows/:workflow
-GET    /:repo/objects/:druid/workflows
-GET    /:repo/objects/:druid/workflows/:workflow
-DELETE /:repo/objects/:druid/workflows/:workflow
+GET    /objects/:druid/workflows
+GET    /objects/:druid/workflows/:workflow
+DELETE /objects/:druid/workflows/:workflow
 ```
 
 These methods deal with a single step for a single object
 ```
-PUT    /:repo/objects/:druid/workflows/:workflow/:process
-GET    /:repo/objects/:druid/workflows/:workflow/:process
+PUT    /objects/:druid/workflows/:workflow/:process
+GET    /objects/:druid/workflows/:workflow/:process
 ```
 
 Return the list of workflow templates
@@ -103,8 +101,6 @@ Return the list of workflow templates
 
 Return the list of steps for the given workflow template
 `GET   /workflow_templates/:workflow`
-
-`PUT    /:repo/objects/:druid/workflows/:workflow` - Deprecated. Use version without repo parameter instead.
 
 These processes are used by robot-master to discover which steps need to be performed.
 ```
