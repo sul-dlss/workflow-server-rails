@@ -7,20 +7,8 @@
     <prereq>start</prereq>
     <label>Extracts WARC files from WACZ files</label>
   </process>
-  <process name="cdx-generator">
-    <prereq>warc-extractor</prereq>
-    <label>Generate CDX files for (W)ARCs</label>
-  </process>
-  <process name="cdx-merge-sort-publish">
-    <prereq>cdx-generator</prereq>
-    <label>Sort individual new CDX files, merge into existing openwayback cdx file</label>
-  </process>
-  <process name="path-indexer">
-    <prereq>cdx-merge-sort-publish</prereq>
-    <label>Update the path index with the new (W)ARCs</label>
-  </process>
   <process name="cdxj-generator">
-    <prereq>path-indexer</prereq>
+    <prereq>warc-extractor</prereq>
     <label>Generate CDXJ files for WARCs</label>
   </process>
   <process name="cdxj-merge">
