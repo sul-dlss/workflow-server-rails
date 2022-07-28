@@ -8,6 +8,7 @@ class StepsController < ApplicationController
   # rubocop:disable Metrics/AbcSize
   def update
     parser = ProcessParser.new(process_from_request_body, use_default_lane_id: false)
+
     step = find_step_for_process
 
     return render plain: '', status: :not_found if step.nil?
@@ -16,7 +17,11 @@ class StepsController < ApplicationController
 
     return render plain: status_mismatch_error(step), status: :conflict if params['current-status'] && step.status != params['current-status']
 
-    step.update(parser.to_h)
+    # We need this transaction to be committed before we kick off indexing/next steps
+    # or they could find the data to be in an outdated state.
+    WorkflowStep.transaction do 
+      step.update(parser.to_h)
+    end
 
     # Enqueue next steps
     next_steps = NextStepService.enqueue_next_steps(step: step)
