@@ -19,7 +19,7 @@ class StepsController < ApplicationController
 
     # We need this transaction to be committed before we kick off indexing/next steps
     # or they could find the data to be in an outdated state.
-    WorkflowStep.transaction do 
+    WorkflowStep.transaction do
       step.update(parser.to_h)
     end
 
