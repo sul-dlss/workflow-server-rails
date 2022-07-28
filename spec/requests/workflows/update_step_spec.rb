@@ -53,16 +53,13 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
     end
   end
 
-  context 'when no matching step exists (Hydrus does this)' do
+  context 'when no matching step exists' do
     let(:druid) { 'druid:zz696qh8598' }
     let(:wf) { WorkflowStep.where(druid: druid, workflow: 'hydrusAssemblyWF', process: 'submit') }
     let(:process_xml) { '<process name="submit" status="completed" elapsed="3" lifecycle="submitted" laneId="default" note="Yay"/>' }
 
-    it 'returns a 404' do
-      put "/objects/#{druid}/workflows/hydrusAssemblyWF/submit", params: process_xml
-
-      expect(response).to be_not_found
-      expect(SendUpdateMessage).not_to have_received(:publish)
+    it 'raises an error' do
+      expect { put "/objects/#{druid}/workflows/hydrusAssemblyWF/submit", params: process_xml }.to raise_error 'step not found'
     end
   end
 

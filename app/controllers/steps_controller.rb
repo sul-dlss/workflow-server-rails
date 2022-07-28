@@ -11,8 +11,6 @@ class StepsController < ApplicationController
 
     step = find_step_for_process
 
-    return render plain: '', status: :not_found if step.nil?
-
     return render plain: process_mismatch_error(parser), status: :bad_request if parser.process != params[:process]
 
     return render plain: status_mismatch_error(step), status: :conflict if params['current-status'] && step.status != params['current-status']
@@ -68,7 +66,7 @@ class StepsController < ApplicationController
       raise "Duplicate workflow step for #{params[:druid]} #{params[:workflow]} #{params[:process]}"
     end
 
-    query.first
+    query.first || raise("step not found")
   end
   # rubocop:enable Metrics/AbcSize
 
