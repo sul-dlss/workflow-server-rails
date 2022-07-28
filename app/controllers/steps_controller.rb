@@ -66,7 +66,7 @@ class StepsController < ApplicationController
       raise "Duplicate workflow step for #{params[:druid]} #{params[:workflow]} #{params[:process]}"
     end
 
-    query.first || raise("step not found")
+    query.first || raise('step not found')
   end
   # rubocop:enable Metrics/AbcSize
 
