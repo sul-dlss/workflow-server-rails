@@ -24,6 +24,12 @@ class StepsController < ApplicationController
     # Enqueue next steps
     next_steps = NextStepService.enqueue_next_steps(step: step)
 
+    # https://github.com/sul-dlss/argo/issues/3817
+    # Theory is that many commits to solr are not being executed in the correct order, resulting in
+    # older data being indexed last.  This is an attempt to force a delay when indexing the very
+    # last step of the accessionWF.
+    sleep 1 if step.workflow == 'accessionWF' && step.process == 'end-accession' && step.status == 'completed'
+
     SendUpdateMessage.publish(step: step)
     render json: { next_steps: next_steps }
   end
