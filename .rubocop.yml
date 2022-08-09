@@ -32,6 +32,10 @@ Style/HashTransformKeys:
 Style/HashTransformValues:
   Enabled: true
 
+Style/GlobalVars:
+  Exclude:
+    - app/services/rabbit_factory.rb
+
 Layout/LineEndStringConcatenationIndentation: # new in 1.18
   Enabled: true
 Layout/SpaceBeforeBrackets: # new in 1.7

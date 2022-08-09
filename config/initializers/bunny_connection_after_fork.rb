@@ -11,13 +11,7 @@ if defined?(PhusionPassenger) # otherwise it breaks rake commands if you put thi
     if forked
       # We're in a smart spawning mode
       # Now is a good time to connect to RabbitMQ
-      $rabbitmq_connection = Bunny.new(hostname: Settings.rabbitmq.hostname,
-                                       vhost: Settings.rabbitmq.vhost,
-                                       username: Settings.rabbitmq.username,
-                                       password: Settings.rabbitmq.password)
-      $rabbitmq_connection.start
-
-      $rabbitmq_channel = $rabbitmq_connection.create_channel
+      RabbitFactory.start_global
     end
   end
 
