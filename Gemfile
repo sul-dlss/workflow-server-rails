@@ -16,6 +16,7 @@ gem 'okcomputer'
 gem 'pg'
 gem 'pry-rails' # useful for prod debugging
 gem 'puma', '~> 5.3' # app server
+gem 'redis', '~> 4.0' # redis 5.x has breaking changes with resque, see https://github.com/resque/resque/issues/1821
 gem 'resque', '~> 2.0'
 gem 'whenever', require: false
 
