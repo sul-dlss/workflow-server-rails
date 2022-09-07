@@ -217,8 +217,6 @@ GEM
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    pry-rails (0.3.9)
-      pry (>= 0.10.4)
     puma (5.6.5)
       nio4r (~> 2.0)
     racc (1.6.0)
@@ -360,7 +358,7 @@ DEPENDENCIES
   lograge
   okcomputer
   pg
-  pry-rails
+  pry
   puma (~> 5.3)
   rails (~> 7.0.0)
   redis (~> 4.0)
