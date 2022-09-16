@@ -41,7 +41,7 @@ RSpec.describe 'Create a workflow', type: :request do
           expect do
             post "/objects/#{druid}/workflows/#{workflow}?version=1"
           end.not_to change(WorkflowStep, :count)
-          expect(response.status).to eq 400
+          expect(response).to have_http_status :bad_request
         end
       end
     end

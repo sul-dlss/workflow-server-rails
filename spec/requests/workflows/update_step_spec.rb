@@ -106,7 +106,7 @@ RSpec.describe 'Update a workflow step for an object', type: :request do
         put "/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}?current-status=not-waiting", params: process_xml
 
         # NOTE: `#be_conflict` does not exist as a matcher for 409 errors
-        expect(response.status).to eq 409
+        expect(response).to have_http_status :conflict
         expect(SendUpdateMessage).not_to have_received(:publish)
       end
     end
