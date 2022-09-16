@@ -28,11 +28,11 @@ class WorkflowMonitor
   end
 
   def monitor_queued_steps
-    queued_count = WorkflowStep.queued
-                               .where(WorkflowStep.arel_table[:updated_at].lt(12.hours.ago)).count
-    return if queued_count.zero?
+    queued = WorkflowStep.queued
+                         .where(WorkflowStep.arel_table[:updated_at].lt(12.hours.ago))
+    return if queued.count.zero?
 
-    Honeybadger.notify("#{queued_count} workflow steps have been queued for more than 12 hours. Perhaps there is a " \
-                       'problem with the robots.')
+    Honeybadger.notify("#{queued.count} workflow steps have been queued for more than 12 hours. Perhaps there is a " \
+                       'problem with the robots.', { druids: queued.pluck(:druid) })
   end
 end
