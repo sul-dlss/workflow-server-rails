@@ -67,7 +67,7 @@ RSpec.describe WorkflowMonitor do
       expect(Honeybadger).to have_received(:notify).with(/#{stale_started_msg}/)
 
       stale_msg = '1 workflow steps have been queued for more than 12 hours. '
-      expect(Honeybadger).to have_received(:notify).with(/#{stale_msg}/, { druids: [stale.druid] })
+      expect(Honeybadger).to have_received(:notify).with(/#{stale_msg}/, context: { druids: [stale.druid] })
     end
   end
 end
