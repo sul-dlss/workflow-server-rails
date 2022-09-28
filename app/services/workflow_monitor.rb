@@ -33,6 +33,6 @@ class WorkflowMonitor
     return if queued.count.zero?
 
     Honeybadger.notify("#{queued.count} workflow steps have been queued for more than 12 hours. Perhaps there is a " \
-                       'problem with the robots.', { druids: queued.pluck(:druid) })
+                       'problem with the robots.', context: { druids: queued.pluck(:druid) })
   end
 end
