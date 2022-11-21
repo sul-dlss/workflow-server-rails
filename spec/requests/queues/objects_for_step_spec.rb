@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Objects for workstep', type: :request do
+RSpec.describe 'Objects for workstep' do
   context 'with prerequisites' do
     context 'when one version' do
       let(:expected_xml) do

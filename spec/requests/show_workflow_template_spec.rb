@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Show a workflow template', type: :request do
+RSpec.describe 'Show a workflow template' do
   context 'when template exists' do
     it 'draws an empty set of milestones' do
       get '/workflow_templates/assemblyWF'

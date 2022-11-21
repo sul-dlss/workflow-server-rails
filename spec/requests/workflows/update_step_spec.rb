@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Update a workflow step for an object', type: :request do
+RSpec.describe 'Update a workflow step for an object' do
   let(:druid) { wf.druid }
 
   let(:process_xml) do

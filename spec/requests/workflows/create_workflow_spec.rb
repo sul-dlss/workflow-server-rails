@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Create a workflow', type: :request do
+RSpec.describe 'Create a workflow' do
   let(:wf) { FactoryBot.create(:workflow_step) }
   let(:druid) { wf.druid }
   let(:workflow_template) { WorkflowTemplateLoader.load_as_xml('accessionWF') }

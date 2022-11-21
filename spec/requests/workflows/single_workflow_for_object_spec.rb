@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Get a single workflow for an object', type: :request do
+RSpec.describe 'Get a single workflow for an object' do
   context 'when a workflow exists for the object' do
     let(:item) do
       FactoryBot.create(:workflow_step,
