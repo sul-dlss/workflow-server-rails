@@ -3,10 +3,20 @@
 ##
 # API for handling requests about a specific step within an object's workflow.
 class StepsController < ApplicationController
+  def show
+    @step = find_step_for_process
+
+    render plain: '', status: :not_found if @step.nil?
+  end
+
+  def destroy_all
+    WorkflowStep.where(druid: params[:druid]).destroy_all
+    head :no_content
+  end
+
   # Update a single WorkflowStep
   # If there are next steps, they are enqueued.
-  # rubocop:disable Metrics/AbcSize
-  def update
+  def update # rubocop:disable Metrics/AbcSize
     parser = ProcessParser.new(process_from_request_body, use_default_lane_id: false)
 
     step = find_step_for_process
@@ -32,18 +42,6 @@ class StepsController < ApplicationController
 
     SendUpdateMessage.publish(step: step)
     render json: { next_steps: next_steps }
-  end
-  # rubocop:enable Metrics/AbcSize
-
-  def destroy_all
-    WorkflowStep.where(druid: params[:druid]).destroy_all
-    head :no_content
-  end
-
-  def show
-    @step = find_step_for_process
-
-    render plain: '', status: :not_found if @step.nil?
   end
 
   private

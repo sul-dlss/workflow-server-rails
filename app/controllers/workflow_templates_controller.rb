@@ -4,6 +4,12 @@
 # This is used by argo so it can display the progress of an object
 # through the workflow.
 class WorkflowTemplatesController < ApplicationController
+  def index
+    files = Dir.glob("#{WorkflowTemplateLoader::WORKFLOWS_DIR}/*.xml")
+    names = files.map { |file| file.sub(%r{#{WorkflowTemplateLoader::WORKFLOWS_DIR}/([^/]*).xml}, '\1') }.sort
+    render json: names
+  end
+
   def show
     loader = WorkflowTemplateLoader.new(params[:id])
     return head :not_found unless loader.exists?
@@ -11,11 +17,5 @@ class WorkflowTemplatesController < ApplicationController
     template = loader.load_as_xml
     parser = WorkflowTemplateParser.new(template)
     @processes = parser.processes
-  end
-
-  def index
-    files = Dir.glob("#{WorkflowTemplateLoader::WORKFLOWS_DIR}/*.xml")
-    names = files.map { |file| file.sub(%r{#{WorkflowTemplateLoader::WORKFLOWS_DIR}/([^/]*).xml}, '\1') }.sort
-    render json: names
   end
 end

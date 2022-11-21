@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Lifecycle', type: :request do
+RSpec.describe 'Lifecycle' do
   let(:xml) { Nokogiri::XML(response.body) }
   let(:returned_milestones) { xml.xpath('//lifecycle/milestone') }
   let(:returned_milestone_versions) { returned_milestones.map { |node| node.attr('version') } }

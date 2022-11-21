@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Lanes', type: :request do
+RSpec.describe 'Lanes' do
   before do
     FactoryBot.create(:workflow_step,
                       process: 'shelve',

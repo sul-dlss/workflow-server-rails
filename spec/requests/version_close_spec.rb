@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Close a version', type: :request do
+RSpec.describe 'Close a version' do
   let(:druid) { FactoryBot.build(:workflow_step).druid }
 
   before do

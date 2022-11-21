@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'List the workflow templates', type: :request do
+RSpec.describe 'List the workflow templates' do
   it 'draws name and label' do
     get '/workflow_templates'
     expect(response).to have_http_status(:ok)

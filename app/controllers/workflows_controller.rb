@@ -40,15 +40,6 @@ class WorkflowsController < ApplicationController
     @workflow = Workflow.new(name: params[:workflow], druid: params[:druid], steps: workflow_steps)
   end
 
-  def destroy
-    obj = Version.new(
-      druid: params[:druid],
-      version: params[:version]
-    )
-    obj.workflow_steps(params[:workflow]).destroy_all
-    head :no_content
-  end
-
   def create
     return render(plain: 'Unknown workflow', status: :bad_request) if template.nil?
 
@@ -62,6 +53,15 @@ class WorkflowsController < ApplicationController
     ).create_workflow_steps
 
     head :created
+  end
+
+  def destroy
+    obj = Version.new(
+      druid: params[:druid],
+      version: params[:version]
+    )
+    obj.workflow_steps(params[:workflow]).destroy_all
+    head :no_content
   end
 
   private

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'All queued steps', type: :request do
+RSpec.describe 'All queued steps' do
   before do
     # This is waiting, so it shouldn't appear in the results
     FactoryBot.create(:workflow_step,
