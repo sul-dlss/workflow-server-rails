@@ -7,13 +7,13 @@
 
 This is a Rails-based workflow service that replaced SDR's Java-based workflow service.  It is consumed by the users of dor-workflow-client (argo, hydra_etd, pre-assembly, dor-indexing-app, dor-services-app, robots, technical-metadata-service, sdr-api, was-registar-app, preservation-catalog) and *soon* the goobi application (currently proxying through dor-services-app).
 
-The workflows are defined by xml templates which are stored in [config/workflows](https://github.com/sul-dlss/workflow-server-rails/tree/main/config/workflows).  The templates define a dependency graph. When all prerequisites for a step are complete, the step is marked as "queued" and a corresponding job is pushed into Resque.  Some steps are are marked `skip-queue="true"` which means they are merely logged events and do not kick off a Resque process.
+The workflows are defined by xml templates which are stored in [config/workflows](https://github.com/sul-dlss/workflow-server-rails/tree/main/config/workflows).  The templates define a dependency graph. When all prerequisites for a step are complete, the step is marked as "queued" and a corresponding job is pushed into Sidekiq.  Some steps are are marked `skip-queue="true"` which means they are merely logged events and do not kick off a Sidekiq process.
 
 
-## Resque Jobs
+## Sidekiq Jobs
 
 When a workflow step is set to done, the service calculates which workflow steps
-are ready to be worked on and enqueues Resque jobs for them.  The queues are named
+are ready to be worked on and enqueues Sidekiq jobs for them.  The queues are named
 for the workflow and priority.  For example:
 
 ```
@@ -30,6 +30,9 @@ disseminationWF_low
 ```
 
 ## Developers
+
+### Configuration
+The credentials for SideKiq Pro must be provided (e.g., in `.bash_profile`): `export BUNDLE_GEMS__CONTRIBSYS__COM=xxxx:xxxx` (available from shared_configs).
 
 ### Build
 Build the production image:

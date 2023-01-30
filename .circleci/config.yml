@@ -5,8 +5,10 @@ workflows:
   build:
     jobs:
       - ruby-rails/lint:
-          name: lint
+          context: dlss
+          name: lint          
       - ruby-rails/test-rails:
+          context: dlss
           name: test
           api-only: true
       - ruby-rails/docker-publish:

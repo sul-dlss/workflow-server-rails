@@ -9,42 +9,44 @@ RSpec.describe QueueService do
 
   describe '#enqueue' do
     before do
-      allow(Resque).to receive(:enqueue_to).and_return(true)
+      allow(Sidekiq::Client).to receive(:push).and_return('123')
     end
 
     context 'when JP2 robot (special case)' do
       let(:step) { FactoryBot.create(:workflow_step, workflow: 'assemblyWF', process: 'jp2-create') }
 
-      it 'enqueues to Resque' do
+      it 'enqueues to Sidekiq' do
         service.enqueue
-        expect(Resque).to have_received(:enqueue_to).with('assemblyWF_jp2',
-                                                          'Robots::DorRepo::Assembly::Jp2Create', step.druid)
+        expect(Sidekiq::Client).to have_received(:push).with('queue' => 'assemblyWF_jp2',
+                                                             'class' => 'Robots::DorRepo::Assembly::Jp2Create', 'args' => [step.druid])
       end
     end
 
     context 'when DorRepo classes' do
       let(:step) { FactoryBot.create(:workflow_step, workflow: 'accessionWF', process: 'descriptive-metadata') }
 
-      it 'enqueues to Resque' do
+      it 'enqueues to Sidekiq' do
         service.enqueue
-        expect(Resque).to have_received(:enqueue_to).with('accessionWF_default',
-                                                          'Robots::DorRepo::Accession::DescriptiveMetadata', step.druid)
+        expect(Sidekiq::Client).to have_received(:push).with('queue' => 'accessionWF_default',
+                                                             'class' => 'Robots::DorRepo::Accession::DescriptiveMetadata',
+                                                             'args' => [step.druid])
       end
     end
 
     context 'when SdrRepo classes' do
       let(:step) { FactoryBot.create(:workflow_step, workflow: 'preservationIngestWF', process: 'transfer-object') }
 
-      it 'enqueues to Resque' do
+      it 'enqueues to Sidekiq' do
         service.enqueue
-        expect(Resque).to have_received(:enqueue_to).with('preservationIngestWF_default',
-                                                          'Robots::SdrRepo::PreservationIngest::TransferObject', step.druid)
+        expect(Sidekiq::Client).to have_received(:push).with('queue' => 'preservationIngestWF_default',
+                                                             'class' => 'Robots::SdrRepo::PreservationIngest::TransferObject',
+                                                             'args' => [step.druid])
       end
     end
 
-    context 'when .enqueue_to returns false' do
+    context 'when .psuh returns nil' do
       before do
-        allow(Resque).to receive(:enqueue_to).and_return(false)
+        allow(Sidekiq::Client).to receive(:push).and_return(nil)
       end
 
       let(:step) { FactoryBot.create(:workflow_step, workflow: 'assemblyWF', process: 'jp2-create') }

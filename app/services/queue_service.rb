@@ -18,11 +18,10 @@ class QueueService
 
   # Enqueue the provided step
   def enqueue
-    # .enqueue_to will return false if a pre-queue hook prevented it from queueing.
-    # Don't necessarily expect this to occur, but want to prevent from failing silently.
-    raise "Enqueueing #{class_name} for #{step.druid} to #{queue_name} failed." unless Resque.enqueue_to(queue_name, class_name, step.druid)
+    job_id = Sidekiq::Client.push('queue' => queue_name, 'class' => class_name, 'args' => [step.druid])
+    raise "Enqueueing #{class_name} for #{step.druid} to #{queue_name} failed." unless job_id
 
-    Rails.logger.info "Enqueued #{class_name} for #{step.druid} to #{queue_name}"
+    Rails.logger.info "Enqueued #{class_name} for #{step.druid} to #{queue_name}: #{job_id}"
   end
 
   private
