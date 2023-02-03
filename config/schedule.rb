@@ -19,6 +19,8 @@
 #   runner "AnotherModel.prune_old_records"
 # end
 
+require_relative 'environment'
+
 # Learn more: http://github.com/javan/whenever
 job_type :no_warnings_runner,
          "cd :path && RUBYOPT='-W0' bin/rails runner -e :environment ':task' :output && curl --silent https://api.honeybadger.io/v1/check_in/:check_in"
