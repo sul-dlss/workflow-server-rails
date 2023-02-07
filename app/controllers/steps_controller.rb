@@ -16,10 +16,15 @@ class StepsController < ApplicationController
 
   # Update a single WorkflowStep
   # If there are next steps, they are enqueued.
-  def update # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/MethodLength
+  def update
     parser = ProcessParser.new(process_from_request_body, use_default_lane_id: false)
 
     step = find_step_for_process
+
+    return render plain: '', status: :not_found if step.nil?
 
     return render plain: process_mismatch_error(parser), status: :bad_request if parser.process != params[:process]
 
@@ -43,6 +48,9 @@ class StepsController < ApplicationController
     SendUpdateMessage.publish(step: step)
     render json: { next_steps: next_steps }
   end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/MethodLength
 
   private
 
@@ -70,7 +78,7 @@ class StepsController < ApplicationController
       raise "Duplicate workflow step for #{params[:druid]} #{params[:workflow]} #{params[:process]}"
     end
 
-    query.first || raise('step not found')
+    query.first
   end
   # rubocop:enable Metrics/AbcSize
 
