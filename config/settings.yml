@@ -9,13 +9,9 @@ rabbitmq:
   username: guest
   password: guest
 
-redis:
-  hostname: localhost
-  port: 6379
-  db: 0
-  namespace: 'resque:development'
-
 # checkin keys for honeybadger (actual keys are in shared_configs per environment as needed)
 # see https://app.honeybadger.io/projects/58890/check_ins
 honeybadger_checkins:
   workflow_monitor: null
+
+redis_url: redis://localhost:6379/

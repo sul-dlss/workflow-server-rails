@@ -16,9 +16,12 @@ gem 'okcomputer'
 gem 'pg'
 gem 'pry' # make it possible to use pry for IRB (in prod debugging)
 gem 'puma', '~> 5.3' # app server
-gem 'redis', '~> 4.0' # redis 5.x has breaking changes with resque, see https://github.com/resque/resque/issues/1821
-gem 'resque', '~> 2.0'
+gem 'sidekiq', '~> 6.4'
 gem 'whenever', require: false
+
+source 'https://gems.contribsys.com/' do
+  gem 'sidekiq-pro'
+end
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
