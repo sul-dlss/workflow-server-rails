@@ -6,6 +6,9 @@ RUN apk --no-cache add \
   postgresql-client \
   tzdata
 
+ARG BUNDLE_GEMS__CONTRIBSYS__COM
+ENV BUNDLE_GEMS__CONTRIBSYS__COM $BUNDLE_GEMS__CONTRIBSYS__COM
+
 # Get bundler 2.1
 RUN gem install bundler
 
