@@ -1,5 +1,8 @@
 FROM ruby:3.0.3-alpine
 
+ARG BUNDLE_GEMS__CONTRIBSYS__COM
+ENV BUNDLE_GEMS__CONTRIBSYS__COM $BUNDLE_GEMS__CONTRIBSYS__COM
+
 # The postgres-client could be eliminated in production
 RUN apk --no-cache add \
   git \
