@@ -5,7 +5,7 @@
   </process>
   <process batch-limit="1000" name="descriptive-metadata">
     <prereq>register-object</prereq>
-    <label>Make descriptive metadata (MODS &amp; DC) from Symphony/MARC</label>
+    <label>Make descriptive metadata (MODS &amp; DC) from MARC</label>
   </process>
   <process batch-limit="10" name="google-convert">
     <prereq>register-object</prereq>

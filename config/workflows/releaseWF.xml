@@ -13,6 +13,6 @@
   </process>
   <process name="update-marc">
     <prereq>release-publish</prereq>
-    <label>Generates Symphony record with PURL URI</label>
+    <label>Generates catalog record with PURL URI</label>
   </process>
 </workflow-def>

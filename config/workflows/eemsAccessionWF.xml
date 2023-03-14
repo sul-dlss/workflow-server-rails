@@ -13,7 +13,7 @@
   </process>
   <process batch-limit="100" error-limit="5" name="submit-marc">
     <prereq>eems-transfer</prereq>
-    <label>Send stub MARC record to Symphony</label>
+    <label>Send stub MARC record to catalog</label>
   </process>
   <process batch-limit="100" error-limit="5" name="check-marc">
     <prereq>submit-marc</prereq>

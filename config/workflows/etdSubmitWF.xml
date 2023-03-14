@@ -13,19 +13,19 @@
     <label>Final Registrar approval (signal from PeopleSoft)</label>
   </process>
   <process name="submit-marc" skip-queue="true">
-    <label>Create stub MARC record for Symphony; daily crons run on etd app to aggregate these records and make them available to Symphony</label>
+    <label>Create stub MARC record for catalog; daily crons run on etd app to aggregate these records and make them available to the catalog</label>
     <prereq>registrar-approval</prereq>
   </process>
   <process name="check-marc" skip-queue="true">
-    <label>Check to see if MARC record has been loaded into Symphony (ILS); if so, updates identityMetadata with ckey and ETD agreement.  Run via cron.</label>
+    <label>Check to see if MARC record has been loaded into catalog/ILS; if so, updates identityMetadata with catalog record ID and ETD agreement.  Run via cron.</label>
     <prereq>submit-marc</prereq>
   </process>
   <process name="catalog-status" skip-queue="true">
-    <label>Check to see if cataloging is done in Symphony (ILS); run via cron</label>
+    <label>Check to see if cataloging is done in catalog/ILS; run via cron</label>
     <prereq>check-marc</prereq>
   </process>
   <process name="other-metadata" skip-queue="true">
-    <label>Update descMetadata from Symphony, generate content metadata, rights metadata, create a tag.</label>
+    <label>Update descMetadata from catalog, generate content metadata, rights metadata, create a tag.</label>
     <prereq>catalog-status</prereq>
   </process>
   <process name="start-accession" skip-queue="true">
