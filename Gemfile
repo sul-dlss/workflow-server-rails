@@ -16,7 +16,7 @@ gem 'okcomputer'
 gem 'pg'
 gem 'pry' # make it possible to use pry for IRB (in prod debugging)
 gem 'puma', '~> 5.3' # app server
-gem 'sidekiq', '~> 6.4'
+gem 'sidekiq', '~> 7.0'
 gem 'whenever', require: false
 
 source 'https://gems.contribsys.com/' do
