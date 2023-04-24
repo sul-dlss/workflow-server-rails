@@ -7,7 +7,7 @@ RSpec.describe 'Show a workflow template' do
     it 'draws an empty set of milestones' do
       get '/workflow_templates/assemblyWF'
       expect(response).to have_http_status(:ok)
-      json = JSON.parse(response.body)
+      json = response.parsed_body
       expect(json['processes']).to eq [
         { 'label' => 'Initiate assembly of the object',
           'name' => 'start-assembly' },
