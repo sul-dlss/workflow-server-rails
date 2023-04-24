@@ -186,14 +186,14 @@ RSpec.describe 'Update a workflow step for an object' do
       it 'verifies the current status' do
         put "/objects/#{druid}/workflows/#{workflow_id}/descriptive-metadata?current-status=not-waiting", params: body
         expect(response.body).to eq('Status in params (not-waiting) does not match current status (waiting)')
-        expect(response.code).to eq('409')
+        expect(response).to have_http_status(:conflict)
       end
 
       it 'verifies that process in url and body match' do
         put "/objects/#{druid}/workflows/#{workflow_id}/content-metadata", params: body
         expect(response.body).to eq('Process name in body (descriptive-metadata) does not match process name in URI ' \
                                     '(content-metadata)')
-        expect(response.code).to eq('400')
+        expect(response).to have_http_status(:bad_request)
       end
 
       it 'verifies that process is unique' do
