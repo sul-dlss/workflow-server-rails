@@ -18,7 +18,6 @@ RSpec.describe 'List the workflow templates' do
       etdSubmitWF
       gisAssemblyWF
       gisDeliveryWF
-      gisDiscoveryWF
       goobiWF
       googleScannedBookWF
       hydrusAssemblyWF
