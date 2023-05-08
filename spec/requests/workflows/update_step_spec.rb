@@ -127,10 +127,8 @@ RSpec.describe 'Update a workflow step for an object' do
     end
 
     context 'when there are multiple versions' do
-      # rubocop:disable RSpec/IndexedLet
       let(:version1_step) { FactoryBot.create(:workflow_step, status: 'error', version: 1) }
       let(:version2_step) { FactoryBot.create(:workflow_step, status: 'error', version: 2, druid: version1_step.druid) }
-      # rubocop:enable RSpec/IndexedLet
 
       before do
         # Force create
