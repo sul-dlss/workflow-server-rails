@@ -13,6 +13,6 @@ RSpec.describe 'Close a version' do
   it 'closes the version' do
     post "/objects/#{druid}/versionClose?version=3"
     expect(response).to be_successful
-    expect(WorkflowStep.where(druid: druid).count).to eq 11
+    expect(WorkflowStep.where(druid:).count).to eq 11
   end
 end

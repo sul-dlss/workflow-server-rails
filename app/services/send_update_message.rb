@@ -5,6 +5,6 @@
 # prevent sending any RabbitMQ messages.
 class SendUpdateMessage
   def self.publish(step:)
-    SendRabbitmqMessage.publish(step: step) if Settings.rabbitmq.enabled
+    SendRabbitmqMessage.publish(step:) if Settings.rabbitmq.enabled
   end
 end

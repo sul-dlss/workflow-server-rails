@@ -4,7 +4,7 @@
 class SendRabbitmqMessage
   def self.publish(step:)
     Rails.logger.info "Publishing Rabbitmq Message for #{step.druid}"
-    new(step: step).publish
+    new(step:).publish
     Rails.logger.info "Published Rabbitmq Message for #{step.druid}"
   end
 

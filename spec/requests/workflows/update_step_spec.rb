@@ -55,7 +55,7 @@ RSpec.describe 'Update a workflow step for an object' do
 
   context 'when no matching step exists (e.g. pres cat looks for 404 response to create missing workflow)' do
     let(:druid) { 'druid:zz696qh8598' }
-    let(:wf) { WorkflowStep.where(druid: druid, workflow: 'hydrusAssemblyWF', process: 'submit') }
+    let(:wf) { WorkflowStep.where(druid:, workflow: 'hydrusAssemblyWF', process: 'submit') }
     let(:process_xml) { '<process name="submit" status="completed" elapsed="3" lifecycle="submitted" laneId="default" note="Yay"/>' }
 
     it 'returns a 404' do
@@ -157,8 +157,8 @@ RSpec.describe 'Update a workflow step for an object' do
     let(:first_step) { FactoryBot.create(:workflow_step, status: 'completed') } # start-accession, which is already completed
 
     before do
-      FactoryBot.create(:workflow_step, druid: druid, process: 'descriptive-metadata')
-      FactoryBot.create(:workflow_step, druid: druid, process: 'content-metadata')
+      FactoryBot.create(:workflow_step, druid:, process: 'descriptive-metadata')
+      FactoryBot.create(:workflow_step, druid:, process: 'content-metadata')
       allow(SendUpdateMessage).to receive(:publish)
       allow(QueueService).to receive(:enqueue)
     end
@@ -170,7 +170,7 @@ RSpec.describe 'Update a workflow step for an object' do
         put "/objects/#{druid}/workflows/#{workflow_id}/descriptive-metadata", params: body
 
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
-        expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('error')
+        expect(WorkflowStep.find_by(druid:, process: 'descriptive-metadata').status).to eq('error')
         expect(QueueService).not_to have_received(:enqueue)
       end
 
@@ -188,7 +188,7 @@ RSpec.describe 'Update a workflow step for an object' do
       end
 
       it 'verifies that process is unique' do
-        duplicate = FactoryBot.build(:workflow_step, druid: druid, process: 'content-metadata', version: first_step.version)
+        duplicate = FactoryBot.build(:workflow_step, druid:, process: 'content-metadata', version: first_step.version)
         duplicate.save(validate: false)
 
         expect do
@@ -204,8 +204,8 @@ RSpec.describe 'Update a workflow step for an object' do
         put "/objects/#{druid}/workflows/#{workflow_id}/descriptive-metadata", params: body
         expect(response.body).to match(/content-metadata/)
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
-        expect(WorkflowStep.find_by(druid: druid, process: 'descriptive-metadata').status).to eq('completed')
-        expect(QueueService).to have_received(:enqueue).with(WorkflowStep.find_by(druid: druid,
+        expect(WorkflowStep.find_by(druid:, process: 'descriptive-metadata').status).to eq('completed')
+        expect(QueueService).to have_received(:enqueue).with(WorkflowStep.find_by(druid:,
                                                                                   process: 'content-metadata'))
       end
     end

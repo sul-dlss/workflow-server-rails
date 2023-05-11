@@ -5,12 +5,18 @@ workflows:
   build:
     jobs:
       - ruby-rails/lint:
+          name: lint
           context: dlss
-          name: lint          
+          executor:
+            name: ruby-rails/ruby
+            ruby-tag: '3.2.2'
       - ruby-rails/test-rails:
           context: dlss
           name: test
           api-only: true
+          executor:
+            name: ruby-rails/ruby-postgres
+            ruby-tag: '3.2.2'
       - ruby-rails/docker-publish:
           context: dlss
           name: publish-latest
