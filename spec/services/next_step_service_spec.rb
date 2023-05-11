@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe NextStepService do
   describe '.enqueue_next_steps' do
-    subject(:next_steps) { described_class.enqueue_next_steps(step: step) }
+    subject(:next_steps) { described_class.enqueue_next_steps(step:) }
 
     context "when there is a step that isn't complete" do
       let(:step) do

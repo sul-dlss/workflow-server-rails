@@ -6,7 +6,7 @@ class NextStepService
 
   # @param [WorkflowStep] step
   def self.enqueue_next_steps(step:)
-    instance.enqueue_next_steps(step: step)
+    instance.enqueue_next_steps(step:)
   end
 
   def initialize
@@ -16,7 +16,7 @@ class NextStepService
   # @param [WorkflowStep] step
   # @return [ActiveRecord::Relation] a list of WorkflowSteps that have been enqueued
   def enqueue_next_steps(step:)
-    find_next(step: step)
+    find_next(step:)
   end
 
   private

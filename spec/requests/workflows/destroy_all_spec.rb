@@ -6,7 +6,7 @@ RSpec.describe 'Get a single workflow for an object' do
   context 'when workflows exists for the object' do
     # rubocop:disable RSpec/IndexedLet
     let!(:item1) { FactoryBot.create(:workflow_step) }
-    let!(:item2) { FactoryBot.create(:workflow_step, process: 'publish', druid: druid) }
+    let!(:item2) { FactoryBot.create(:workflow_step, process: 'publish', druid:) }
     let!(:item3) { FactoryBot.create(:workflow_step, process: 'shelve') }
     # rubocop:enable RSpec/IndexedLet
 

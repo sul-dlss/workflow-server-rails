@@ -52,7 +52,7 @@ class WorkflowQueuesController < ApplicationController
   def workflows_for_step_and_scope(step, scope)
     workflow, process = step.split(':').last(2)
 
-    WorkflowStep.active.public_send(scope).where(workflow: workflow, process: process)
+    WorkflowStep.active.public_send(scope).where(workflow:, process:)
   end
 
   # Because `completed` can have more than one value, we can't use the rails params parser.

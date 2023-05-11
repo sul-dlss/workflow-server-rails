@@ -12,6 +12,6 @@ class Version
 
   # @return [ActiveRecord::Relationship] an ActiveRecord scope that has the WorkflowSteps for this version
   def workflow_steps(workflow)
-    WorkflowStep.where(druid: druid, version: version_id, workflow: workflow)
+    WorkflowStep.where(druid:, version: version_id, workflow:)
   end
 end

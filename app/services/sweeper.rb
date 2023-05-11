@@ -43,6 +43,6 @@ class Sweeper
   end
 
   def enqueue_next_steps(step)
-    NextStepService.enqueue_next_steps(step: step)
+    NextStepService.enqueue_next_steps(step:)
   end
 end

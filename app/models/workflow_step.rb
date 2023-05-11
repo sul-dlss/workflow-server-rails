@@ -21,7 +21,7 @@ class WorkflowStep < ApplicationRecord
   scope :started, -> { where(status: 'started') }
   scope :active, -> { where(active_version: true) }
 
-  scope :for_version, ->(version) { where(version: version) }
+  scope :for_version, ->(version) { where(version:) }
 
   COMPLETED_STATES = %w[completed skipped].freeze # a list of states that are considered completed
   ##
@@ -31,7 +31,7 @@ class WorkflowStep < ApplicationRecord
   def as_milestone(xml)
     xml.milestone(lifecycle,
                   date: milestone_date,
-                  version: version)
+                  version:)
   end
 
   # callback to set the completed_at column to the current time if we are
@@ -101,14 +101,14 @@ class WorkflowStep < ApplicationRecord
   # rubocop:disable Metrics/MethodLength
   def attributes_for_process
     {
-      version: version,
-      note: note,
-      lifecycle: lifecycle,
+      version:,
+      note:,
+      lifecycle:,
       laneId: lane_id,
-      elapsed: elapsed,
-      attempts: attempts,
+      elapsed:,
+      attempts:,
       datetime: updated_at.to_time.iso8601,
-      status: status,
+      status:,
       name: process
     }.tap do |attr|
       attr[:errorMessage] = error_msg if error_msg

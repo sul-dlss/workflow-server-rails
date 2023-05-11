@@ -22,7 +22,7 @@ RSpec.describe 'Lifecycle' do
     context 'when all steps in the current version are complete' do
       before do
         FactoryBot.create(:workflow_step,
-                          druid: druid,
+                          druid:,
                           version: 2,
                           process: 'start-accession',
                           status: 'completed',
@@ -30,7 +30,7 @@ RSpec.describe 'Lifecycle' do
 
         # This is not a lifecycle event, so it shouldn't display.
         FactoryBot.create(:workflow_step,
-                          druid: druid,
+                          druid:,
                           version: 2,
                           process: 'technical-metadata',
                           status: 'completed')
@@ -45,7 +45,7 @@ RSpec.describe 'Lifecycle' do
     context 'when some steps in the current version are not complete' do
       before do
         FactoryBot.create(:workflow_step,
-                          druid: druid,
+                          druid:,
                           version: 2,
                           process: 'start-accession',
                           status: 'completed',
@@ -53,7 +53,7 @@ RSpec.describe 'Lifecycle' do
 
         # This is not a lifecycle event, so it shouldn't display.
         FactoryBot.create(:workflow_step,
-                          druid: druid,
+                          druid:,
                           version: 2,
                           process: 'technical-metadata',
                           status: 'waiting')
@@ -79,7 +79,7 @@ RSpec.describe 'Lifecycle' do
 
     before do
       FactoryBot.create(:workflow_step,
-                        druid: druid,
+                        druid:,
                         version: 2,
                         process: 'start-accession',
                         status: 'completed',
@@ -87,7 +87,7 @@ RSpec.describe 'Lifecycle' do
 
       # This is not a lifecycle event, so it shouldn't display.
       FactoryBot.create(:workflow_step,
-                        druid: druid,
+                        druid:,
                         version: 2,
                         process: 'content-metadata',
                         lane_id: 'fast',
@@ -95,7 +95,7 @@ RSpec.describe 'Lifecycle' do
 
       # This is not a complete event, so it shouldn't display.
       FactoryBot.create(:workflow_step,
-                        druid: druid,
+                        druid:,
                         version: 2,
                         process: 'sdr-ingest-transfer',
                         status: 'waiting',

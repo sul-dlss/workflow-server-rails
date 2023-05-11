@@ -8,14 +8,14 @@ RSpec.describe 'workflows/index' do
   let(:step) do
     FactoryBot.build(
       :workflow_step,
-      druid: druid,
+      druid:,
       updated_at: Date.today,
       workflow: 'accessionWF'
     )
   end
 
   before do
-    @workflow = Workflow.new(druid: druid, name: 'accessionWF', steps: [step])
+    @workflow = Workflow.new(druid:, name: 'accessionWF', steps: [step])
   end
 
   it 'renders a workflows document' do
