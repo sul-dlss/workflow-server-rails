@@ -17,11 +17,11 @@ class WorkflowMonitor
 
   def monitor_started_steps
     steps = WorkflowStep.started
-                        .where(WorkflowStep.arel_table[:updated_at].lt(24.hours.ago))
+                        .where(WorkflowStep.arel_table[:updated_at].lt(48.hours.ago))
                         .limit(1000)
 
     steps.each do |step|
-      Honeybadger.notify("Workflow step has been running for more than 24 hours: <druid:\"#{step.druid}\" " \
+      Honeybadger.notify("Workflow step has been running for more than 48 hours: <druid:\"#{step.druid}\" " \
                          "version:\"#{step.version}\" workflow:\"#{step.workflow}\" process:\"#{step.process}\">. " \
                          'Perhaps there is a problem with it.')
     end
@@ -29,10 +29,10 @@ class WorkflowMonitor
 
   def monitor_queued_steps
     queued = WorkflowStep.queued
-                         .where(WorkflowStep.arel_table[:updated_at].lt(12.hours.ago))
+                         .where(WorkflowStep.arel_table[:updated_at].lt(24.hours.ago))
     return if queued.count.zero?
 
-    Honeybadger.notify("#{queued.count} workflow steps have been queued for more than 12 hours. Perhaps there is a " \
+    Honeybadger.notify("#{queued.count} workflow steps have been queued for more than 24 hours. Perhaps there is a " \
                        'problem with the robots.', context: { druids: queued.pluck(:druid) })
   end
 end
