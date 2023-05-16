@@ -62,11 +62,11 @@ RSpec.describe WorkflowMonitor do
       described_class.monitor
       expect(Honeybadger).to have_received(:notify).exactly(2).times
 
-      stale_started_msg = "Workflow step has been running for more than 24 hours: <druid:\"#{stale_started.druid}\" " \
+      stale_started_msg = "Workflow step has been running for more than 48 hours: <druid:\"#{stale_started.druid}\" " \
                           "version:\"3\" workflow:\"#{stale_started.workflow}\" process:\"start-accession\">."
       expect(Honeybadger).to have_received(:notify).with(/#{stale_started_msg}/)
 
-      stale_msg = '1 workflow steps have been queued for more than 12 hours. '
+      stale_msg = '1 workflow steps have been queued for more than 24 hours. '
       expect(Honeybadger).to have_received(:notify).with(/#{stale_msg}/, context: { druids: [stale.druid] })
     end
   end

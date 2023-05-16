@@ -27,7 +27,7 @@ job_type :no_warnings_runner,
 
 # NOTE: this job uses HB checkins.
 # If you change the schedule, edit the HB checkin at https://app.honeybadger.io/projects/58890/check_ins
-every 60.minutes do
+every 6.hours do
   # Currently running Monitor (notification only for stuck workflow steps) instead of Sweeper (notification and requeueing).
   # If monitoring alone isn't adequate (e.g., due to large numbers of Redis timeouts), we may want to re-enable the sweeper.
   # no_warnings_runner 'Sweeper.sweep'
