@@ -10,7 +10,7 @@ RSpec.describe 'Get a single workflow for an object' do
                         created_at: date)
     end
 
-    let(:date) { Time.now.utc.iso8601.sub(/Z/, '+00:00') }
+    let(:date) { Time.now.utc.iso8601.sub('Z', '+00:00') }
     let(:druid) { item.druid }
 
     it 'shows the workflow' do

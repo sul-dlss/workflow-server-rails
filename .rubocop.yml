@@ -403,3 +403,20 @@ FactoryBot/RedundantFactoryOption: # new in 2.23
 
 Rails/UniqueValidationWithoutIndex:
   Enabled: false # it's buggy in 2.20.1
+
+Lint/MixedCaseRange: # new in 1.53
+  Enabled: true
+Lint/RedundantRegexpQuantifiers: # new in 1.53
+  Enabled: true
+Style/RedundantCurrentDirectoryInPath: # new in 1.53
+  Enabled: true
+Style/RedundantRegexpArgument: # new in 1.53
+  Enabled: true
+Style/ReturnNilInPredicateMethodDefinition: # new in 1.53
+  Enabled: true
+Style/YAMLFileRead: # new in 1.53
+  Enabled: true
+RSpec/ReceiveMessages: # new in 2.23
+  Enabled: true
+RSpec/Rails/NegationBeValid: # new in 2.23
+  Enabled: true
