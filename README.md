@@ -115,3 +115,8 @@ GET    /workflow_queue
 ## Deploy
 ### Logs
 Logs are located in `/var/log/httpd`.
+
+## Reset Process (for QA/Stage)
+### Steps
+
+1. Reset the database: `bin/rails -e p db:reset`
