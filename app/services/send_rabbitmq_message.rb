@@ -14,8 +14,7 @@ class SendRabbitmqMessage
   end
 
   def publish
-    message = step.attributes_for_process.merge(action: 'workflow updated')
-    Rails.logger.debug message
+    message = step.attributes_for_process.merge(action: 'workflow updated', druid: step.druid)
     exchange = channel.topic('sdr.workflow')
     exchange.publish(message.to_json, routing_key: "#{step.process}.#{step.status}")
   end
