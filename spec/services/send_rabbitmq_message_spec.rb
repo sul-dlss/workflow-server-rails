@@ -29,7 +29,8 @@ RSpec.describe SendRabbitmqMessage do
           datetime: step.updated_at.to_time.iso8601,
           status: 'waiting',
           name: 'start-accession',
-          action: 'workflow updated'
+          action: 'workflow updated',
+          druid:
         }.to_json,
         routing_key: 'start-accession.waiting'
       )
