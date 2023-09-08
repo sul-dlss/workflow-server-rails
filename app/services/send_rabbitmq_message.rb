@@ -14,7 +14,7 @@ class SendRabbitmqMessage
   end
 
   def publish
-    message = { druid: step.druid, action: 'workflow updated' }
+    message = { druid: step.druid, version: step.version, action: 'workflow updated' }
     exchange = channel.topic('sdr.workflow')
     exchange.publish(message.to_json, routing_key: "#{step.process}.#{step.status}")
   end
