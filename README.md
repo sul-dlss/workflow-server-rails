@@ -119,4 +119,4 @@ Logs are located in `/var/log/httpd`.
 ## Reset Process (for QA/Stage)
 ### Steps
 
-1. Reset the database: `bin/rails -e p db:reset`
+1. [Reset the database](https://github.com/sul-dlss/DeveloperPlaybook/blob/main/best-practices/db_reset.md)
