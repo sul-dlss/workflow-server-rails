@@ -9,7 +9,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'bunny', '~> 2.17'
 gem 'config', '~> 2.0'
 gem 'druid-tools'
-gem 'honeybadger', '~> 4.1'
+gem 'honeybadger'
 gem 'jbuilder', '~> 2.5'
 gem 'lograge'
 gem 'okcomputer'
