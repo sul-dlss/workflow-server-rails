@@ -26,6 +26,7 @@ end
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'equivalent-xml'
+  # NOTE: factory_bot_rails >= 6.3.0 requires env/test.rb to have config.factory_bot.reject_primary_key_attributes = false
   gem 'factory_bot_rails'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails', '~> 5.0'
