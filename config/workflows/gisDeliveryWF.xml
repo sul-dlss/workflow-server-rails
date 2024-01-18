@@ -16,11 +16,11 @@
     <label>Load layers into GeoServer</label>
   </process>
   <process name="reset-geowebcache">
-    <prereq>reset-geowebcache</prereq>
+    <prereq>load-geoserver</prereq>
     <label>Reset GeoWebCache for the layer</label>
   </process>
   <process name="finish-gis-delivery-workflow">
-    <prereq>load-geoserver</prereq>
+    <prereq>reset-geowebcache</prereq>
     <label>Finalize delivery workflow for the object</label>
   </process>
 </workflow-def>
