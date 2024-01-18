@@ -7,12 +7,8 @@
     <prereq>start-gis-assembly-workflow</prereq>
     <label>Ensure proper registration of druid, source ID, and label</label>
   </process>
-  <process name="author-metadata">
-    <prereq>register-druid</prereq>
-    <label>Author metadata using ArcCatalog</label>
-  </process>
   <process name="extract-thumbnail">
-    <prereq>author-metadata</prereq>
+    <prereq>register-druid</prereq>
     <label>Extract thumbnail preview from ArcCatalog metadata</label>
   </process>
   <process name="extract-iso19139">
