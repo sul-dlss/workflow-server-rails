@@ -27,16 +27,8 @@
     <prereq>generate-mods</prereq>
     <label>Insert linked data into MODS record from gazetteer</label>
   </process>
-  <process name="finish-metadata">
-    <prereq>assign-placenames</prereq>
-    <label>Finalize the metadata preparation</label>
-  </process>
-  <process name="wrangle-data">
-    <prereq>finish-metadata</prereq>
-    <label>Wrangle the data into the digital work</label>
-  </process>
   <process name="package-data">
-    <prereq>wrangle-data</prereq>
+    <prereq>assign-placenames</prereq>
     <label>Package the digital work</label>
   </process>
   <process name="normalize-data">
@@ -47,12 +39,8 @@
     <prereq>normalize-data</prereq>
     <label>Extract bounding box from data for MODS record</label>
   </process>
-  <process name="finish-data">
-    <prereq>extract-boundingbox</prereq>
-    <label>Finalize the data preparation</label>
-  </process>
   <process name="generate-content-metadata">
-    <prereq>finish-data</prereq>
+    <prereq>extract-boundingbox</prereq>
     <label>Generate contentMetadata manifest</label>
   </process>
   <process name="finish-gis-assembly-workflow">
