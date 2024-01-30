@@ -11,12 +11,20 @@
     <prereq>register-druid</prereq>
     <label>Extract thumbnail preview from ArcCatalog metadata</label>
   </process>
-  <process name="extract-iso19139">
+  <process name="extract-iso19139-metadata">
     <prereq>extract-thumbnail</prereq>
     <label>Transform ISO 19139 metadata from ArcCatalog metadata</label>
   </process>
+  <process name="extract-iso19110-metadata">
+    <prereq>extract-iso19139-metadata</prereq>
+    <label>Transform ISO 19110 metadata from ArcCatalog metadata</label>
+  </process>
+  <process name="extract-fgdc-metadata">
+    <prereq>extract-iso19110-metadata</prereq>
+    <label>Transform FGDC metadata from ArcCatalog metadata</label>
+  </process>
   <process name="generate-geo-metadata">
-    <prereq>extract-iso19139</prereq>
+    <prereq>extract-fgdc-metadata</prereq>
     <label>Convert ISO 19139 metadata into geoMetadata RDF XML</label>
   </process>
   <process name="generate-mods">
