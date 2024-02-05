@@ -23,8 +23,12 @@
     <prereq>reset-geowebcache</prereq>
     <label>Finalize delivery workflow for the object</label>
   </process>
-  <process name="start-accession-workflow">
+  <process name="reload-geoserver">
     <prereq>finish-gis-delivery-workflow</prereq>
+    <label>Automatically reload the geo server</label>
+  </process>
+  <process name="start-accession-workflow">
+    <prereq>reload-geoserver</prereq>
     <label>Initiate accession workflow for the object</label>
   </process>
 </workflow-def>
