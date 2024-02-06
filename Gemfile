@@ -7,7 +7,7 @@ gem 'rails', '~> 7.0.0'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'bunny', '~> 2.17'
-gem 'config', '~> 2.0'
+gem 'config'
 gem 'druid-tools'
 gem 'honeybadger'
 gem 'jbuilder', '~> 2.5'
