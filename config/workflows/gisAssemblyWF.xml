@@ -43,12 +43,12 @@
     <prereq>normalize-data</prereq>
     <label>Extract bounding box from data for MODS record</label>
   </process>
-  <process name="generate-content-metadata">
+  <process name="generate-structural">
     <prereq>extract-boundingbox</prereq>
-    <label>Generate contentMetadata manifest</label>
+    <label>Generate cocina structural</label>
   </process>
   <process name="finish-gis-assembly-workflow">
-    <prereq>generate-content-metadata</prereq>
+    <prereq>generate-structural</prereq>
     <label>Finalize assembly workflow to prepare for assembly/delivery/discovery</label>
   </process>
   <process name="start-delivery-workflow">
