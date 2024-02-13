@@ -23,8 +23,12 @@
     <prereq>extract-fgdc-metadata</prereq>
     <label>Convert ISO 19139 metadata into geoMetadata RDF XML</label>
   </process>
-  <process name="generate-mods">
+  <process name="generate-tag">
     <prereq>generate-geo-metadata</prereq>
+    <label>Add Geo tag to object</label>
+  </process>
+  <process name="generate-mods">
+    <prereq>generate-tag</prereq>
     <label>Convert geoMetadata into MODS</label>
   </process>
   <process name="assign-placenames">
