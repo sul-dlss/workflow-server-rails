@@ -27,12 +27,12 @@
     <prereq>generate-geo-metadata</prereq>
     <label>Add Geo tag to object</label>
   </process>
-  <process name="generate-mods">
+  <process name="generate-descriptive">
     <prereq>generate-tag</prereq>
-    <label>Convert geoMetadata into MODS</label>
+    <label>Convert ISO19139 into cocina descriptive</label>
   </process>
   <process name="assign-placenames">
-    <prereq>generate-mods</prereq>
+    <prereq>generate-descriptive</prereq>
     <label>Insert linked data into MODS record from gazetteer</label>
   </process>
   <process name="package-data">
@@ -45,7 +45,7 @@
   </process>
   <process name="extract-boundingbox">
     <prereq>normalize-data</prereq>
-    <label>Extract bounding box from data for MODS record</label>
+    <label>Extract bounding box from data for cocina descriptive</label>
   </process>
   <process name="generate-structural">
     <prereq>extract-boundingbox</prereq>
