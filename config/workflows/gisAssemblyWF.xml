@@ -39,12 +39,12 @@
     <prereq>assign-placenames</prereq>
     <label>Package the digital work</label>
   </process>
-  <process name="normalize-data">
+  <process name="copy-data">
     <prereq>package-data</prereq>
-    <label>Reproject the data into common SRS projection and/or file format</label>
+    <label>Move files from temp to content directory</label>
   </process>
   <process name="extract-boundingbox">
-    <prereq>normalize-data</prereq>
+    <prereq>copy-data</prereq>
     <label>Extract bounding box from data for cocina descriptive</label>
   </process>
   <process name="generate-structural">
