@@ -35,12 +35,8 @@
     <prereq>generate-descriptive</prereq>
     <label>Insert linked data into MODS record from gazetteer</label>
   </process>
-  <process name="package-data">
-    <prereq>assign-placenames</prereq>
-    <label>Package the digital work</label>
-  </process>
   <process name="copy-data">
-    <prereq>package-data</prereq>
+    <prereq>assign-placenames</prereq>
     <label>Move files from temp to content directory</label>
   </process>
   <process name="extract-boundingbox">
