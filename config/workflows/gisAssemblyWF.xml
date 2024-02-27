@@ -19,12 +19,8 @@
     <prereq>extract-iso19110-metadata</prereq>
     <label>Transform FGDC metadata from ArcCatalog metadata</label>
   </process>
-  <process name="generate-geo-metadata">
-    <prereq>extract-fgdc-metadata</prereq>
-    <label>Convert ISO 19139 metadata into geoMetadata RDF XML</label>
-  </process>
   <process name="generate-tag">
-    <prereq>generate-geo-metadata</prereq>
+    <prereq>extract-fgdc-metadata</prereq>
     <label>Add Geo tag to object</label>
   </process>
   <process name="generate-descriptive">
