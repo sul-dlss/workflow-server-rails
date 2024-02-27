@@ -43,12 +43,8 @@
     <prereq>extract-boundingbox</prereq>
     <label>Generate cocina structural</label>
   </process>
-  <process name="finish-gis-assembly-workflow">
-    <prereq>generate-structural</prereq>
-    <label>Finalize assembly workflow to prepare for assembly/delivery/discovery</label>
-  </process>
   <process name="start-delivery-workflow">
-    <prereq>finish-gis-assembly-workflow</prereq>
+    <prereq>generate-structural</prereq>
     <label>Initiate gisDelivery workflow for the object</label>
   </process>
 </workflow-def>
