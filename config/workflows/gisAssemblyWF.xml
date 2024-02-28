@@ -31,12 +31,8 @@
     <prereq>generate-descriptive</prereq>
     <label>Insert linked data into MODS record from gazetteer</label>
   </process>
-  <process name="copy-data">
-    <prereq>assign-placenames</prereq>
-    <label>Move files from temp to content directory</label>
-  </process>
   <process name="extract-boundingbox">
-    <prereq>copy-data</prereq>
+    <prereq>assign-placenames</prereq>
     <label>Extract bounding box from data for cocina descriptive</label>
   </process>
   <process name="generate-structural">
