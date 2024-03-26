@@ -132,14 +132,14 @@ RSpec.describe 'Objects for workstep' do
 
       let(:not_prereqs_current_version) do
         FactoryBot.create(:workflow_step,
-                          process: 'content-metadata',
+                          process: 'publish',
                           status: 'waiting',
                           version: 2)
       end
 
       let(:with_preqs_for_current_version) do
         FactoryBot.create(:workflow_step,
-                          process: 'content-metadata',
+                          process: 'publish',
                           status: 'waiting',
                           active_version: true,
                           version: 2)
@@ -148,38 +148,38 @@ RSpec.describe 'Objects for workstep' do
       before do
         FactoryBot.create(:workflow_step,
                           druid: not_prereqs_current_version.druid,
-                          process: 'content-metadata',
+                          process: 'publish',
                           status: 'completed',
                           version: 1)
 
         FactoryBot.create(:workflow_step,
                           druid: not_prereqs_current_version.druid,
-                          process: 'descriptive-metadata',
+                          process: 'shelve',
                           status: 'completed',
                           version: 1)
 
         FactoryBot.create(:workflow_step,
                           druid: not_prereqs_current_version.druid,
-                          process: 'descriptive-metadata',
+                          process: 'shelve',
                           status: 'waiting',
                           active_version: true,
                           version: 2)
 
         FactoryBot.create(:workflow_step,
                           druid: with_preqs_for_current_version.druid,
-                          process: 'content-metadata',
+                          process: 'publish',
                           status: 'completed',
                           version: 1)
 
         FactoryBot.create(:workflow_step,
                           druid: with_preqs_for_current_version.druid,
-                          process: 'descriptive-metadata',
+                          process: 'shelve',
                           status: 'completed',
                           version: 1)
 
         FactoryBot.create(:workflow_step,
                           druid: with_preqs_for_current_version.druid,
-                          process: 'descriptive-metadata',
+                          process: 'shelve',
                           status: 'completed',
                           active_version: true,
                           version: 2)
@@ -187,8 +187,8 @@ RSpec.describe 'Objects for workstep' do
 
       context 'with repository-qualified step names' do
         it 'only shows items that are complete for the most recent version' do
-          get '/workflow_queue?completed=dor:accessionWF:descriptive-metadata&' \
-              'waiting=dor:accessionWF:content-metadata'
+          get '/workflow_queue?completed=dor:accessionWF:shelve&' \
+              'waiting=dor:accessionWF:publish'
 
           expect(response.body).to be_equivalent_to expected_xml
         end
@@ -196,8 +196,8 @@ RSpec.describe 'Objects for workstep' do
 
       context 'without repository-qualified step names' do
         it 'only shows items that are complete for the most recent version' do
-          get '/workflow_queue?completed=accessionWF:descriptive-metadata&' \
-              'waiting=accessionWF:content-metadata'
+          get '/workflow_queue?completed=accessionWF:shelve&' \
+              'waiting=accessionWF:publish'
 
           expect(response.body).to be_equivalent_to expected_xml
         end

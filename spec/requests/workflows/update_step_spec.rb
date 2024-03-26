@@ -157,56 +157,56 @@ RSpec.describe 'Update a workflow step for an object' do
     let(:first_step) { FactoryBot.create(:workflow_step, status: 'completed') } # start-accession, which is already completed
 
     before do
-      FactoryBot.create(:workflow_step, druid:, process: 'descriptive-metadata')
-      FactoryBot.create(:workflow_step, druid:, process: 'content-metadata')
+      FactoryBot.create(:workflow_step, druid:, process: 'shelve')
+      FactoryBot.create(:workflow_step, druid:, process: 'publish')
       allow(SendUpdateMessage).to receive(:publish)
       allow(QueueService).to receive(:enqueue)
     end
 
     context 'when updating a step' do
-      let(:body) { '<process name="descriptive-metadata" status="error" />' }
+      let(:body) { '<process name="shelve" status="error" />' }
 
       it 'updates the step' do
-        put "/objects/#{druid}/workflows/#{workflow_id}/descriptive-metadata", params: body
+        put "/objects/#{druid}/workflows/#{workflow_id}/shelve", params: body
 
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
-        expect(WorkflowStep.find_by(druid:, process: 'descriptive-metadata').status).to eq('error')
+        expect(WorkflowStep.find_by(druid:, process: 'shelve').status).to eq('error')
         expect(QueueService).not_to have_received(:enqueue)
       end
 
       it 'verifies the current status' do
-        put "/objects/#{druid}/workflows/#{workflow_id}/descriptive-metadata?current-status=not-waiting", params: body
+        put "/objects/#{druid}/workflows/#{workflow_id}/shelve?current-status=not-waiting", params: body
         expect(response.body).to eq('Status in params (not-waiting) does not match current status (waiting)')
         expect(response).to have_http_status(:conflict)
       end
 
       it 'verifies that process in url and body match' do
-        put "/objects/#{druid}/workflows/#{workflow_id}/content-metadata", params: body
-        expect(response.body).to eq('Process name in body (descriptive-metadata) does not match process name in URI ' \
-                                    '(content-metadata)')
+        put "/objects/#{druid}/workflows/#{workflow_id}/publish", params: body
+        expect(response.body).to eq('Process name in body (shelve) does not match process name in URI ' \
+                                    '(publish)')
         expect(response).to have_http_status(:bad_request)
       end
 
       it 'verifies that process is unique' do
-        duplicate = FactoryBot.build(:workflow_step, druid:, process: 'content-metadata', version: first_step.version)
+        duplicate = FactoryBot.build(:workflow_step, druid:, process: 'shelve', version: first_step.version)
         duplicate.save(validate: false)
 
         expect do
-          put "/objects/#{druid}/workflows/#{workflow_id}/content-metadata", params: body
-        end.to raise_error "Duplicate workflow step for #{first_step.druid} accessionWF content-metadata"
+          put "/objects/#{druid}/workflows/#{workflow_id}/shelve", params: body
+        end.to raise_error "Duplicate workflow step for #{first_step.druid} accessionWF shelve"
       end
     end
 
     context 'when completing a step' do
-      let(:body) { '<process name="descriptive-metadata" status="completed" />' }
+      let(:body) { '<process name="shelve" status="completed" />' }
 
       it 'updates the step and enqueues next step' do
-        put "/objects/#{druid}/workflows/#{workflow_id}/descriptive-metadata", params: body
-        expect(response.body).to match(/content-metadata/)
+        put "/objects/#{druid}/workflows/#{workflow_id}/shelve", params: body
+        expect(response.body).to match(/publish/)
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
-        expect(WorkflowStep.find_by(druid:, process: 'descriptive-metadata').status).to eq('completed')
+        expect(WorkflowStep.find_by(druid:, process: 'shelve').status).to eq('completed')
         expect(QueueService).to have_received(:enqueue).with(WorkflowStep.find_by(druid:,
-                                                                                  process: 'content-metadata'))
+                                                                                  process: 'publish'))
       end
     end
   end

@@ -3,21 +3,13 @@
   <process lifecycle="submitted" name="start-accession" status="completed">
     <label>Start Accessioning</label>
   </process>
-  <process batch-limit="1000" error-limit="10" lifecycle="described" name="descriptive-metadata">
-    <label>Any descMetadata.xml is converted and posted to cocina object; no-op if no such file exists (cocina object may already have information)</label>
-    <prereq>start-accession</prereq>
-  </process>
-  <process batch-limit="1000" error-limit="10" name="content-metadata">
-    <label>Any contentMetadata.xml is converted and posted to cocina object; no-op if no such file exists (cocina object may already have information)</label>
-    <prereq>descriptive-metadata</prereq>
-  </process>
   <process batch-limit="1000" error-limit="10" name="technical-metadata">
     <label>Creates the technical metadata by calling technical-metadata-service, only for item objects with files</label>
-    <prereq>content-metadata</prereq>
+    <prereq>start-accession</prereq>
   </process>
   <process batch-limit="1" error-limit="5" name="shelve">
     <label>Shelve content in Digital Stacks</label>
-    <prereq>technical-metadata</prereq>
+    <prereq>start-accession</prereq>
   </process>
   <process batch-limit="100" error-limit="10" lifecycle="published" name="publish">
     <label>Sends metadata to PURL (but it may be updated by releaseWF)</label>

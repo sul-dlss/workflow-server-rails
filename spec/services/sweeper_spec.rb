@@ -29,7 +29,7 @@ RSpec.describe Sweeper do
     let!(:on_deck) do
       FactoryBot.create(:workflow_step,
                         druid: stale.druid,
-                        process: 'descriptive-metadata',
+                        process: 'shelve',
                         version: 2,
                         status: 'waiting',
                         active_version: true)
@@ -46,7 +46,7 @@ RSpec.describe Sweeper do
     let!(:less_stale) do
       FactoryBot.create(:workflow_step,
                         druid: completed.druid,
-                        process: 'descriptive-metadata',
+                        process: 'shelve',
                         version: 2,
                         status: 'queued',
                         active_version: true,
@@ -55,7 +55,7 @@ RSpec.describe Sweeper do
     let!(:on_deck2) do
       FactoryBot.create(:workflow_step,
                         druid: completed.druid,
-                        process: 'content-metadata',
+                        process: 'publish',
                         version: 2,
                         status: 'waiting',
                         active_version: true)
@@ -71,7 +71,7 @@ RSpec.describe Sweeper do
     let!(:started) do
       FactoryBot.create(:workflow_step,
                         druid: stale_started.druid,
-                        process: 'descriptive-metadata',
+                        process: 'shelve',
                         version: 1,
                         status: 'waiting',
                         active_version: true)

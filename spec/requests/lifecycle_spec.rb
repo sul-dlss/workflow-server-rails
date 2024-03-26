@@ -89,7 +89,7 @@ RSpec.describe 'Lifecycle' do
       FactoryBot.create(:workflow_step,
                         druid:,
                         version: 2,
-                        process: 'content-metadata',
+                        process: 'shelve',
                         lane_id: 'fast',
                         status: 'completed')
 
