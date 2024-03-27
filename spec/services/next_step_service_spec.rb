@@ -18,7 +18,7 @@ RSpec.describe NextStepService do
       let!(:ready) do
         FactoryBot.create(:workflow_step,
                           druid: step.druid,
-                          process: 'descriptive-metadata',
+                          process: 'shelve',
                           version: 1,
                           status: 'waiting',
                           active_version: true)
@@ -28,7 +28,7 @@ RSpec.describe NextStepService do
         # This record does not have the prerequisites met, so it shouldn't appear in the results
         FactoryBot.create(:workflow_step,
                           druid: step.druid,
-                          process: 'content-metadata',
+                          process: 'publish',
                           version: 1,
                           status: 'waiting',
                           active_version: true)

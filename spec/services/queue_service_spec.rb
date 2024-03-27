@@ -23,12 +23,12 @@ RSpec.describe QueueService do
     end
 
     context 'when DorRepo classes' do
-      let(:step) { FactoryBot.create(:workflow_step, workflow: 'accessionWF', process: 'descriptive-metadata') }
+      let(:step) { FactoryBot.create(:workflow_step, workflow: 'accessionWF', process: 'technical-metadata') }
 
       it 'enqueues to Sidekiq' do
         service.enqueue
         expect(Sidekiq::Client).to have_received(:push).with('queue' => 'accessionWF_default',
-                                                             'class' => 'Robots::DorRepo::Accession::DescriptiveMetadata',
+                                                             'class' => 'Robots::DorRepo::Accession::TechnicalMetadata',
                                                              'args' => [step.druid])
       end
     end
