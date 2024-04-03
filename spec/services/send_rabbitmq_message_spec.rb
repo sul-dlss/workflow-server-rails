@@ -60,7 +60,7 @@ RSpec.describe SendRabbitmqMessage do
             status: 'waiting',
             name: 'start-accession',
             action: 'workflow updated',
-            druid:
+            druid: step.druid
           }.to_json,
           routing_key: 'start-accession.waiting'
         )
