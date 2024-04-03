@@ -27,10 +27,15 @@ RSpec.describe 'Get a single workflow for an object' do
   end
 
   context 'when a workflow exists for the object with metadata' do
-    let(:item_metadata) { FactoryBot.create(:workflow_metadata, created_at: date) }
+    let(:item) do
+      FactoryBot.create(:workflow_step,
+                        :with_ocr_metadata,
+                        status: 'waiting',
+                        created_at: date)
+    end
 
     let(:date) { Time.now.utc.iso8601.sub('Z', '+00:00') }
-    let(:druid) { item_metadata.druid }
+    let(:druid) { item.druid }
 
     it 'shows the workflow with metadata' do
       get "/objects/#{druid}/workflows/accessionWF"

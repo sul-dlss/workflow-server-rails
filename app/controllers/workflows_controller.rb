@@ -48,9 +48,9 @@ class WorkflowsController < ApplicationController
       processes: initial_parser.processes,
       version: Version.new(
         druid: params[:druid],
-        version: params[:version]
-      ),
-      metadata: params[:metadata]
+        version: params[:version],
+        metadata: params[:metadata]
+      )
     ).create_workflow_steps
 
     head :created

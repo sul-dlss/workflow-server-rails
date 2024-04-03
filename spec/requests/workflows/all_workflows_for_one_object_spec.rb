@@ -53,10 +53,13 @@ RSpec.describe 'Get the steps for one object' do
   end
 
   context 'when a successful step with metadata' do
-    let(:item_metadata) { FactoryBot.create(:workflow_metadata, created_at: date) }
-    let(:druid) { item_metadata.druid }
+    let(:item) do
+      FactoryBot.create(:workflow_step,
+                        :with_ocr_metadata,
+                        created_at: date)
+    end
 
-    it 'does not have an error message and shows the metadata' do
+    it 'shows the metadata' do
       get "/objects/#{druid}/workflows"
       expect(response).to be_successful
       expect(response.body).to be_equivalent_to <<~XML

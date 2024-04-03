@@ -14,14 +14,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_02_194159) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "workflow_metadata", force: :cascade do |t|
+  create_table "version_metadata", primary_key: ["druid", "version"], force: :cascade do |t|
     t.string "druid", null: false
-    t.integer "version", default: 1
+    t.integer "version", default: 1, null: false
     t.jsonb "values", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["druid"], name: "index_workflow_metadata_on_druid"
-    t.index ["version"], name: "index_workflow_metadata_on_version"
+    t.index ["druid", "version"], name: "index_version_metadata_on_druid_and_version"
+    t.index ["druid"], name: "index_version_metadata_on_druid"
   end
 
   create_table "workflow_steps", id: :serial, force: :cascade do |t|

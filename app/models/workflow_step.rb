@@ -23,8 +23,6 @@ class WorkflowStep < ApplicationRecord
 
   scope :for_version, ->(version) { where(version:) }
 
-  has_one :workflow_metadata, foreign_key: 'druid', primary_key: 'druid', inverse_of: :workflow_step
-
   COMPLETED_STATES = %w[completed skipped].freeze # a list of states that are considered completed
   ##
   # Serialize a WorkflowStep as a milestone
@@ -42,6 +40,11 @@ class WorkflowStep < ApplicationRecord
     return unless completed?
 
     self.completed_at ||= Time.now
+  end
+
+  # any associated metadata for this step (if it exists) -- note: is the same for any workflow/step for a given druid/version combination
+  def metadata
+    VersionMetadata.find_by(druid:, version:)&.values
   end
 
   ##
@@ -110,7 +113,7 @@ class WorkflowStep < ApplicationRecord
       elapsed:,
       attempts:,
       datetime: updated_at.to_time.iso8601,
-      metadata: workflow_metadata&.values,
+      metadata:,
       status:,
       name: process
     }.tap do |attr|

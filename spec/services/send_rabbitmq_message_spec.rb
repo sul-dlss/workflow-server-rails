@@ -7,6 +7,7 @@ RSpec.describe SendRabbitmqMessage do
     let(:service) { described_class.new(step:, channel:) }
 
     let(:druid) { 'druid:bb123bc1234' }
+    let(:version) { 1 }
     let(:channel) { instance_double(Bunny::Channel) }
     let(:exchange) { instance_double(Bunny::Exchange) }
 
@@ -22,7 +23,7 @@ RSpec.describe SendRabbitmqMessage do
         service.publish
         expect(exchange).to have_received(:publish).with(
           {
-            version: 1,
+            version:,
             note: nil,
             lifecycle: nil,
             laneId: 'default',
@@ -42,25 +43,24 @@ RSpec.describe SendRabbitmqMessage do
     end
 
     context 'with metadata' do
-      let(:step) { workflow_metadata.workflow_step }
-      let(:workflow_metadata) { FactoryBot.create(:workflow_metadata) }
+      let(:step) { FactoryBot.create(:workflow_step, :with_ocr_metadata, druid:) }
 
       it 'sends message' do
         service.publish
         expect(exchange).to have_received(:publish).with(
           {
-            version: 1,
+            version:,
             note: nil,
             lifecycle: nil,
             laneId: 'default',
             elapsed: nil,
             attempts: 0,
             datetime: step.updated_at.to_time.iso8601,
-            metadata: workflow_metadata.values,
+            metadata: VersionMetadata.find_by(druid:, version:).values,
             status: 'waiting',
             name: 'start-accession',
             action: 'workflow updated',
-            druid: step.druid
+            druid:
           }.to_json,
           routing_key: 'start-accession.waiting'
         )

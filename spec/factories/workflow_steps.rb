@@ -18,7 +18,7 @@ FactoryBot.define do
 
     trait :with_ocr_metadata do
       after(:create) do |step|
-        create(:workflow_metadata, druid: step.druid, version: step.version, values: { requireOCR: true })
+        create(:version_metadata, druid: step.druid, version: step.version)
       end
     end
   end

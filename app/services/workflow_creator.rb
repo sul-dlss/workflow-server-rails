@@ -9,11 +9,10 @@ class WorkflowCreator
   # @param [Array<ProcessParser>] processes
   # @param [String] workflow_id the workflow identifier
   # @param [Version] version the object/version
-  def initialize(processes:, workflow_id:, version:, metadata: nil)
+  def initialize(processes:, workflow_id:, version:)
     @processes = processes
     @workflow_id = workflow_id
     @version = version
-    @metadata = metadata
   end
 
   ##
@@ -30,15 +29,15 @@ class WorkflowCreator
         WorkflowStep.create!(workflow_attributes(process))
       end
 
-      # Create metadata if passed in
-      WorkflowMetadata.create!(druid: version.druid, version: version.version_id, values: metadata) if metadata
+      # Create/update metadata if passed in
+      version.update_metadata if version.metadata
     end
     enqueue
   end
 
   private
 
-  attr_reader :processes, :workflow_id, :metadata
+  attr_reader :processes, :workflow_id
 
   def enqueue
     # Get the first step and enqueue any next steps
