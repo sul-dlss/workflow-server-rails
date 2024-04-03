@@ -23,9 +23,7 @@ class WorkflowStep < ApplicationRecord
 
   scope :for_version, ->(version) { where(version:) }
 
-  # On delete: raises an exception if there are is any workflow metadata
-  # Don't destroy because there may be other steps that reference the same druid
-  has_one :workflow_metadata, foreign_key: 'druid', primary_key: 'druid', dependent: :restrict_with_error, inverse_of: :workflow_step
+  has_one :workflow_metadata, foreign_key: 'druid', primary_key: 'druid', inverse_of: :workflow_step
 
   COMPLETED_STATES = %w[completed skipped].freeze # a list of states that are considered completed
   ##
@@ -103,7 +101,6 @@ class WorkflowStep < ApplicationRecord
   end
 
   # rubocop:disable Metrics/MethodLength
-  # rubocop:disable Metrics/AbcSize
   def attributes_for_process
     {
       version:,
@@ -120,6 +117,5 @@ class WorkflowStep < ApplicationRecord
       attr[:errorMessage] = error_msg if error_msg
     end
   end
-  # rubocop:enable Metrics/AbcSize
   # rubocop:enable Metrics/MethodLength
 end

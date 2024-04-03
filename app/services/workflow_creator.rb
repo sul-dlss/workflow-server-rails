@@ -31,9 +31,7 @@ class WorkflowCreator
       end
 
       # Create metadata if passed in
-      if metadata
-        WorkflowMetadata.create!(druid: version.druid, version: version.version_id, values: metadata)
-      end
+      WorkflowMetadata.create!(druid: version.druid, version: version.version_id, values: metadata) if metadata
     end
     enqueue
   end

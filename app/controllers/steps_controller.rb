@@ -67,7 +67,6 @@ class StepsController < ApplicationController
   end
 
   # Returns most recent workflow step
-  # rubocop:disable Metrics/AbcSize
   def find_step_for_process
     query = WorkflowStep.where(druid: params[:druid],
                                workflow: params[:workflow],
@@ -80,7 +79,6 @@ class StepsController < ApplicationController
 
     query.first
   end
-  # rubocop:enable Metrics/AbcSize
 
   def process_from_request_body
     # TODO: Confirm we do not have a use case for multiple processes when PUT'ing updates

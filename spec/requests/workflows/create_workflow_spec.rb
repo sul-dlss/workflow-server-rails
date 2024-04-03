@@ -55,7 +55,7 @@ RSpec.describe 'Create a workflow' do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}&metadata=#{ERB::Util.url_encode(metadata.to_json)}"
         end.to change(WorkflowStep, :count).by(10)
         expect(WorkflowStep.last.lane_id).to eq('default')
-        expect(JSON.parse(WorkflowMetadata.find_by(druid:, version:).values)).to eq({'requireOCR' => true, 'requireTranscript' => true})
+        expect(JSON.parse(WorkflowMetadata.find_by(druid:, version:).values)).to eq({ 'requireOCR' => true, 'requireTranscript' => true })
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
       end
     end
