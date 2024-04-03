@@ -108,6 +108,7 @@ class WorkflowStep < ApplicationRecord
       elapsed:,
       attempts:,
       datetime: updated_at.to_time.iso8601,
+      metadata: VersionMetadata.find_by(druid:, version:)&.metadata,
       status:,
       name: process
     }.tap do |attr|
