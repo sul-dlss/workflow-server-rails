@@ -21,7 +21,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_02_194159) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["druid", "version"], name: "index_version_metadata_on_druid_and_version"
-    t.index ["druid"], name: "index_version_metadata_on_druid"
   end
 
   create_table "workflow_steps", id: :serial, force: :cascade do |t|

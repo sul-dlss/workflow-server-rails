@@ -29,8 +29,8 @@ class WorkflowCreator
         WorkflowStep.create!(workflow_attributes(process))
       end
 
-      # Create/update metadata if passed in
-      version.update_metadata if version.metadata
+      # Create/update metadata
+      version.update_metadata
     end
     enqueue
   end

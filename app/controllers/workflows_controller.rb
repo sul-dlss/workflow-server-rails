@@ -49,7 +49,7 @@ class WorkflowsController < ApplicationController
       version: Version.new(
         druid: params[:druid],
         version: params[:version],
-        metadata: params[:metadata]
+        metadata:
       )
     ).create_workflow_steps
 
@@ -80,5 +80,12 @@ class WorkflowsController < ApplicationController
 
   def template
     @template ||= WorkflowTemplateLoader.load_as_xml(params[:workflow])
+  end
+
+  # this ensures we pass a hash to the Version object, or nil if no metadata at all is passed in via the API call
+  def metadata
+    return nil unless params[:metadata]
+
+    JSON.parse(params[:metadata])
   end
 end

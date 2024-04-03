@@ -3,7 +3,7 @@
 class CreateVersionMetadatas < ActiveRecord::Migration[7.0]
   def change
     create_table :version_metadata, primary_key: %i[druid version] do |t|
-      t.string      :druid, null: false, index: true
+      t.string      :druid, null: false
       t.integer     :version, default: 1
       t.jsonb       :values, default: {}
       t.timestamps

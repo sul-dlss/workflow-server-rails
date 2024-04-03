@@ -6,14 +6,22 @@ class Version
   def initialize(druid:, version:, metadata: nil)
     @druid = druid
     @version_id = version
-    @metadata = metadata
+    @metadata = metadata # this is a hash of metadata values to be stored in the VersionMetadata table
   end
 
   attr_reader :druid, :version_id, :metadata
 
   def update_metadata
-    version_metadata = VersionMetadata.find_or_create_by(druid:, version: version_id)
-    version_metadata.update!(values: metadata)
+    # if no metadata passed in (nil), do nothing
+    return unless metadata
+
+    # if metadata passed in is an empty hash, delete the version metadata record
+    if metadata.empty?
+      VersionMetadata.find_by(druid:, version: version_id)&.destroy
+    else # otherwise, create/update the metadata record
+      version_metadata = VersionMetadata.find_or_create_by(druid:, version: version_id)
+      version_metadata.update!(values: metadata)
+    end
   end
 
   # @return [ActiveRecord::Relationship] an ActiveRecord scope that has the WorkflowSteps for this version

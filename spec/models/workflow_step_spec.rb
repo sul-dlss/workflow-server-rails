@@ -136,7 +136,7 @@ RSpec.describe WorkflowStep do
   end
 
   context 'with workflow metadata' do
-    let(:step_with_metadata) { FactoryBot.create(:workflow_step, :with_ocr_metadata, process: 'end-accession') }
+    let(:step_with_metadata) { FactoryBot.create(:workflow_step, :with_ocr_metadata) }
 
     it 'includes the metadata as a hash' do
       expect(step_with_metadata.metadata).to eq({ 'requireOCR' => true, 'requireTranscript' => true })
