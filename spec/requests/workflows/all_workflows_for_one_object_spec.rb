@@ -22,7 +22,7 @@ RSpec.describe 'Get the steps for one object' do
         <workflows objectId="#{druid}">
           <workflow objectId="#{druid}" id="accessionWF">
             <process version="1" note="" lifecycle="" laneId="default"
-              elapsed="" attempts="0" datetime="#{date}"
+              elapsed="" attempts="0" datetime="#{date}" metadata=""
               status="error" name="start-accession" errorMessage="it just broke"/>
           </workflow>
         </workflows>
@@ -44,8 +44,28 @@ RSpec.describe 'Get the steps for one object' do
         <workflows objectId="#{druid}">
           <workflow objectId="#{druid}" id="accessionWF">
             <process version="1" note="" lifecycle="" laneId="default"
-              elapsed="" attempts="0" datetime="#{date}"
+              elapsed="" attempts="0" datetime="#{date}" metadata=""
               status="completed" name="start-accession"/>
+          </workflow>
+        </workflows>
+      XML
+    end
+  end
+
+  context 'when a successful step with metadata' do
+    let(:item_metadata) { FactoryBot.create(:workflow_metadata, created_at: date) }
+    let(:druid) { item_metadata.druid }
+
+    it 'does not have an error message and shows the metadata' do
+      get "/objects/#{druid}/workflows"
+      expect(response).to be_successful
+      expect(response.body).to be_equivalent_to <<~XML
+        <workflows objectId="#{druid}">
+          <workflow objectId="#{druid}" id="accessionWF">
+            <process version="1" note="" lifecycle="" laneId="default"
+              elapsed="" attempts="0" datetime="#{date}"
+              metadata="{&quot;requireOCR&quot;=&gt;true, &quot;requireTranscript&quot;=&gt;true}"
+              status="waiting" name="start-accession"/>
           </workflow>
         </workflows>
       XML

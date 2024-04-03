@@ -15,5 +15,11 @@ FactoryBot.define do
       status { 'completed' }
       completed_at { Time.now }
     end
+
+    trait :with_ocr_metadata do
+      after(:create) do |step|
+        create(:workflow_metadata, druid: step.druid, version: step.version, values: { requireOCR: true })
+      end
+    end
   end
 end

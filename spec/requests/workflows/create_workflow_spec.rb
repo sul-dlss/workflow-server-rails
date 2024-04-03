@@ -20,7 +20,7 @@ RSpec.describe 'Create a workflow' do
       allow(SendUpdateMessage).to receive(:publish)
     end
 
-    context 'when the version is passed' do
+    context 'when the version is passed without metadata' do
       it 'creates new workflows' do
         expect do
           post "/objects/#{druid}/workflows/#{workflow}?version=1"
@@ -43,6 +43,20 @@ RSpec.describe 'Create a workflow' do
           end.not_to change(WorkflowStep, :count)
           expect(response).to have_http_status :bad_request
         end
+      end
+    end
+
+    context 'when the version is passed with metadata' do
+      let(:metadata) { { requireOCR: true, requireTranscript: true } }
+      let(:version) { 1 }
+
+      it 'creates new workflows with metadata' do
+        expect do
+          post "/objects/#{druid}/workflows/#{workflow}?version=#{version}&metadata=#{ERB::Util.url_encode(metadata.to_json)}"
+        end.to change(WorkflowStep, :count).by(10)
+        expect(WorkflowStep.last.lane_id).to eq('default')
+        expect(JSON.parse(WorkflowMetadata.find_by(druid:, version:).values)).to eq({'requireOCR' => true, 'requireTranscript' => true})
+        expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
       end
     end
   end

@@ -49,7 +49,8 @@ class WorkflowsController < ApplicationController
       version: Version.new(
         druid: params[:druid],
         version: params[:version]
-      )
+      ),
+      metadata: params[:metadata]
     ).create_workflow_steps
 
     head :created
