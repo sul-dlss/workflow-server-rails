@@ -61,7 +61,7 @@ RSpec.describe WorkflowCreator do
         described_class.new(
           workflow_id: wf_parser.workflow_id,
           processes: wf_parser.processes,
-          version: Version.new(druid:, version: 1, metadata: { requireOCR: true, requireTranscript: true })
+          version: Version.new(druid:, version: 1, metadata: '{"requireOCR":true,"requireTranscript":true}')
         )
       end
 
