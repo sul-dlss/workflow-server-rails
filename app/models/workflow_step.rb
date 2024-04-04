@@ -2,6 +2,7 @@
 
 # Models a process that occurred for a digital object. Basically a log entry.
 class WorkflowStep < ApplicationRecord
+  validates_with DruidValidator
   validates :workflow, presence: true
   validates :process, presence: true
   validates :version, numericality: { only_integer: true }
