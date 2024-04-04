@@ -2,5 +2,5 @@
 
 # Models optional metadata that is associated with a druid/version pair for any workflow
 class VersionMetadata < ApplicationRecord
-  self.primary_keys = :druid, :version
+  validates :druid, uniqueness: { scope: :version }
 end

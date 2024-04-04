@@ -108,8 +108,6 @@ GEM
     capistrano-shared_configs (0.2.2)
     chronic (0.10.2)
     coderay (1.1.3)
-    composite_primary_keys (14.0.9)
-      activerecord (~> 7.0.2)
     concurrent-ruby (1.2.3)
     config (5.4.0)
       deep_merge (~> 1.2, >= 1.2.1)
@@ -330,7 +328,6 @@ DEPENDENCIES
   byebug
   capistrano-passenger
   capistrano-rails
-  composite_primary_keys
   config
   dlss-capistrano
   druid-tools
