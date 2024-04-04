@@ -18,9 +18,9 @@ class Version
     # if metadata passed in is an empty hash, delete the version metadata record
     if metadata.empty?
       VersionMetadata.find_by(druid:, version: version_id)&.destroy
-    else # otherwise, create/update the metadata record
+    else # otherwise, create/update the metadata record as json in the database
       version_metadata = VersionMetadata.find_or_create_by(druid:, version: version_id)
-      version_metadata.update!(values: metadata)
+      version_metadata.update!(values: metadata.to_json)
     end
   end
 

@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe VersionMetadata do
   let(:version_metadata) { FactoryBot.create(:version_metadata) }
 
-  it 'includes the metadata as a hash' do
-    expect(version_metadata.values).to eq({ 'requireOCR' => true, 'requireTranscript' => true })
+  it 'includes the metadata as json' do
+    expect(version_metadata.values).to eq('{"requireOCR":true,"requireTranscript":true}')
   end
 
   it 'validates the uniqueness of druid and version combination' do

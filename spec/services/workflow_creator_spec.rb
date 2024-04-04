@@ -73,7 +73,7 @@ RSpec.describe WorkflowCreator do
         first_step = WorkflowStep.find_by(druid:, process: 'start-accession')
         expect(QueueService).to have_received(:enqueue).with(first_step)
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
-        expect(VersionMetadata.find_by(druid:, version: 1).values).to eq({ 'requireOCR' => true, 'requireTranscript' => true })
+        expect(VersionMetadata.find_by(druid:, version: 1).values).to eq('{"requireOCR":true,"requireTranscript":true}')
       end
     end
   end

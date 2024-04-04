@@ -55,14 +55,14 @@ RSpec.describe 'Create a workflow' do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}&metadata=#{ERB::Util.url_encode(metadata.to_json)}"
         end.to change(WorkflowStep, :count).by(10)
         expect(WorkflowStep.last.lane_id).to eq('default')
-        expect(VersionMetadata.find_by(druid:, version:).values).to eq(metadata)
+        expect(VersionMetadata.find_by(druid:, version:).values).to eq('{"requireOCR":true,"requireTranscript":true}')
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
       end
     end
 
     context 'when the version is passed with updated metadata' do
       let(:original_metadata) { { 'requireOCR' => true, 'requireTranscript' => true } }
-      let(:new_metadata) { { 'requireOCR' => true, 'requireTranscript' => true } }
+      let(:new_metadata) { { 'requireOCR' => false, 'requireTranscript' => true } }
       let(:version) { 1 }
 
       it 'updates existing workflow metadata' do
@@ -71,14 +71,14 @@ RSpec.describe 'Create a workflow' do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}&metadata=#{ERB::Util.url_encode(original_metadata.to_json)}"
         end.to change(WorkflowStep, :count).by(10)
         expect(VersionMetadata.where(druid:, version:).count).to eq(1) # we have one metadata record
-        expect(VersionMetadata.find_by(druid:, version:).values).to eq(original_metadata)
+        expect(VersionMetadata.find_by(druid:, version:).values).to eq('{"requireOCR":true,"requireTranscript":true}')
 
         # next create the workflow with new metadata
         expect do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}&metadata=#{ERB::Util.url_encode(new_metadata.to_json)}"
         end.not_to change(WorkflowStep, :count) # no new workflow steps created, they just got replaced
         expect(VersionMetadata.where(druid:, version:).count).to eq(1) # we still have one metadata record
-        expect(VersionMetadata.find_by(druid:, version:).values).to eq(new_metadata) # but it has the new metadata
+        expect(VersionMetadata.find_by(druid:, version:).values).to eq('{"requireOCR":false,"requireTranscript":true}') # has new metadata
       end
     end
 
@@ -93,7 +93,7 @@ RSpec.describe 'Create a workflow' do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}&metadata=#{ERB::Util.url_encode(original_metadata.to_json)}"
         end.to change(WorkflowStep, :count).by(10)
         expect(VersionMetadata.where(druid:, version:).count).to eq(1) # we have one metadata record
-        expect(VersionMetadata.find_by(druid:, version:).values).to eq(original_metadata)
+        expect(VersionMetadata.find_by(druid:, version:).values).to eq('{"requireOCR":true,"requireTranscript":true}')
 
         # next create the workflow passing in blank metadata
         expect do
@@ -113,14 +113,14 @@ RSpec.describe 'Create a workflow' do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}&metadata=#{ERB::Util.url_encode(original_metadata.to_json)}"
         end.to change(WorkflowStep, :count).by(10)
         expect(VersionMetadata.where(druid:, version:).count).to eq(1) # we have one metadata record
-        expect(VersionMetadata.find_by(druid:, version:).values).to eq(original_metadata)
+        expect(VersionMetadata.find_by(druid:, version:).values).to eq('{"requireOCR":true,"requireTranscript":true}')
 
         # next create the workflow without passing in any metadata
         expect do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}"
         end.not_to change(WorkflowStep, :count) # no new workflow steps created, they just got replaced
         expect(VersionMetadata.where(druid:, version:).count).to eq(1) # we still have one metadata record
-        expect(VersionMetadata.find_by(druid:, version:).values).to eq(original_metadata) # and it still has the original metadata
+        expect(VersionMetadata.find_by(druid:, version:).values).to eq('{"requireOCR":true,"requireTranscript":true}') # original metadata
       end
     end
   end
