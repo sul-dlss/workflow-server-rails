@@ -32,6 +32,7 @@
   </process>
   <process batch-limit="1" error-limit="5" name="reset-workspace">
     <label>Reset workspace by renaming the druid-tree to a versioned directory</label>
+    <prereq>technical-metadata</prereq>
     <prereq>sdr-ingest-received</prereq>
     <prereq>publish</prereq>
     <prereq>shelve</prereq>
