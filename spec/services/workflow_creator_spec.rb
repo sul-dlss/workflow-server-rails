@@ -33,7 +33,7 @@ RSpec.describe WorkflowCreator do
         create_workflow_steps
       end.to change(WorkflowStep, :count).by(10)
       expect(WorkflowStep.last.druid).to eq druid
-      first_step = WorkflowStep.find_by(druid:, process: 'shelve')
+      first_step = WorkflowStep.find_by(druid:, process: 'start-accession')
       expect(QueueService).to have_received(:enqueue).with(first_step)
       expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
     end
@@ -47,7 +47,7 @@ RSpec.describe WorkflowCreator do
         expect do
           create_workflow_steps
         end.not_to change(WorkflowStep, :count)
-        first_step = WorkflowStep.find_by(druid:, process: 'shelve')
+        first_step = WorkflowStep.find_by(druid:, process: 'start-accession')
         expect(QueueService).to have_received(:enqueue).with(first_step)
         # The first time was for the test setup in the before hook.
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep).twice
