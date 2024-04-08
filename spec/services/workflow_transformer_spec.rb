@@ -12,7 +12,7 @@ RSpec.describe WorkflowTransformer do
       expect(transformer.initial_workflow.to_s).to be_equivalent_to <<~XML
         <?xml version="1.0"?>
         <workflow id="accessionWF">
-          <process name="start-accession" status="completed" attempts="1" lifecycle="submitted"/>
+          <process name="start-accession" status="waiting" lifecycle="submitted"/>
           <process name="technical-metadata" status="waiting"/>
           <process name="shelve" status="waiting"/>
           <process name="publish" status="waiting" lifecycle="published"/>

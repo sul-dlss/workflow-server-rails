@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <workflow-def id="accessionWF">
-  <process lifecycle="submitted" name="start-accession" status="completed">
+  <process lifecycle="submitted" name="start-accession">
     <label>Start Accessioning</label>
   </process>
   <process batch-limit="1000" error-limit="10" name="technical-metadata">
