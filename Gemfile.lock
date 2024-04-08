@@ -76,6 +76,7 @@ GEM
       sshkit (>= 1.6.1, != 1.7.0)
     amq-protocol (2.3.2)
     ast (2.4.2)
+    base64 (0.2.0)
     bootsnap (1.18.3)
       msgpack (~> 1.2)
     builder (3.2.4)
@@ -138,7 +139,7 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
-    json (2.7.1)
+    json (2.7.2)
     language_server-protocol (3.17.0.3)
     lograge (0.14.0)
       actionpack (>= 4)
@@ -173,7 +174,7 @@ GEM
       net-ssh (>= 5.0.0, < 8.0.0)
     net-smtp (0.5.0)
       net-protocol
-    net-ssh (7.2.1)
+    net-ssh (7.2.3)
     nio4r (2.7.1)
     nokogiri (1.16.3)
       mini_portile2 (~> 2.8.2)
@@ -226,7 +227,7 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
-    rake (13.1.0)
+    rake (13.2.1)
     rbtree (0.4.6)
     redis-client (0.21.1)
       connection_pool
@@ -253,7 +254,7 @@ GEM
     rspec-support (3.13.1)
     rspec_junit_formatter (0.6.0)
       rspec-core (>= 2, < 4, != 2.12.0)
-    rubocop (1.62.1)
+    rubocop (1.63.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
@@ -275,7 +276,7 @@ GEM
       rack (>= 1.1)
       rubocop (>= 1.33.0, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
-    rubocop-rspec (2.28.0)
+    rubocop-rspec (2.29.1)
       rubocop (~> 1.40)
       rubocop-capybara (~> 2.17)
       rubocop-factory_bot (~> 2.22)
@@ -298,7 +299,8 @@ GEM
     sorted_set (1.0.3)
       rbtree
       set (~> 1.0)
-    sshkit (1.22.0)
+    sshkit (1.22.1)
+      base64
       mutex_m
       net-scp (>= 1.1.2)
       net-sftp (>= 2.1.2)
