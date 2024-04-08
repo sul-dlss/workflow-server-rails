@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <workflow-def id="wasSeedPreassemblyWF">
-  <process name="start" status="completed">
+  <process name="start">
     <label>Initiate WAS Seed Preassembly WF of the object</label>
   </process>
   <process name="desc-metadata-generator">

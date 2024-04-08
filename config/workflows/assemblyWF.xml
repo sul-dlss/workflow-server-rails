@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <workflow-def id="assemblyWF">
-  <process name="start-assembly" status="completed">
+  <process name="start-assembly">
     <label>Initiate assembly of the object</label>
   </process>
   <process name="content-metadata-create">

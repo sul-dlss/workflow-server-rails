@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <workflow-def id="wasCrawlPreassemblyWF">
-  <process name="start" status="completed">
+  <process name="start">
     <label>Initiate WAS Crawl Preassembly WF of the object</label>
   </process>
   <process name="build-was-crawl-druid-tree">
