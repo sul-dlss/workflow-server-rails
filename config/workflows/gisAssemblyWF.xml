@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <workflow-def id="gisAssemblyWF">
-  <process name="start-gis-assembly-workflow" status="completed">
+  <process name="start-gis-assembly-workflow">
     <label>Initiate assembly workflow for the object</label>
   </process>
   <process name="register-druid" status="completed">
