@@ -13,7 +13,16 @@ class WorkflowsController < ApplicationController
     # Active means that it's of the current version, and that all the steps in
     # the current version haven't been completed yet.
     steps = steps.for_version(params[:version])
+    Rails.logger.info("Lifecycle steps: #{steps} for #{params[:druid]} #{params[:version]}. Any incomplete? #{steps.incomplete.any?}")
     return @objects = [] unless steps.incomplete.any?
+
+    steps.incomplete.each do |step|
+      Rails.logger.info("Incomplete step: #{step.inspect}")
+    end
+
+    steps.lifecycle.each do |step|
+      Rails.logger.info("Lifecycle step: #{step.inspect}")
+    end
 
     @objects = steps.lifecycle
   end

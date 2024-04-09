@@ -4,12 +4,21 @@
 # API for handling requests about a specific object's versions.
 class VersionsController < ApplicationController
   def close
+    Rails.logger.info("Closing. #{incomplete?}")
     update_versioning_steps
+    Rails.logger.info("Updated versioning steps. #{incomplete?}")
     initialize_workflow unless params['create-accession'] == 'false'
+    Rails.logger.info("Initialized workflow")
     head :ok
   end
 
   private
+
+  def incomplete?
+    steps = WorkflowStep.where(druid: params[:druid])
+    steps = steps.for_version(params[:version])
+    steps.incomplete.any?
+  end
 
   def update_versioning_steps
     WorkflowStep.transaction do
