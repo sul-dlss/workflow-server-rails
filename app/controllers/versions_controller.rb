@@ -12,10 +12,12 @@ class VersionsController < ApplicationController
   private
 
   def update_versioning_steps
-    find_versioning_steps.update_all(
-      attempts: 1,
-      status: 'completed'
-    )
+    WorkflowStep.transaction do
+      find_versioning_steps.update_all(
+        attempts: 1,
+        status: 'completed'
+      )
+    end
   end
 
   def find_versioning_steps
