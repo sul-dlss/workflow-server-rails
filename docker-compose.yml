@@ -5,6 +5,8 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
+      args:
+        - BUNDLE_GEMS__CONTRIBSYS__COM
     environment:
       - RAILS_LOG_TO_STDOUT=true
       - DATABASE_NAME=workflow-server
@@ -15,6 +17,7 @@ services:
       - SECRET_KEY_BASE="${SECRET_KEY_BASE}"
       - SETTINGS__ENABLE_STOMP=false
       - SETTINGS__REDIS__HOSTNAME=redis
+      - BUNDLE_GEMS__CONTRIBSYS__COM="${BUNDLE_GEMS__CONTRIBSYS__COM}"
     volumes:
        - .:/app
     ports:
