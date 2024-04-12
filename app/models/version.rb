@@ -6,16 +6,16 @@ class Version
   def initialize(druid:, version:, metadata: nil)
     @druid = druid
     @version_id = version
-    @metadata = metadata # this is a hash of metadata values to be stored in the VersionMetadata table
+    @metadata = metadata # this is JSON metadata with values to be stored in the VersionMetadata table
   end
 
   attr_reader :druid, :version_id, :metadata
 
   def update_metadata
-    # if no metadata passed in (nil), do nothing
+    # if no metadata JSON passed in (nil), do nothing
     return unless metadata
 
-    # if json metadata is passed in but is empty, delete the version metadata record
+    # if JSON metadata is passed in but is empty, delete the version metadata record to clear all metadata
     if metadata == '{}'
       VersionMetadata.find_by(druid:, version: version_id)&.destroy
     else # otherwise, create/update the metadata record as json in the database
