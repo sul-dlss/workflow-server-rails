@@ -3,6 +3,7 @@ require:
   - rubocop-rails
   - rubocop-rspec
   - rubocop-factory_bot
+  - rubocop-rspec_rails
 
 AllCops:
   TargetRubyVersion: 3.2
@@ -198,7 +199,7 @@ RSpec/SubjectDeclaration: # new in 2.5
   Enabled: true
 FactoryBot/SyntaxMethods: # new in 2.7
   Enabled: false
-RSpec/Rails/AvoidSetupHook: # new in 2.4
+RSpecRails/AvoidSetupHook: # new in 2.4
   Enabled: true
 
 Naming/BlockForwarding: # new in 1.24
@@ -297,7 +298,7 @@ Capybara/SpecificFinders: # new in 2.13
   Enabled: true
 Capybara/SpecificMatcher: # new in 2.12
   Enabled: true
-RSpec/Rails/HaveHttpStatus: # new in 2.12
+RSpecRails/HaveHttpStatus: # new in 2.12
   Enabled: true
 
 Lint/DuplicateMagicComment: # new in 1.37
@@ -322,7 +323,7 @@ Capybara/SpecificActions: # new in 2.14
   Enabled: true
 FactoryBot/ConsistentParenthesesStyle: # new in 2.14
   Enabled: true
-RSpec/Rails/InferredSpecType: # new in 2.14
+RSpecRails/InferredSpecType: # new in 2.14
   Enabled: true
 
 Gemspec/DevelopmentDependencies: # new in 1.44
@@ -381,9 +382,9 @@ RSpec/SkipBlockInsideExample: # new in 2.19
   Enabled: true
 FactoryBot/FactoryNameStyle: # new in 2.16
   Enabled: true
-RSpec/Rails/MinitestAssertions: # new in 2.17
+RSpecRails/MinitestAssertions: # new in 2.17
   Enabled: true
-RSpec/Rails/TravelAround: # new in 2.19
+RSpecRails/TravelAround: # new in 2.19
   Enabled: true
 
 Style/ExactRegexpMatch: # new in 1.51
@@ -418,7 +419,7 @@ Style/YAMLFileRead: # new in 1.53
   Enabled: true
 RSpec/ReceiveMessages: # new in 2.23
   Enabled: true
-RSpec/Rails/NegationBeValid: # new in 2.23
+RSpecRails/NegationBeValid: # new in 2.23
   Enabled: true
 
 Rails/DangerousColumnNames: # new in 2.21
