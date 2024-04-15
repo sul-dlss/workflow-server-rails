@@ -61,7 +61,7 @@ RSpec.describe WorkflowCreator do
         described_class.new(
           workflow_id: wf_parser.workflow_id,
           processes: wf_parser.processes,
-          version: Version.new(druid:, version: 1, metadata: '{"requireOCR":true,"requireTranscript":true}')
+          version: Version.new(druid:, version: 1, metadata: { requireOCR: true, requireTranscript: true })
         )
       end
 
@@ -73,6 +73,7 @@ RSpec.describe WorkflowCreator do
         first_step = WorkflowStep.find_by(druid:, process: 'start-accession')
         expect(QueueService).to have_received(:enqueue).with(first_step)
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
+        # returns metadata as json
         expect(VersionMetadata.find_by(druid:, version: 1).values).to eq('{"requireOCR":true,"requireTranscript":true}')
       end
     end

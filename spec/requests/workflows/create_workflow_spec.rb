@@ -60,6 +60,20 @@ RSpec.describe 'Create a workflow' do
       end
     end
 
+    context 'when the version is passed with non JSON metadata' do
+      let(:bogus_metadata) { 'not JSON' }
+      let(:version) { 1 }
+
+      it 'throws an error' do
+        expect do
+          post "/objects/#{druid}/workflows/#{workflow}?version=#{version}&metadata=#{bogus_metadata}"
+        end.to raise_error(JSON::ParserError)
+        expect(WorkflowStep.where(druid:, version:).count).to eq(0) # no workflow steps
+        expect(VersionMetadata.where(druid:, version:).count).to eq(0) # no metadata record
+        expect(SendUpdateMessage).not_to have_received(:publish).with(step: WorkflowStep)
+      end
+    end
+
     context 'when the version is passed with updated metadata' do
       let(:original_metadata) { { 'requireOCR' => true, 'requireTranscript' => true } }
       let(:new_metadata) { { 'requireOCR' => false, 'requireTranscript' => true } }
