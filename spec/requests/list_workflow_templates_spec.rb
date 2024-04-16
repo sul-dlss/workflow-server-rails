@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'List the workflow templates' do
+  # rubocop:disable RSpec/ExampleLength
   it 'draws name and label' do
     get '/workflow_templates'
     expect(response).to have_http_status(:ok)
@@ -11,6 +12,7 @@ RSpec.describe 'List the workflow templates' do
       accession2WF
       accessionWF
       assemblyWF
+      caption
       digitizationWF
       disseminationWF
       dpgImageWF
@@ -21,6 +23,7 @@ RSpec.describe 'List the workflow templates' do
       goobiWF
       googleScannedBookWF
       hydrusAssemblyWF
+      ocr
       preservationAuditWF
       preservationIngestWF
       registrationWF
@@ -38,4 +41,5 @@ RSpec.describe 'List the workflow templates' do
       wasSeedPreassemblyWF
     ]
   end
+  # rubocop:enable RSpec/ExampleLength
 end

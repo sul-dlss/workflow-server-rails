@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<workflow-def id="ocr">
+  <process name="start-ocr">
+    <label>Initiate OCR for the object</label>
+  </process>
+  <process name="ocr-create">
+    <prereq>start-ocr</prereq>
+    <label>Generate OCR for the content in the object (if requested and possible)</label>
+  </process>
+  <process name="split-ocr-xml">
+    <prereq>ocr-create</prereq>
+    <label>Split full document OCR XML into page level OCR XML</label>
+  </process>
+  <process name="end-ocr">
+    <prereq>split-ocr-xml</prereq>
+    <label>Complete OCR tasks for the object</label>
+  </process>
+</workflow-def>
