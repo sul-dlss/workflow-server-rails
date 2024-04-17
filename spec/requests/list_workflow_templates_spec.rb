@@ -12,7 +12,7 @@ RSpec.describe 'List the workflow templates' do
       accession2WF
       accessionWF
       assemblyWF
-      caption
+      captionWF
       digitizationWF
       disseminationWF
       dpgImageWF
@@ -23,7 +23,7 @@ RSpec.describe 'List the workflow templates' do
       goobiWF
       googleScannedBookWF
       hydrusAssemblyWF
-      ocr
+      ocrWF
       preservationAuditWF
       preservationIngestWF
       registrationWF

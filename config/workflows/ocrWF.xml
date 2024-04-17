@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<workflow-def id="ocr">
+<workflow-def id="ocrWF">
   <process name="start-ocr">
     <label>Initiate OCR for the object</label>
   </process>
