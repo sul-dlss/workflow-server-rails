@@ -42,9 +42,9 @@ class WorkflowStep < ApplicationRecord
     self.completed_at ||= Time.now
   end
 
-  # any associated metadata for this step (if it exists) -- note: is the same for any workflow/step for a given druid/version combination
-  def metadata
-    VersionMetadata.find_by(druid:, version:)&.values
+  # any associated version context for this step (if it exists) -- note: same for any workflow/step for a given druid/version combination
+  def context
+    VersionContext.find_by(druid:, version:)&.values
   end
 
   ##
@@ -101,7 +101,7 @@ class WorkflowStep < ApplicationRecord
       elapsed:,
       attempts:,
       datetime: updated_at.to_time.iso8601,
-      metadata:,
+      context:,
       status:,
       name: process
     }.tap do |attr|

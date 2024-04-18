@@ -16,9 +16,9 @@ FactoryBot.define do
       completed_at { Time.now }
     end
 
-    trait :with_ocr_metadata do
+    trait :with_ocr_context do
       after(:create) do |step|
-        create(:version_metadata, druid: step.druid, version: step.version)
+        create(:version_context, druid: step.druid, version: step.version)
       end
     end
   end

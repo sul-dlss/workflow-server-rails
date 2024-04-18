@@ -22,7 +22,7 @@ RSpec.describe 'Get the steps for one object' do
         <workflows objectId="#{druid}">
           <workflow objectId="#{druid}" id="accessionWF">
             <process version="1" note="" lifecycle="" laneId="default"
-              elapsed="" attempts="0" datetime="#{date}" metadata=""
+              elapsed="" attempts="0" datetime="#{date}" context=""
               status="error" name="start-accession" errorMessage="it just broke"/>
           </workflow>
         </workflows>
@@ -44,7 +44,7 @@ RSpec.describe 'Get the steps for one object' do
         <workflows objectId="#{druid}">
           <workflow objectId="#{druid}" id="accessionWF">
             <process version="1" note="" lifecycle="" laneId="default"
-              elapsed="" attempts="0" datetime="#{date}" metadata=""
+              elapsed="" attempts="0" datetime="#{date}" context=""
               status="completed" name="start-accession"/>
           </workflow>
         </workflows>
@@ -52,14 +52,14 @@ RSpec.describe 'Get the steps for one object' do
     end
   end
 
-  context 'when a successful step with metadata' do
+  context 'when a successful step with context' do
     let(:item) do
       FactoryBot.create(:workflow_step,
-                        :with_ocr_metadata,
+                        :with_ocr_context,
                         created_at: date)
     end
 
-    it 'shows the metadata' do
+    it 'shows the context' do
       get "/objects/#{druid}/workflows"
       expect(response).to be_successful
       expect(response.body).to be_equivalent_to <<~XML
@@ -67,7 +67,7 @@ RSpec.describe 'Get the steps for one object' do
           <workflow objectId="#{druid}" id="accessionWF">
             <process version="1" note="" lifecycle="" laneId="default"
               elapsed="" attempts="0" datetime="#{date}"
-              metadata="{&quot;requireOCR&quot;:true,&quot;requireTranscript&quot;:true}"
+              context="{&quot;requireOCR&quot;:true,&quot;requireTranscript&quot;:true}"
               status="waiting" name="start-accession"/>
           </workflow>
         </workflows>

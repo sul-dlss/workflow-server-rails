@@ -20,7 +20,7 @@ RSpec.describe WorkflowCreator do
   describe '#create_workflow_steps' do
     subject(:create_workflow_steps) { wf_creator.create_workflow_steps }
 
-    context 'without metadata' do
+    context 'without context' do
       let(:wf_creator) do
         described_class.new(
           workflow_id: wf_parser.workflow_id,
@@ -56,16 +56,16 @@ RSpec.describe WorkflowCreator do
       end
     end
 
-    context 'with metadata' do
+    context 'with context' do
       let(:wf_creator) do
         described_class.new(
           workflow_id: wf_parser.workflow_id,
           processes: wf_parser.processes,
-          version: Version.new(druid:, version: 1, metadata: { requireOCR: true, requireTranscript: true })
+          version: Version.new(druid:, version: 1, context: { requireOCR: true, requireTranscript: true })
         )
       end
 
-      it 'creates a WorkflowStep for each process, along with version metadata' do
+      it 'creates a WorkflowStep for each process, along with version context' do
         expect do
           create_workflow_steps
         end.to change(WorkflowStep, :count).by(10)
@@ -73,8 +73,8 @@ RSpec.describe WorkflowCreator do
         first_step = WorkflowStep.find_by(druid:, process: 'start-accession')
         expect(QueueService).to have_received(:enqueue).with(first_step)
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
-        # returns metadata as json
-        expect(VersionMetadata.find_by(druid:, version: 1).values).to eq('{"requireOCR":true,"requireTranscript":true}')
+        # returns context as json
+        expect(VersionContext.find_by(druid:, version: 1).values).to eq('{"requireOCR":true,"requireTranscript":true}')
       end
     end
   end

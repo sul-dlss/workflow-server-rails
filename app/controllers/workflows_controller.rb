@@ -49,7 +49,7 @@ class WorkflowsController < ApplicationController
       version: Version.new(
         druid: params[:druid],
         version: params[:version],
-        metadata:
+        context:
       )
     ).create_workflow_steps
 
@@ -67,11 +67,8 @@ class WorkflowsController < ApplicationController
 
   private
 
-  # parse metadata from the request as JSON unless it is nil
-  def metadata
-    return nil unless params[:metadata]
-
-    JSON.parse(params[:metadata])
+  def context
+    params[:context] || nil
   end
 
   def initial_parser

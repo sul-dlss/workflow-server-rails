@@ -20,7 +20,7 @@ RSpec.describe 'Create a workflow' do
       allow(SendUpdateMessage).to receive(:publish)
     end
 
-    context 'when the version is passed without metadata' do
+    context 'when the version is passed without context' do
       it 'creates new workflows' do
         expect do
           post "/objects/#{druid}/workflows/#{workflow}?version=1"
@@ -46,95 +46,115 @@ RSpec.describe 'Create a workflow' do
       end
     end
 
-    context 'when the version is passed with metadata' do
-      let(:metadata) { { 'requireOCR' => true, 'requireTranscript' => true } }
+    context 'when the version is passed with context' do
+      let(:context) { { 'requireOCR' => true, 'requireTranscript' => true } }
       let(:version) { 1 }
 
-      it 'creates new workflows with metadata' do
+      it 'creates new workflows with context' do
         expect do
-          post "/objects/#{druid}/workflows/#{workflow}?version=#{version}&metadata=#{ERB::Util.url_encode(metadata.to_json)}"
+          post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: }
         end.to change(WorkflowStep, :count).by(10)
         expect(WorkflowStep.last.lane_id).to eq('default')
-        expect(VersionMetadata.find_by(druid:, version:).values).to eq('{"requireOCR":true,"requireTranscript":true}')
+        expect(VersionContext.find_by(druid:, version:).values).to eq('{"requireOCR":"true","requireTranscript":"true"}')
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
       end
     end
 
-    context 'when the version is passed with non JSON metadata' do
-      let(:bogus_metadata) { 'not JSON' }
+    context 'when the version is passed with non hash context' do
+      let(:string_context) { 'not JSON' }
       let(:version) { 1 }
 
-      it 'throws an error' do
+      it 'returns the value as a string' do
         expect do
-          post "/objects/#{druid}/workflows/#{workflow}?version=#{version}&metadata=#{bogus_metadata}"
-        end.to raise_error(JSON::ParserError)
-        expect(WorkflowStep.where(druid:, version:).count).to eq(0) # no workflow steps
-        expect(VersionMetadata.where(druid:, version:).count).to eq(0) # no metadata record
-        expect(SendUpdateMessage).not_to have_received(:publish).with(step: WorkflowStep)
+          post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: string_context }
+        end.to change(WorkflowStep, :count).by(10)
+        expect(VersionContext.where(druid:, version:).count).to eq(1) # we have one context record
+        expect(VersionContext.find_by(druid:, version:).values).to eq("\"#{string_context}\"")
       end
     end
 
-    context 'when the version is passed with updated metadata' do
-      let(:original_metadata) { { 'requireOCR' => true, 'requireTranscript' => true } }
-      let(:new_metadata) { { 'requireOCR' => false, 'requireTranscript' => true } }
+    context 'when the version is passed with updated context' do
+      let(:original_context) { { 'requireOCR' => true, 'requireTranscript' => true } }
+      let(:new_context) { { 'requireOCR' => false, 'requireTranscript' => true } }
       let(:version) { 1 }
 
-      it 'updates existing workflow metadata' do
-        # first create the workflow with original metadata
+      it 'updates existing workflow context' do
+        # first create the workflow with original context
         expect do
-          post "/objects/#{druid}/workflows/#{workflow}?version=#{version}&metadata=#{ERB::Util.url_encode(original_metadata.to_json)}"
+          post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: original_context }
         end.to change(WorkflowStep, :count).by(10)
-        expect(VersionMetadata.where(druid:, version:).count).to eq(1) # we have one metadata record
-        expect(VersionMetadata.find_by(druid:, version:).values).to eq('{"requireOCR":true,"requireTranscript":true}')
+        expect(VersionContext.where(druid:, version:).count).to eq(1) # we have one context record
+        expect(VersionContext.find_by(druid:, version:).values).to eq('{"requireOCR":"true","requireTranscript":"true"}')
 
-        # next create the workflow with new metadata
+        # next create the workflow with new context
         expect do
-          post "/objects/#{druid}/workflows/#{workflow}?version=#{version}&metadata=#{ERB::Util.url_encode(new_metadata.to_json)}"
+          post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: new_context }
         end.not_to change(WorkflowStep, :count) # no new workflow steps created, they just got replaced
-        expect(VersionMetadata.where(druid:, version:).count).to eq(1) # we still have one metadata record
-        expect(VersionMetadata.find_by(druid:, version:).values).to eq('{"requireOCR":false,"requireTranscript":true}') # has new metadata
+        expect(VersionContext.where(druid:, version:).count).to eq(1) # we still have one context record
+        expect(VersionContext.find_by(druid:, version:).values).to eq('{"requireOCR":"false","requireTranscript":"true"}') # has new context
       end
     end
 
-    context 'when the version is passed with blank metadata' do
-      let(:original_metadata) { { 'requireOCR' => true, 'requireTranscript' => true } }
-      let(:new_metadata) { {} }
+    context 'when the version is passed with blank context' do
+      let(:original_context) { { 'requireOCR' => true, 'requireTranscript' => true } }
+      let(:blank_context) { '' }
       let(:version) { 1 }
 
-      it 'removes the existing workflow metadata' do
-        # first create the workflow with original metadata
+      it 'removes the existing workflow context' do
+        # first create the workflow with original context
         expect do
-          post "/objects/#{druid}/workflows/#{workflow}?version=#{version}&metadata=#{ERB::Util.url_encode(original_metadata.to_json)}"
+          post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: original_context }
         end.to change(WorkflowStep, :count).by(10)
-        expect(VersionMetadata.where(druid:, version:).count).to eq(1) # we have one metadata record
-        expect(VersionMetadata.find_by(druid:, version:).values).to eq('{"requireOCR":true,"requireTranscript":true}')
+        expect(VersionContext.where(druid:, version:).count).to eq(1) # we have one context record
+        expect(VersionContext.find_by(druid:, version:).values).to eq('{"requireOCR":"true","requireTranscript":"true"}')
 
-        # next create the workflow passing in blank metadata
+        # next create the workflow passing in blank context
         expect do
-          post "/objects/#{druid}/workflows/#{workflow}?version=#{version}&metadata=#{ERB::Util.url_encode(new_metadata.to_json)}"
+          post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: blank_context }
         end.not_to change(WorkflowStep, :count) # no new workflow steps created, they just got replaced
-        expect(VersionMetadata.where(druid:, version:).count).to eq(0) # all gone
+        expect(VersionContext.where(druid:, version:).count).to eq(0) # all gone
       end
     end
 
-    context 'when the version is passed with no new metadata' do
-      let(:original_metadata) { { 'requireOCR' => true, 'requireTranscript' => true } }
+    context 'when the version is passed with no new context' do
+      let(:original_context) { { 'requireOCR' => true, 'requireTranscript' => true } }
       let(:version) { 1 }
 
-      it 'leaves the existing workflow metadata alone' do
-        # first create the workflow with original metadata
+      it 'leaves the existing workflow context alone' do
+        # first create the workflow with original context
         expect do
-          post "/objects/#{druid}/workflows/#{workflow}?version=#{version}&metadata=#{ERB::Util.url_encode(original_metadata.to_json)}"
+          post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: original_context }
         end.to change(WorkflowStep, :count).by(10)
-        expect(VersionMetadata.where(druid:, version:).count).to eq(1) # we have one metadata record
-        expect(VersionMetadata.find_by(druid:, version:).values).to eq('{"requireOCR":true,"requireTranscript":true}')
+        expect(VersionContext.where(druid:, version:).count).to eq(1) # we have one context record
+        expect(VersionContext.find_by(druid:, version:).values).to eq('{"requireOCR":"true","requireTranscript":"true"}')
 
-        # next create the workflow without passing in any metadata
+        # next create the workflow without passing in any context
         expect do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}"
         end.not_to change(WorkflowStep, :count) # no new workflow steps created, they just got replaced
-        expect(VersionMetadata.where(druid:, version:).count).to eq(1) # we still have one metadata record
-        expect(VersionMetadata.find_by(druid:, version:).values).to eq('{"requireOCR":true,"requireTranscript":true}') # original metadata
+        expect(VersionContext.where(druid:, version:).count).to eq(1) # we still have one context record
+        expect(VersionContext.find_by(druid:, version:).values).to eq('{"requireOCR":"true","requireTranscript":"true"}') # original context
+      end
+
+      context 'when the version is passed with nil context' do
+        let(:original_context) { { 'requireOCR' => true, 'requireTranscript' => true } }
+        let(:version) { 1 }
+
+        it 'leaves the existing workflow context alone' do
+          # first create the workflow with original context
+          expect do
+            post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: original_context }
+          end.to change(WorkflowStep, :count).by(10)
+          expect(VersionContext.where(druid:, version:).count).to eq(1) # we have one context record
+          expect(VersionContext.find_by(druid:, version:).values).to eq('{"requireOCR":"true","requireTranscript":"true"}')
+
+          # next create the workflow passing in nil context
+          expect do
+            post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: nil }
+          end.not_to change(WorkflowStep, :count) # no new workflow steps created, they just got replaced
+          expect(VersionContext.where(druid:, version:).count).to eq(1) # we still have one context record
+          expect(VersionContext.find_by(druid:, version:).values).to eq('{"requireOCR":"true","requireTranscript":"true"}') # original context
+        end
       end
     end
   end

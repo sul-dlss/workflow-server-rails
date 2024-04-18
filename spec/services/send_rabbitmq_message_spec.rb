@@ -16,7 +16,7 @@ RSpec.describe SendRabbitmqMessage do
       allow(exchange).to receive(:publish)
     end
 
-    context 'without any metadata' do
+    context 'without any context' do
       let(:step) { FactoryBot.create(:workflow_step, druid:) }
 
       it 'sends message' do
@@ -30,7 +30,7 @@ RSpec.describe SendRabbitmqMessage do
             elapsed: nil,
             attempts: 0,
             datetime: step.updated_at.to_time.iso8601,
-            metadata: nil,
+            context: nil,
             status: 'waiting',
             name: 'start-accession',
             action: 'workflow updated',
@@ -42,8 +42,8 @@ RSpec.describe SendRabbitmqMessage do
       end
     end
 
-    context 'with metadata' do
-      let(:step) { FactoryBot.create(:workflow_step, :with_ocr_metadata, druid:) }
+    context 'with context' do
+      let(:step) { FactoryBot.create(:workflow_step, :with_ocr_context, druid:) }
 
       it 'sends message' do
         service.publish
@@ -56,7 +56,7 @@ RSpec.describe SendRabbitmqMessage do
             elapsed: nil,
             attempts: 0,
             datetime: step.updated_at.to_time.iso8601,
-            metadata: VersionMetadata.find_by(druid:, version:).values,
+            context: VersionContext.find_by(druid:, version:).values,
             status: 'waiting',
             name: 'start-accession',
             action: 'workflow updated',

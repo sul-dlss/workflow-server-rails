@@ -135,17 +135,17 @@ RSpec.describe WorkflowStep do
     end
   end
 
-  context 'with workflow metadata' do
-    let(:step_with_metadata) { FactoryBot.create(:workflow_step, :with_ocr_metadata) }
+  context 'with workflow context' do
+    let(:step_with_context) { FactoryBot.create(:workflow_step, :with_ocr_context) }
 
-    it 'includes the metadata as json' do
-      expect(step_with_metadata.metadata).to eq('{"requireOCR":true,"requireTranscript":true}')
+    it 'includes the context as json' do
+      expect(step_with_context.context).to eq('{"requireOCR":true,"requireTranscript":true}')
     end
   end
 
-  context 'without workflow metadata' do
-    it 'includes the metadata as a hash' do
-      expect(step.metadata).to be_nil
+  context 'without workflow context' do
+    it 'includes the context as nil' do
+      expect(step.context).to be_nil
     end
   end
 
