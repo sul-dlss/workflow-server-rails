@@ -112,6 +112,24 @@ GET    /workflow_queue/all_queued
 GET    /workflow_queue
 ```
 
+### Workflow Variables
+
+If a workflow or workflows for a particular object require data to be persisted and available between steps, workflow variables can be set.
+These are per object/version pair and thus available to any step in any workflow for a given version of an object once set.
+
+These data are not persisted in Cocina, and are not preserved or available outside of the workflow-service, so they should only be used to persist information used during workflow processing.
+
+To use, pass in a "metadata" parameter as a hash when creating a workflow. The hash can contain any number of key/value pairs of metadata:
+
+```
+POST   /objects/:druid/workflows/:workflow?metadata=XXXX&version=Y
+```
+
+This metadata will then be returned as JSON in each `process` block of the XML response containing workflow data, e.g. `GET    /objects/:druid/workflows` for use in processing.
+
+This can be used if a user selects an option in Pre-assembly or Argo that needs to be passed through the accessioning pipeline, such as if OCR or captioning is required.  The value is set when creating the workflow, and then available to each robot which needs it.
+
+
 ## Deploy
 ### Logs
 Logs are located in `/var/log/httpd`.
