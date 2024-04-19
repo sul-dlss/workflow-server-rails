@@ -56,7 +56,7 @@ RSpec.describe SendRabbitmqMessage do
             elapsed: nil,
             attempts: 0,
             datetime: step.updated_at.to_time.iso8601,
-            context: VersionContext.find_by(druid:, version:).values,
+            context: VersionContext.find_by(druid:, version:).values.to_json,
             status: 'waiting',
             name: 'start-accession',
             action: 'workflow updated',

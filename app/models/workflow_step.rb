@@ -47,6 +47,13 @@ class WorkflowStep < ApplicationRecord
     VersionContext.find_by(druid:, version:)&.values
   end
 
+  # context as json to return to the client (or nil )
+  def context_as_json
+    return nil unless context
+
+    context.to_json
+  end
+
   ##
   # indicate if this step is marked as completed
   # @return [boolean]
@@ -101,7 +108,7 @@ class WorkflowStep < ApplicationRecord
       elapsed:,
       attempts:,
       datetime: updated_at.to_time.iso8601,
-      context:,
+      context: context_as_json,
       status:,
       name: process
     }.tap do |attr|
