@@ -55,7 +55,7 @@ RSpec.describe 'Create a workflow' do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: }
         end.to change(WorkflowStep, :count).by(10)
         expect(WorkflowStep.last.lane_id).to eq('default')
-        expect(VersionContext.find_by(druid:, version:).values).to eq('{"requireOCR":"true","requireTranscript":"true"}')
+        expect(VersionContext.find_by(druid:, version:).values).to eq({ 'requireOCR' => 'true', 'requireTranscript' => 'true' })
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
       end
     end
@@ -69,7 +69,7 @@ RSpec.describe 'Create a workflow' do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: string_context }
         end.to change(WorkflowStep, :count).by(10)
         expect(VersionContext.where(druid:, version:).count).to eq(1) # we have one context record
-        expect(VersionContext.find_by(druid:, version:).values).to eq("\"#{string_context}\"")
+        expect(VersionContext.find_by(druid:, version:).values).to eq(string_context)
       end
     end
 
@@ -84,14 +84,15 @@ RSpec.describe 'Create a workflow' do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: original_context }
         end.to change(WorkflowStep, :count).by(10)
         expect(VersionContext.where(druid:, version:).count).to eq(1) # we have one context record
-        expect(VersionContext.find_by(druid:, version:).values).to eq('{"requireOCR":"true","requireTranscript":"true"}')
+        expect(VersionContext.find_by(druid:, version:).values).to eq({ 'requireOCR' => 'true', 'requireTranscript' => 'true' })
 
         # next create the workflow with new context
         expect do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: new_context }
         end.not_to change(WorkflowStep, :count) # no new workflow steps created, they just got replaced
         expect(VersionContext.where(druid:, version:).count).to eq(1) # we still have one context record
-        expect(VersionContext.find_by(druid:, version:).values).to eq('{"requireOCR":"false","requireTranscript":"true"}') # has new context
+        # has new context
+        expect(VersionContext.find_by(druid:, version:).values).to eq({ 'requireOCR' => 'false', 'requireTranscript' => 'true' })
       end
     end
 
@@ -106,7 +107,7 @@ RSpec.describe 'Create a workflow' do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: original_context }
         end.to change(WorkflowStep, :count).by(10)
         expect(VersionContext.where(druid:, version:).count).to eq(1) # we have one context record
-        expect(VersionContext.find_by(druid:, version:).values).to eq('{"requireOCR":"true","requireTranscript":"true"}')
+        expect(VersionContext.find_by(druid:, version:).values).to eq({ 'requireOCR' => 'true', 'requireTranscript' => 'true' })
 
         # next create the workflow passing in blank context
         expect do
@@ -126,14 +127,15 @@ RSpec.describe 'Create a workflow' do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: original_context }
         end.to change(WorkflowStep, :count).by(10)
         expect(VersionContext.where(druid:, version:).count).to eq(1) # we have one context record
-        expect(VersionContext.find_by(druid:, version:).values).to eq('{"requireOCR":"true","requireTranscript":"true"}')
+        expect(VersionContext.find_by(druid:, version:).values).to eq({ 'requireOCR' => 'true', 'requireTranscript' => 'true' })
 
         # next create the workflow without passing in any context
         expect do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}"
         end.not_to change(WorkflowStep, :count) # no new workflow steps created, they just got replaced
         expect(VersionContext.where(druid:, version:).count).to eq(1) # we still have one context record
-        expect(VersionContext.find_by(druid:, version:).values).to eq('{"requireOCR":"true","requireTranscript":"true"}') # original context
+        # original context
+        expect(VersionContext.find_by(druid:, version:).values).to eq({ 'requireOCR' => 'true', 'requireTranscript' => 'true' })
       end
 
       context 'when the version is passed with nil context' do
@@ -146,14 +148,15 @@ RSpec.describe 'Create a workflow' do
             post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: original_context }
           end.to change(WorkflowStep, :count).by(10)
           expect(VersionContext.where(druid:, version:).count).to eq(1) # we have one context record
-          expect(VersionContext.find_by(druid:, version:).values).to eq('{"requireOCR":"true","requireTranscript":"true"}')
+          expect(VersionContext.find_by(druid:, version:).values).to eq({ 'requireOCR' => 'true', 'requireTranscript' => 'true' })
 
           # next create the workflow passing in nil context
           expect do
             post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: nil }
           end.not_to change(WorkflowStep, :count) # no new workflow steps created, they just got replaced
           expect(VersionContext.where(druid:, version:).count).to eq(1) # we still have one context record
-          expect(VersionContext.find_by(druid:, version:).values).to eq('{"requireOCR":"true","requireTranscript":"true"}') # original context
+          # original context
+          expect(VersionContext.find_by(druid:, version:).values).to eq({ 'requireOCR' => 'true', 'requireTranscript' => 'true' })
         end
       end
     end

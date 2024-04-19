@@ -139,7 +139,7 @@ RSpec.describe WorkflowStep do
     let(:step_with_context) { FactoryBot.create(:workflow_step, :with_ocr_context) }
 
     it 'includes the context as json' do
-      expect(step_with_context.context).to eq('{"requireOCR":true,"requireTranscript":true}')
+      expect(step_with_context.context).to eq({ 'requireOCR' => true, 'requireTranscript' => true })
     end
   end
 

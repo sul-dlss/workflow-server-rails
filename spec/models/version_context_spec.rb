@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe VersionContext do
   let(:version_context) { FactoryBot.create(:version_context) }
 
-  it 'includes the context as json' do
-    expect(version_context.values).to eq('{"requireOCR":true,"requireTranscript":true}')
+  it 'includes the context as a hash' do
+    expect(version_context.values).to eq({ 'requireOCR' => true, 'requireTranscript' => true })
   end
 
   it 'validates the uniqueness of druid and version combination' do

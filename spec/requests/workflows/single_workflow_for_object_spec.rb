@@ -44,7 +44,7 @@ RSpec.describe 'Get a single workflow for an object' do
         <workflow objectId="#{druid}" id="accessionWF">
           <process version="1" note="" lifecycle="" laneId="default" elapsed=""
            attempts="0" datetime="#{date}"
-           context="{&quot;requireOCR&quot;:true,&quot;requireTranscript&quot;:true}"
+           context="{&quot;requireOCR&quot;=&gt;true, &quot;requireTranscript&quot;=&gt;true}"
           status="waiting" name="start-accession"/>
         </workflow>
       XML

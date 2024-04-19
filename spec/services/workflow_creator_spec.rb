@@ -74,7 +74,7 @@ RSpec.describe WorkflowCreator do
         expect(QueueService).to have_received(:enqueue).with(first_step)
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
         # returns context as json
-        expect(VersionContext.find_by(druid:, version: 1).values).to eq('{"requireOCR":true,"requireTranscript":true}')
+        expect(VersionContext.find_by(druid:, version: 1).values).to eq({ 'requireOCR' => true, 'requireTranscript' => true })
       end
     end
   end

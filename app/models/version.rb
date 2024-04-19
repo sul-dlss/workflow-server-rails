@@ -19,7 +19,7 @@ class Version
     if context.blank?
       VersionContext.find_by(druid:, version: version_id)&.destroy
     else # otherwise, create/update the version context record as json in the database
-      VersionContext.find_or_create_by(druid:, version: version_id).update!(values: context.to_json)
+      VersionContext.find_or_create_by(druid:, version: version_id).update!(values: context)
     end
   end
 
