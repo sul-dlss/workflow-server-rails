@@ -4,5 +4,4 @@
 class VersionContext < ApplicationRecord
   validates :druid, uniqueness: { scope: :version }
   validates_with DruidValidator
-  serialize :context, coder: JSON
 end

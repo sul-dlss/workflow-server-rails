@@ -40,6 +40,7 @@ class WorkflowsController < ApplicationController
     @workflow = Workflow.new(name: params[:workflow], druid: params[:druid], steps: workflow_steps)
   end
 
+  # rubocop:disable Metrics/AbcSize
   def create
     return render(plain: 'Unknown workflow', status: :bad_request) if template.nil?
 
@@ -49,12 +50,13 @@ class WorkflowsController < ApplicationController
       version: Version.new(
         druid: params[:druid],
         version: params[:version],
-        context:
+        context: params[:context] # any context in the body of the request as JSON; wrapped in "context" key to allow for future body values
       )
     ).create_workflow_steps
 
     head :created
   end
+  # rubocop:enable Metrics/AbcSize
 
   def destroy
     obj = Version.new(
@@ -66,10 +68,6 @@ class WorkflowsController < ApplicationController
   end
 
   private
-
-  def context
-    params[:context] || nil
-  end
 
   def initial_parser
     @initial_parser ||= begin

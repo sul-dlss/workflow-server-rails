@@ -47,13 +47,6 @@ class WorkflowStep < ApplicationRecord
     VersionContext.find_by(druid:, version:)&.values
   end
 
-  # context as json to return to the client (or nil )
-  def context_as_json
-    return nil unless context
-
-    context.to_json
-  end
-
   ##
   # indicate if this step is marked as completed
   # @return [boolean]
@@ -99,6 +92,7 @@ class WorkflowStep < ApplicationRecord
   end
 
   # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def attributes_for_process
     {
       version:,
@@ -108,7 +102,7 @@ class WorkflowStep < ApplicationRecord
       elapsed:,
       attempts:,
       datetime: updated_at.to_time.iso8601,
-      context: context_as_json,
+      context: context&.to_json, # context (which is deserialized as a hash by activerecord) as json so it can be deserialized by client
       status:,
       name: process
     }.tap do |attr|
@@ -116,4 +110,5 @@ class WorkflowStep < ApplicationRecord
     end
   end
   # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 end
