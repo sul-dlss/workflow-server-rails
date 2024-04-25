@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :workflow_step do
     sequence :druid do |n|
-      "druid:bb123bc#{n.to_s.rjust(4, '0')}" # ensure we always have a valid druid format
+      "druid:bb123bc#{format('%04d', n)}" # ensure we always have a valid druid format
     end
     workflow { 'accessionWF' }
     process { 'start-accession' }
@@ -14,6 +14,12 @@ FactoryBot.define do
     trait :completed do
       status { 'completed' }
       completed_at { Time.now }
+    end
+
+    trait :with_ocr_context do
+      after(:create) do |step|
+        create(:version_context, druid: step.druid, version: step.version)
+      end
     end
   end
 end

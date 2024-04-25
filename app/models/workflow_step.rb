@@ -2,7 +2,7 @@
 
 # Models a process that occurred for a digital object. Basically a log entry.
 class WorkflowStep < ApplicationRecord
-  validate :druid_is_valid
+  validates_with DruidValidator
   validates :workflow, presence: true
   validates :process, presence: true
   validates :version, numericality: { only_integer: true }
@@ -42,6 +42,11 @@ class WorkflowStep < ApplicationRecord
     self.completed_at ||= Time.now
   end
 
+  # any associated version context for this step (if it exists) -- note: same for any workflow/step for a given druid/version combination
+  def context
+    VersionContext.find_by(druid:, version:)&.values
+  end
+
   ##
   # indicate if this step is marked as completed
   # @return [boolean]
@@ -57,13 +62,6 @@ class WorkflowStep < ApplicationRecord
     else
       created_at.to_time.iso8601
     end
-  end
-
-  ##
-  # check if we have a valid druid with prefix
-  # @return [boolean]
-  def valid_druid?
-    DruidTools::Druid.valid?(druid, true) && druid.starts_with?('druid:')
   end
 
   ##
@@ -83,11 +81,6 @@ class WorkflowStep < ApplicationRecord
     wtp.processes.map(&:name).include? process
   end
 
-  # ensure we have a valid druid with prefix
-  def druid_is_valid
-    errors.add(:druid, 'is not valid') unless valid_druid?
-  end
-
   # ensure we have a valid workflow before creating a new step
   def workflow_exists
     errors.add(:workflow, 'is not valid') unless valid_workflow?
@@ -99,6 +92,7 @@ class WorkflowStep < ApplicationRecord
   end
 
   # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def attributes_for_process
     {
       version:,
@@ -108,6 +102,7 @@ class WorkflowStep < ApplicationRecord
       elapsed:,
       attempts:,
       datetime: updated_at.to_time.iso8601,
+      context: context&.to_json, # context (which is deserialized as a hash by activerecord) as json so it can be deserialized by client
       status:,
       name: process
     }.tap do |attr|
@@ -115,4 +110,5 @@ class WorkflowStep < ApplicationRecord
     end
   end
   # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 end

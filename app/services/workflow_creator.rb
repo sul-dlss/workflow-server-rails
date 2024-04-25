@@ -18,6 +18,7 @@ class WorkflowCreator
   ##
   # Delete all the rows for this druid/version/workflow, and replace with new rows.
   # @return [Array]
+  # rubocop:disable Metrics/AbcSize
   def create_workflow_steps
     ActiveRecord::Base.transaction do
       version.workflow_steps(workflow_id).destroy_all
@@ -28,9 +29,13 @@ class WorkflowCreator
       processes.map do |process|
         WorkflowStep.create!(workflow_attributes(process))
       end
+
+      # Create/update version context
+      version.update_context
     end
     enqueue
   end
+  # rubocop:enable Metrics/AbcSize
 
   private
 

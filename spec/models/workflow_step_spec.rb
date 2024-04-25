@@ -135,6 +135,20 @@ RSpec.describe WorkflowStep do
     end
   end
 
+  context 'with workflow context' do
+    let(:step_with_context) { FactoryBot.create(:workflow_step, :with_ocr_context) }
+
+    it 'includes the context as json' do
+      expect(step_with_context.context).to eq({ 'requireOCR' => true, 'requireTranscript' => true })
+    end
+  end
+
+  context 'without workflow context' do
+    it 'includes the context as nil' do
+      expect(step.context).to be_nil
+    end
+  end
+
   describe '#completed?' do
     it 'indicates if the step is not completed' do
       expect(step).not_to be_completed

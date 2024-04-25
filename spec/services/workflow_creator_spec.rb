@@ -12,14 +12,6 @@ RSpec.describe WorkflowCreator do
     InitialWorkflowParser.new(xml)
   end
 
-  let(:wf_creator) do
-    described_class.new(
-      workflow_id: wf_parser.workflow_id,
-      processes: wf_parser.processes,
-      version: Version.new(druid:, version: 1)
-    )
-  end
-
   before do
     allow(SendUpdateMessage).to receive(:publish)
     allow(QueueService).to receive(:enqueue)
@@ -28,29 +20,61 @@ RSpec.describe WorkflowCreator do
   describe '#create_workflow_steps' do
     subject(:create_workflow_steps) { wf_creator.create_workflow_steps }
 
-    it 'creates a WorkflowStep for each process' do
-      expect do
-        create_workflow_steps
-      end.to change(WorkflowStep, :count).by(10)
-      expect(WorkflowStep.last.druid).to eq druid
-      first_step = WorkflowStep.find_by(druid:, process: 'start-accession')
-      expect(QueueService).to have_received(:enqueue).with(first_step)
-      expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
-    end
-
-    context 'when workflow steps already exists' do
-      before do
-        wf_creator.create_workflow_steps
+    context 'without context' do
+      let(:wf_creator) do
+        described_class.new(
+          workflow_id: wf_parser.workflow_id,
+          processes: wf_parser.processes,
+          version: Version.new(druid:, version: 1)
+        )
       end
 
-      it 'replaces them' do
+      it 'creates a WorkflowStep for each process' do
         expect do
           create_workflow_steps
-        end.not_to change(WorkflowStep, :count)
+        end.to change(WorkflowStep, :count).by(10)
+        expect(WorkflowStep.last.druid).to eq druid
         first_step = WorkflowStep.find_by(druid:, process: 'start-accession')
         expect(QueueService).to have_received(:enqueue).with(first_step)
-        # The first time was for the test setup in the before hook.
-        expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep).twice
+        expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
+      end
+
+      context 'when workflow steps already exists' do
+        before do
+          wf_creator.create_workflow_steps
+        end
+
+        it 'replaces them' do
+          expect do
+            create_workflow_steps
+          end.not_to change(WorkflowStep, :count)
+          first_step = WorkflowStep.find_by(druid:, process: 'start-accession')
+          expect(QueueService).to have_received(:enqueue).with(first_step)
+          # The first time was for the test setup in the before hook.
+          expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep).twice
+        end
+      end
+    end
+
+    context 'with context' do
+      let(:wf_creator) do
+        described_class.new(
+          workflow_id: wf_parser.workflow_id,
+          processes: wf_parser.processes,
+          version: Version.new(druid:, version: 1, context: { requireOCR: true, requireTranscript: true })
+        )
+      end
+
+      it 'creates a WorkflowStep for each process, along with version context' do
+        expect do
+          create_workflow_steps
+        end.to change(WorkflowStep, :count).by(10)
+        expect(WorkflowStep.last.druid).to eq druid
+        first_step = WorkflowStep.find_by(druid:, process: 'start-accession')
+        expect(QueueService).to have_received(:enqueue).with(first_step)
+        expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
+        # returns context as json
+        expect(VersionContext.find_by(druid:, version: 1).values).to eq({ 'requireOCR' => true, 'requireTranscript' => true })
       end
     end
   end

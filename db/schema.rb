@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_11_212454) do
-
+ActiveRecord::Schema[7.0].define(version: 2024_04_02_194159) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "version_contexts", force: :cascade do |t|
+    t.string "druid", null: false
+    t.integer "version", default: 1, null: false
+    t.jsonb "values", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["druid", "version"], name: "index_version_contexts_on_druid_and_version", unique: true
+  end
 
   create_table "workflow_steps", id: :serial, force: :cascade do |t|
     t.string "druid", null: false
@@ -28,10 +36,10 @@ ActiveRecord::Schema.define(version: 2020_08_11_212454) do
     t.integer "version"
     t.text "note"
     t.string "lane_id", default: "default", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "active_version", default: false
-    t.datetime "completed_at"
+    t.datetime "completed_at", precision: nil
     t.index ["active_version", "status", "workflow", "process"], name: "active_version_step_name_workflow2_idx"
     t.index ["druid", "version"], name: "index_workflow_steps_on_druid_and_version"
     t.index ["druid"], name: "index_workflow_steps_on_druid"
