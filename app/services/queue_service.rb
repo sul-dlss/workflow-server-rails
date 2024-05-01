@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Service for add workflow steps to Resqueue queues
+# Service for add workflow steps to Sidekiq queues
 class QueueService
   # Enqueue the provided step
   # NOTE: This should only be called by one process at a time. Wrap this in a database row lock.
