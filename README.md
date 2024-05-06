@@ -32,7 +32,12 @@ disseminationWF_low
 ## Developers
 
 ### Configuration
-The credentials for SideKiq Pro must be provided (e.g., in `.bash_profile`): `export BUNDLE_GEMS__CONTRIBSYS__COM=xxxx:xxxx` (available from shared_configs).
+The credentials for SideKiq Pro must be set on your laptop (e.g., in `.bash_profile`): `export BUNDLE_GEMS__CONTRIBSYS__COM=xxxx:xxxx`
+
+You can get this value from the servers, just SSH into one of the app servers and echo the value:
+```
+echo $BUNDLE_GEMS__CONTRIBSYS__COM
+```
 
 ### Build
 Build the production image:
