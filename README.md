@@ -43,10 +43,10 @@ docker build -t suldlss/workflow-server:latest .
 ### Run the development stack
 ```
 $ docker-compose up -d
+$ docker-compose stop app
 [FIRST RUN]
-$ docker-compose run app rake db:setup
-$ docker-compose stop
-$ docker-compose up -d
+$ rake db:setup
+$ rails s
 [ -------- ]
 ```
 
@@ -66,7 +66,7 @@ docker-compose up db
 
 The first time you run tests, you may need to run this before the tests (from another terminal window):
 
-`RAILS_ENV=test ./bin/rails db:create db:migrate`
+`RAILS_ENV=test ./bin/rails rake db:setup`
 
 To run tests:
 ```
