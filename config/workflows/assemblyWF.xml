@@ -5,7 +5,7 @@
   </process>
   <process name="content-metadata-create">
     <prereq>start-assembly</prereq>
-    <label>Create contentMetadata.xml from stub (from Goobi) if it exists; any contentMetadata.xml is converted and posted to cocina object</label>
+    <label>Create structural metadata from stub (from Goobi) if it exists.</label>
   </process>
   <process name="jp2-create">
     <prereq>content-metadata-create</prereq>

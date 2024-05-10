@@ -12,7 +12,7 @@ RSpec.describe 'Show a workflow template' do
         { 'label' => 'Initiate assembly of the object',
           'name' => 'start-assembly' },
         { 'label' =>
-          'Create contentMetadata.xml from stub (from Goobi) if it exists; any contentMetadata.xml is converted and posted to cocina object',
+          'Create structural metadata from stub (from Goobi) if it exists.',
           'name' => 'content-metadata-create' },
         { 'label' => 'Create JP2 derivatives for images in object',
           'name' => 'jp2-create' },
