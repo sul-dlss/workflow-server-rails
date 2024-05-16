@@ -3,9 +3,13 @@
   <process name="start-ocr">
     <label>Initiate OCR for the object</label>
   </process>
-  <process name="ocr-create">
+  <process name="fetch-files">
     <prereq>start-ocr</prereq>
-    <label>Generate OCR for the content in the object (if requested and possible)</label>
+    <label>Copy files for OCR from Preservation</label>
+  </process>
+  <process name="ocr-create">
+    <prereq>fetch-files</prereq>
+    <label>Generate OCR for files</label>
   </process>
   <process name="split-ocr-xml">
     <prereq>ocr-create</prereq>
