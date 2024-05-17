@@ -7,16 +7,28 @@
     <prereq>start-ocr</prereq>
     <label>Copy files for OCR from Preservation</label>
   </process>
-  <process name="ocr-create">
+  <process name="xml-ticket-create">
     <prereq>fetch-files</prereq>
-    <label>Generate OCR for files</label>
+    <label>Create the XML ticket for ABBYY</label>
+  </process>
+  <process name="ocr-create">
+    <prereq>xml-ticket-create</prereq>
+    <label>Wait for ABBYY to generate OCR for files</label>
   </process>
   <process name="split-ocr-xml">
     <prereq>ocr-create</prereq>
     <label>Split full document OCR XML into page level OCR XML</label>
   </process>
-  <process name="end-ocr">
+  <process name="update-cocina">
     <prereq>split-ocr-xml</prereq>
+    <label>Add new OCR files to cocina structural with correct attributes</label>
+  </process>
+  <process name="stage-files">
+    <prereq>update-cocina</prereq>
+    <label>Move new OCR files to workspace</label>
+  </process>
+  <process name="end-ocr">
+    <prereq>stage-files</prereq>
     <label>Complete OCR tasks for the object</label>
   </process>
 </workflow-def>
