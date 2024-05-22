@@ -27,8 +27,12 @@
     <prereq>stage-files</prereq>
     <label>Add new OCR files to cocina structural with correct attributes</label>
   </process>
-  <process name="end-ocr">
+  <process name="ocr-workspace-cleanup">
     <prereq>update-cocina</prereq>
+    <label>Cleanup empty folders from OCR/ABBYY workspace</label>
+  </process>
+  <process name="end-ocr">
+    <prereq>ocr-workspace-cleanup</prereq>
     <label>Complete OCR tasks for the object</label>
   </process>
 </workflow-def>
