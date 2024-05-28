@@ -41,7 +41,7 @@ class NextStepService
       results_before_update
     end
 
-    # We mustn't enqueue steps before the transaction completes, otherwise the workers
+    # We must not enqueue steps before the transaction completes, otherwise the workers
     # could start working on it and find it to still be "waiting".
     results.each { |next_step| QueueService.enqueue(next_step) }
   end

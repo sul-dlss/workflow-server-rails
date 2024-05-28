@@ -26,7 +26,25 @@ class TablesHaveDataCheck < OkComputer::Check
   end
 end
 
+# check the depth of the ocr queue
+class OcrQueueDepthCheck < OkComputer::Check
+  MAX_OCR_WAITING = 20 # alert if we have more than this number of objects waiting in ocrWF:ocr-create
+
+  def check
+    num_ocr_waiting = WorkflowStep.where(workflow: 'ocrWF', process: 'ocr-create').active.waiting.size
+
+    msg = "ocrWF:ocr-create step has #{num_ocr_waiting} waiting"
+    if num_ocr_waiting > MAX_OCR_WAITING
+      mark_failure
+      msg += " (more than #{MAX_OCR_WAITING})"
+    end
+
+    mark_message msg
+  end
+end
+
 OkComputer::Registry.register 'feature-tables-have-data', TablesHaveDataCheck.new
+OkComputer::Registry.register 'ocr_queue_depth', OcrQueueDepthCheck.new
 
 if Settings.rabbitmq.enabled
   OkComputer::Registry.register 'rabbit',
