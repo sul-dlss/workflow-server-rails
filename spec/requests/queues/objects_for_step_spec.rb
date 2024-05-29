@@ -253,16 +253,16 @@ RSpec.describe 'Objects for workstep' do
 
     let!(:waiting) do
       FactoryBot.create(:workflow_step,
-                        workflow: 'versioningWF',
-                        process: 'start-accession',
+                        workflow: 'preservationIngestWF',
+                        process: 'complete-ingest',
                         status: 'waiting',
                         active_version: true)
     end
 
     let!(:second_waiting) do
       FactoryBot.create(:workflow_step,
-                        workflow: 'versioningWF',
-                        process: 'start-accession',
+                        workflow: 'preservationIngestWF',
+                        process: 'complete-ingest',
                         status: 'waiting',
                         active_version: true)
     end
@@ -270,15 +270,15 @@ RSpec.describe 'Objects for workstep' do
     before do
       # It shouldn't show this one because it's the wrong process
       FactoryBot.create(:workflow_step,
-                        workflow: 'versioningWF',
-                        process: 'submit-version',
+                        workflow: 'preservationIngestWF',
+                        process: 'transfer-object',
                         status: 'waiting',
                         active_version: true)
     end
 
     context 'with repository-qualified step names' do
       it 'shows the items that are waiting' do
-        get '/workflow_queue?waiting=dor%3AversioningWF%3Astart-accession'
+        get '/workflow_queue?waiting=dor%3ApreservationIngestWF%3Acomplete-ingest'
 
         expect(response.body).to be_equivalent_to expected_xml
       end
@@ -286,7 +286,7 @@ RSpec.describe 'Objects for workstep' do
 
     context 'without repository-qualified step names' do
       it 'shows the items that are waiting' do
-        get '/workflow_queue?waiting=versioningWF%3Astart-accession'
+        get '/workflow_queue?waiting=preservationIngestWF%3Acomplete-ingest'
 
         expect(response.body).to be_equivalent_to expected_xml
       end
