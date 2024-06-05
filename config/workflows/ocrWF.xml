@@ -19,16 +19,16 @@
     <prereq>ocr-create</prereq>
     <label>Split full document OCR XML into page level OCR XML</label>
   </process>
-  <process name="update-cocina">
-    <prereq>split-ocr-xml</prereq>
-    <label>Add new OCR files to cocina structural with correct attributes</label>
-  </process>
   <process name="stage-files">
-    <prereq>update-cocina</prereq>
+    <prereq>split-ocr-xml</prereq>
     <label>Move new OCR files to workspace</label>
   </process>
-  <process name="end-ocr">
+  <process name="update-cocina">
     <prereq>stage-files</prereq>
+    <label>Add new OCR files to cocina structural with correct attributes</label>
+  </process>
+  <process name="end-ocr">
+    <prereq>update-cocina</prereq>
     <label>Complete OCR tasks for the object</label>
   </process>
 </workflow-def>
