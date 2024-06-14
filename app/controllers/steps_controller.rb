@@ -14,6 +14,21 @@ class StepsController < ApplicationController
     head :no_content
   end
 
+  # Used by ocrWF to skip all steps if files don't exist
+  # Added as endpoint to centralize logic for future use and to allow all updates to be made in one transaction
+  def skip_all
+    query = WorkflowStep.where(druid: params[:druid],
+                               active_version: true,
+                               workflow: params[:workflow])
+    parser = ProcessParser.new(process_from_request_body)
+    WorkflowStep.transaction do
+      query.each do |record|
+        record.update(status: 'skipped', note: parser.to_h[:note])
+      end
+    end
+    head :no_content
+  end
+
   # Update a single WorkflowStep
   # If there are next steps, they are enqueued.
   # rubocop:disable Metrics/AbcSize

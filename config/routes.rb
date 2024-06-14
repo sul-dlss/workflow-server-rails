@@ -9,6 +9,8 @@ Rails.application.routes.draw do
       collection do
         post ':workflow', to: 'workflows#create'
         put ':workflow/:process', to: 'steps#update'
+        # made a post because it conflicts with the line above when a put request
+        post ':workflow/skip-all', to: 'steps#skip_all'
       end
     end
   end
