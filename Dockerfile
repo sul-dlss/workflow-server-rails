@@ -1,10 +1,12 @@
-FROM ruby:3.2.2-alpine
+FROM ruby:3.3.1-bookworm
 
-# postgresql-client is required for invoke.sh
-RUN apk --no-cache add \
-  postgresql-dev \
-  postgresql-client \
-  tzdata
+ENV RAILS_ENV=production
+ENV BUNDLER_WITHOUT="development test"
+
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+  && apt-get -y install --no-install-recommends \
+      postgresql-client postgresql-contrib libpq-dev \
+      tzdata
 
 ARG BUNDLE_GEMS__CONTRIBSYS__COM
 ENV BUNDLE_GEMS__CONTRIBSYS__COM $BUNDLE_GEMS__CONTRIBSYS__COM
@@ -17,10 +19,7 @@ WORKDIR /app
 
 COPY Gemfile Gemfile.lock ./
 
-RUN apk --no-cache add --virtual build-dependencies \
-  build-base \
-  && bundle install --without development test\
-&& apk del build-dependencies
+RUN bundle install
 
 COPY . .
 
