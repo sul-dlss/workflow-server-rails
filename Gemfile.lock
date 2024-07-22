@@ -138,7 +138,7 @@ GEM
       railties (>= 5.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    honeybadger (5.14.0)
+    honeybadger (5.15.0)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     jbuilder (2.12.0)
@@ -239,7 +239,7 @@ GEM
     regexp_parser (2.9.2)
     request_store (1.7.0)
       rack (>= 1.4)
-    rexml (3.3.1)
+    rexml (3.3.2)
       strscan
     rspec-core (3.13.0)
       rspec-support (~> 3.13.0)
