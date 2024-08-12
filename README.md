@@ -47,8 +47,8 @@ docker build -t suldlss/workflow-server:latest .
 
 ### Run the development stack
 ```
-$ docker-compose up -d
-$ docker-compose stop app
+$ docker compose up -d
+$ docker compose stop app
 [FIRST RUN]
 $ rake db:setup
 $ rails s
@@ -66,7 +66,7 @@ $ docker exec -it (container id) /bin/sh
 You need to be running the postgres database.  One of the easiest ways is to use the docker-compose db via separate terminal window:
 
 ```
-docker-compose up db
+docker compose up db
 ```
 
 The first time you run tests, you may need to run this before the tests (from another terminal window):
@@ -81,7 +81,7 @@ bundle exec rspec
 To shut down postgres afterwards,
 
 - cntl-C in your existing docker-compose terminal window.
-- ```docker-compose down``` afterwards
+- ```docker compose down``` afterwards
 
 ## Routes:
 `GET    /objects/:druid/lifecycle` - Returns the milestones in the lifecycle that have been completed
