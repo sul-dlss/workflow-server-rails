@@ -32,6 +32,7 @@ RSpec.describe 'List the workflow templates' do
       sdrIngestWF
       sdrMigrationWF
       sdrRecoveryWF
+      speechToTextWF
       swIndexWF
       versioningWF
       wasCrawlDisseminationWF
