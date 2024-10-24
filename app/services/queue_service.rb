@@ -26,6 +26,8 @@ class QueueService
 
   private
 
+  DSA_ROBOTS = ['Robots::DorRepo::Accession::Publish'].freeze
+
   # Generate the queue name from step
   #
   # @example
@@ -36,6 +38,9 @@ class QueueService
                       # Special case because this robot can eats up too much memory if more
                       # than one instance is running on a worker box simultaneously
                       'assemblyWF_jp2'
+                    elsif DSA_ROBOTS.include?(class_name)
+                      # DSA only handles certain robots. Those need to be sent to separate queues.
+                      "#{step.workflow}_#{step.lane_id}_dsa"
                     else
                       "#{step.workflow}_#{step.lane_id}"
                     end
