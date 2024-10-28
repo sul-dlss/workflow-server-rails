@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem 'rails', '~> 7.0.0'
+gem 'rails', '~> 7.1.0'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'bunny', '~> 2.17'
@@ -15,7 +15,7 @@ gem 'lograge'
 gem 'okcomputer'
 gem 'pg'
 gem 'pry' # make it possible to use pry for IRB (in prod debugging)
-gem 'puma', '~> 5.3' # app server
+gem 'puma'
 gem 'sidekiq', '~> 7.0'
 gem 'whenever', require: false
 
@@ -29,8 +29,8 @@ group :development, :test do
   # NOTE: factory_bot_rails >= 6.3.0 requires env/test.rb to have config.factory_bot.reject_primary_key_attributes = false
   gem 'factory_bot_rails'
   gem 'rspec_junit_formatter'
-  gem 'rspec-rails', '~> 5.0'
-  gem 'rubocop', '~> 1.0'
+  gem 'rspec-rails'
+  gem 'rubocop'
   gem 'rubocop-capybara'
   gem 'rubocop-factory_bot'
   gem 'rubocop-rails'

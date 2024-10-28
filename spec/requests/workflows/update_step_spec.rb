@@ -23,7 +23,7 @@ RSpec.describe 'Update a workflow step for an object' do
     end
 
     it 'clears the old error message, but preserves the lifecycle' do
-      put "/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}", params: process_xml
+      put "/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}", params: process_xml, headers: { 'Content-Type' => 'application/xml' }
 
       wf.reload
       expect(wf.status).to eq 'completed'
@@ -43,7 +43,7 @@ RSpec.describe 'Update a workflow step for an object' do
     end
 
     it 'does not change the lane_id' do
-      put "/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}", params: process_xml
+      put "/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}", params: process_xml, headers: { 'Content-Type' => 'application/xml' }
 
       wf.reload
       expect(wf.status).to eq 'completed'
@@ -59,7 +59,7 @@ RSpec.describe 'Update a workflow step for an object' do
     let(:process_xml) { '<process name="submit" status="completed" elapsed="3" lifecycle="submitted" laneId="default" note="Yay"/>' }
 
     it 'returns a 404' do
-      put "/objects/#{druid}/workflows/hydrusAssemblyWF/submit", params: process_xml
+      put "/objects/#{druid}/workflows/hydrusAssemblyWF/submit", params: process_xml, headers: { 'Content-Type' => 'application/xml' }
 
       expect(response).to be_not_found
       expect(SendUpdateMessage).not_to have_received(:publish)
@@ -74,7 +74,7 @@ RSpec.describe 'Update a workflow step for an object' do
     end
 
     it 'updates the step with error message/text' do
-      put "/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}", params: process_xml
+      put "/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}", params: process_xml, headers: { 'Content-Type' => 'application/xml' }
 
       expect(wf.reload.status).to eq 'error'
       expect(response.body).to eq '{"next_steps":[]}'
@@ -92,7 +92,7 @@ RSpec.describe 'Update a workflow step for an object' do
     it 'returns a 400 and does not update the step' do
       expect_any_instance_of(WorkflowStep).not_to receive(:update)
 
-      put "/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}", params: process_xml
+      put "/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}", params: process_xml, headers: { 'Content-Type' => 'application/xml' }
 
       expect(response).to be_bad_request
       expect(SendUpdateMessage).not_to have_received(:publish)
@@ -106,7 +106,9 @@ RSpec.describe 'Update a workflow step for an object' do
       it 'does not update the step' do
         expect_any_instance_of(WorkflowStep).not_to receive(:update)
 
-        put "/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}?current-status=not-waiting", params: process_xml
+        put "/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}?current-status=not-waiting",
+            params: process_xml,
+            headers: { 'Content-Type' => 'application/xml' }
 
         # NOTE: `#be_conflict` does not exist as a matcher for 409 errors
         expect(response).to have_http_status :conflict
@@ -118,7 +120,9 @@ RSpec.describe 'Update a workflow step for an object' do
       let(:wf) { FactoryBot.create(:workflow_step, status: 'waiting') }
 
       it 'updates the step' do
-        put "/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}?current-status=waiting", params: process_xml
+        put "/objects/#{druid}/workflows/#{wf.workflow}/#{wf.process}?current-status=waiting",
+            params: process_xml,
+            headers: { 'Content-Type' => 'application/xml' }
 
         expect(wf.reload.status).to eq 'completed'
         expect(response.body).to eq '{"next_steps":[]}'
@@ -137,7 +141,9 @@ RSpec.describe 'Update a workflow step for an object' do
       end
 
       it 'updates the newest version' do
-        put "/objects/#{version1_step.druid}/workflows/#{version1_step.workflow}/#{version1_step.process}", params: process_xml
+        put "/objects/#{version1_step.druid}/workflows/#{version1_step.workflow}/#{version1_step.process}",
+            params: process_xml,
+            headers: { 'Content-Type' => 'application/xml' }
 
         version1_step.reload
         expect(version1_step.status).to eq 'error'
@@ -167,7 +173,7 @@ RSpec.describe 'Update a workflow step for an object' do
       let(:body) { '<process name="shelve" status="error" />' }
 
       it 'updates the step' do
-        put "/objects/#{druid}/workflows/#{workflow_id}/shelve", params: body
+        put "/objects/#{druid}/workflows/#{workflow_id}/shelve", params: body, headers: { 'Content-Type' => 'application/xml' }
 
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
         expect(WorkflowStep.find_by(druid:, process: 'shelve').status).to eq('error')
@@ -175,13 +181,14 @@ RSpec.describe 'Update a workflow step for an object' do
       end
 
       it 'verifies the current status' do
-        put "/objects/#{druid}/workflows/#{workflow_id}/shelve?current-status=not-waiting", params: body
+        put "/objects/#{druid}/workflows/#{workflow_id}/shelve?current-status=not-waiting", params: body,
+                                                                                            headers: { 'Content-Type' => 'application/xml' }
         expect(response.body).to eq('Status in params (not-waiting) does not match current status (waiting)')
         expect(response).to have_http_status(:conflict)
       end
 
       it 'verifies that process in url and body match' do
-        put "/objects/#{druid}/workflows/#{workflow_id}/publish", params: body
+        put "/objects/#{druid}/workflows/#{workflow_id}/publish", params: body, headers: { 'Content-Type' => 'application/xml' }
         expect(response.body).to eq('Process name in body (shelve) does not match process name in URI ' \
                                     '(publish)')
         expect(response).to have_http_status(:bad_request)
@@ -192,7 +199,7 @@ RSpec.describe 'Update a workflow step for an object' do
         duplicate.save(validate: false)
 
         expect do
-          put "/objects/#{druid}/workflows/#{workflow_id}/shelve", params: body
+          put "/objects/#{druid}/workflows/#{workflow_id}/shelve", params: body, headers: { 'Content-Type' => 'application/xml' }
         end.to raise_error "Duplicate workflow step for #{first_step.druid} accessionWF shelve"
       end
     end
@@ -201,7 +208,7 @@ RSpec.describe 'Update a workflow step for an object' do
       let(:body) { '<process name="shelve" status="completed" />' }
 
       it 'updates the step and enqueues next step' do
-        put "/objects/#{druid}/workflows/#{workflow_id}/shelve", params: body
+        put "/objects/#{druid}/workflows/#{workflow_id}/shelve", params: body, headers: { 'Content-Type' => 'application/xml' }
         expect(response.body).to match(/publish/)
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
         expect(WorkflowStep.find_by(druid:, process: 'shelve').status).to eq('completed')
