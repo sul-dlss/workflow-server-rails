@@ -22,6 +22,16 @@ RSpec.describe QueueService do
       end
     end
 
+    context 'when DSA robot (special case)' do
+      let(:step) { FactoryBot.create(:workflow_step, workflow: 'accessionWF', process: 'publish') }
+
+      it 'enqueues to Sidekiq' do
+        service.enqueue
+        expect(Sidekiq::Client).to have_received(:push).with('queue' => 'accessionWF_default_dsa',
+                                                             'class' => 'Robots::DorRepo::Accession::Publish', 'args' => [step.druid])
+      end
+    end
+
     context 'when DorRepo classes' do
       let(:step) { FactoryBot.create(:workflow_step, workflow: 'accessionWF', process: 'technical-metadata') }
 
