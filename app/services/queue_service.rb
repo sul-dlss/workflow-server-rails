@@ -26,7 +26,16 @@ class QueueService
 
   private
 
-  DSA_ROBOTS = ['Robots::DorRepo::Accession::Publish'].freeze
+  DSA_ROBOTS = [
+    'Robots::DorRepo::Accession::Publish',
+    'Robots::DorRepo::Accession::Shelve',
+    'Robots::DorRepo::Accession::ResetWorkspace',
+    'Robots::DorRepo::Accession::SdrIngestTransfer',
+    'Robots::DorRepo::Accession::UpdateDoi',
+    'Robots::DorRepo::Accession::UpdateOrcidWork',
+    'Robots::DorRepo::Goobi::GoobiNotify',
+    'Robots::DorRepo::Release::UpdateMarc'
+  ].freeze
 
   # Generate the queue name from step
   #
