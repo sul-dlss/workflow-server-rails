@@ -33,8 +33,7 @@ class QueueService
     'Robots::DorRepo::Accession::SdrIngestTransfer',
     'Robots::DorRepo::Accession::UpdateDoi',
     'Robots::DorRepo::Accession::UpdateOrcidWork',
-    'Robots::DorRepo::Goobi::GoobiNotify',
-    'Robots::DorRepo::Release::UpdateMarc'
+    'Robots::DorRepo::Goobi::GoobiNotify'
   ].freeze
 
   SPECIAL_ROBOTS = {
@@ -42,7 +41,7 @@ class QueueService
     # than one instance is running on a worker box simultaneously
     'Robots::DorRepo::Assembly::Jp2Create' => 'assemblyWF_jp2',
     # Special case so that can single thread Folio updates
-    'Robotos::DorRepo::Release::UpdateMarc' => 'releaseWF_update-marc_dsa'
+    'Robots::DorRepo::Release::UpdateMarc' => 'releaseWF_update-marc_dsa'
   }.freeze
 
   # Generate the queue name from step
