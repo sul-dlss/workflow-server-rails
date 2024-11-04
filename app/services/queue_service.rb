@@ -37,16 +37,22 @@ class QueueService
     'Robots::DorRepo::Release::UpdateMarc'
   ].freeze
 
+  SPECIAL_ROBOTS = {
+    # Special case because this robot can eats up too much memory if more
+    # than one instance is running on a worker box simultaneously
+    'Robots::DorRepo::Assembly::Jp2Create' => 'assemblyWF_jp2',
+    # Special case so that can single thread Folio updates
+    'Robotos::DorRepo::Release::UpdateMarc' => 'releaseWF_update-marc_dsa'
+  }.freeze
+
   # Generate the queue name from step
   #
   # @example
   #     => 'assemblyWF_default'
   #     => 'assemblyWF_low'
   def queue_name
-    @queue_name ||= if class_name == 'Robots::DorRepo::Assembly::Jp2Create'
-                      # Special case because this robot can eats up too much memory if more
-                      # than one instance is running on a worker box simultaneously
-                      'assemblyWF_jp2'
+    @queue_name ||= if SPECIAL_ROBOTS.include?(class_name)
+                      SPECIAL_ROBOTS[class_name]
                     elsif DSA_ROBOTS.include?(class_name)
                       # DSA only handles certain robots. Those need to be sent to separate queues.
                       "#{step.workflow}_#{step.lane_id}_dsa"
