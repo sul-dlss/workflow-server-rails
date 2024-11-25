@@ -1,7 +1,7 @@
 GEM
   remote: https://gems.contribsys.com/
   specs:
-    sidekiq-pro (7.3.2)
+    sidekiq-pro (7.3.3)
       sidekiq (>= 7.3.0, < 8)
 
 GEM
@@ -148,7 +148,7 @@ GEM
       railties (>= 5.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    honeybadger (5.22.0)
+    honeybadger (5.24.0)
       logger
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
@@ -179,7 +179,7 @@ GEM
     method_source (1.1.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.8)
-    minitest (5.25.1)
+    minitest (5.25.2)
     msgpack (1.7.5)
     net-imap (0.5.1)
       date
@@ -215,7 +215,7 @@ GEM
       method_source (~> 1.0)
     psych (5.2.0)
       stringio
-    puma (6.4.3)
+    puma (6.5.0)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.1.8)
@@ -257,7 +257,7 @@ GEM
     rainbow (3.1.1)
     rake (13.2.1)
     rbtree (0.4.6)
-    rdoc (6.7.0)
+    rdoc (6.8.1)
       psych (>= 4.0.0)
     redis-client (0.22.2)
       connection_pool
@@ -314,7 +314,7 @@ GEM
     ruby-progressbar (1.13.0)
     securerandom (0.3.2)
     set (1.1.0)
-    sidekiq (7.3.5)
+    sidekiq (7.3.6)
       connection_pool (>= 2.3.0)
       logger
       rack (>= 2.2.4)
