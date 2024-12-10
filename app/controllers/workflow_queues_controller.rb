@@ -20,8 +20,12 @@ class WorkflowQueuesController < ApplicationController
   def show
     if params[:waiting].present?
       # Used by hydra_etd:
-      # https://github.com/sul-dlss/hydra_etd/blob/4d19bbbf772cd37c77b7afdf0691966db85d04a3/app/services/cron_base.rb#L10
+      # https://github.com/sul-dlss/hydra_etd/blob/e44caed1cc74df613895061fad724fc92608a9c6/app/services/batch_workflow_operation.rb#L16
       find_waiting_objects
+    elsif params[:error].present?
+      # Used by hydra_etd:
+      # https://github.com/sul-dlss/hydra_etd/blob/e44caed1cc74df613895061fad724fc92608a9c6/app/services/batch_workflow_operation.rb#L16
+      find_errored_objects
     else
       # Used by count_objects_in_step
       # https://github.com/sul-dlss/dor-workflow-service/blob/845edfe4160a165d62b06530138f71e5c816a5c9/lib/dor/services/workflow_service.rb#L499
@@ -41,6 +45,12 @@ class WorkflowQueuesController < ApplicationController
 
     # Get the druids that belong in all (intersection) of the scopes (ActiveRecord::Relations)
     @objects = WorkflowStep.find_by_sql(*IntersectQuery.intersect(scopes)).pluck(:druid)
+  end
+
+  def find_errored_objects
+    workflow, process = params[:error].split(':').last(2)
+
+    @objects = WorkflowStep.where(workflow:, process:, status: 'error').pluck(:druid)
   end
 
   def find_completed_objects
