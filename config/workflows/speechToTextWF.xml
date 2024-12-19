@@ -15,8 +15,12 @@
     <prereq>stt-create</prereq>
     <label>Move new STT files to workspace</label>
   </process>
-  <process name="update-cocina">
+  <process name="process-files">
     <prereq>stage-files</prereq>
+    <label>Process speech to text files to remove problematic phrases</label>
+  </process>
+  <process name="update-cocina">
+    <prereq>process-files</prereq>
     <label>Add new STT files to cocina structural with correct attributes</label>
   </process>
   <process name="stt-workspace-cleanup">
