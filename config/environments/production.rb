@@ -38,11 +38,6 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
-  # Log to STDOUT by default
-  config.logger = ActiveSupport::Logger.new($stdout)
-                                       .tap  { |logger| logger.formatter = Logger::Formatter.new }
-                                       .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
-
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
 
@@ -76,6 +71,7 @@ Rails.application.configure do
 
   config.lograge.enabled = true
   config.lograge.base_controller_class = 'ActionController::API'
+  config.lograge.ignore_actions = ['OkComputer::OkComputerController#show']
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
