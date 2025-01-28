@@ -71,7 +71,7 @@ docker compose up db
 
 The first time you run tests, you may need to run this before the tests (from another terminal window):
 
-`RAILS_ENV=test ./bin/rails rake db:setup`
+`RAILS_ENV=test ./bin/rake db:setup`
 
 To run tests:
 ```
