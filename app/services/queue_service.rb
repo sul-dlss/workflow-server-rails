@@ -24,8 +24,6 @@ class QueueService
     Rails.logger.info "Enqueued #{class_name} for #{step.druid} to #{queue_name}: #{job_id}"
   end
 
-  private
-
   DSA_ROBOTS = [
     'Robots::DorRepo::Accession::Publish',
     'Robots::DorRepo::Accession::Shelve',
@@ -43,6 +41,8 @@ class QueueService
     # Special case so that can single thread Folio updates
     'Robots::DorRepo::Release::UpdateMarc' => 'releaseWF_update-marc_dsa'
   }.freeze
+
+  private
 
   # Generate the queue name from step
   #
