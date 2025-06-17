@@ -39,7 +39,7 @@ RSpec.describe InitialWorkflowParser do
 
     it 'is a list of ProcessParsers' do
       expect(processes).to all be_instance_of ProcessParser
-      expect(processes.size).to eq 10
+      expect(processes.size).to eq ACCESSION_WF_STEP_COUNT
     end
   end
 end

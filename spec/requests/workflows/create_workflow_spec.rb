@@ -24,7 +24,7 @@ RSpec.describe 'Create a workflow' do
       it 'creates new workflows' do
         expect do
           post "/objects/#{druid}/workflows/#{workflow}?version=1"
-        end.to change(WorkflowStep, :count).by(10)
+        end.to change(WorkflowStep, :count).by(ACCESSION_WF_STEP_COUNT)
         expect(WorkflowStep.last.lane_id).to eq('default')
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
       end
@@ -54,7 +54,7 @@ RSpec.describe 'Create a workflow' do
         expect do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: }.to_json,
                                                                              headers: { 'CONTENT_TYPE' => 'application/json' }
-        end.to change(WorkflowStep, :count).by(10)
+        end.to change(WorkflowStep, :count).by(ACCESSION_WF_STEP_COUNT)
         expect(WorkflowStep.last.lane_id).to eq('default')
         expect(VersionContext.find_by(druid:, version:).values).to eq(context)
         expect(SendUpdateMessage).to have_received(:publish).with(step: WorkflowStep)
@@ -69,7 +69,7 @@ RSpec.describe 'Create a workflow' do
         expect do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: string_context }.to_json,
                                                                              headers: { 'CONTENT_TYPE' => 'application/json' }
-        end.to change(WorkflowStep, :count).by(10)
+        end.to change(WorkflowStep, :count).by(ACCESSION_WF_STEP_COUNT)
         expect(VersionContext.where(druid:, version:).count).to eq(1) # we have one context record
         expect(VersionContext.find_by(druid:, version:).values).to eq(string_context)
       end
@@ -85,7 +85,7 @@ RSpec.describe 'Create a workflow' do
         expect do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: original_context }.to_json,
                                                                              headers: { 'CONTENT_TYPE' => 'application/json' }
-        end.to change(WorkflowStep, :count).by(10)
+        end.to change(WorkflowStep, :count).by(ACCESSION_WF_STEP_COUNT)
         expect(VersionContext.where(druid:, version:).count).to eq(1) # we have one context record
         expect(VersionContext.find_by(druid:, version:).values).to eq(original_context)
 
@@ -110,7 +110,7 @@ RSpec.describe 'Create a workflow' do
         expect do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: original_context }.to_json,
                                                                              headers: { 'CONTENT_TYPE' => 'application/json' }
-        end.to change(WorkflowStep, :count).by(10)
+        end.to change(WorkflowStep, :count).by(ACCESSION_WF_STEP_COUNT)
         expect(VersionContext.where(druid:, version:).count).to eq(1) # we have one context record
         expect(VersionContext.find_by(druid:, version:).values).to eq(original_context)
 
@@ -132,7 +132,7 @@ RSpec.describe 'Create a workflow' do
         expect do
           post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: original_context }.to_json,
                                                                              headers: { 'CONTENT_TYPE' => 'application/json' }
-        end.to change(WorkflowStep, :count).by(10)
+        end.to change(WorkflowStep, :count).by(ACCESSION_WF_STEP_COUNT)
         expect(VersionContext.where(druid:, version:).count).to eq(1) # we have one context record
         expect(VersionContext.find_by(druid:, version:).values).to eq(original_context)
 
@@ -154,7 +154,7 @@ RSpec.describe 'Create a workflow' do
           expect do
             post "/objects/#{druid}/workflows/#{workflow}?version=#{version}", params: { context: original_context }.to_json,
                                                                                headers: { 'CONTENT_TYPE' => 'application/json' }
-          end.to change(WorkflowStep, :count).by(10)
+          end.to change(WorkflowStep, :count).by(ACCESSION_WF_STEP_COUNT)
           expect(VersionContext.where(druid:, version:).count).to eq(1) # we have one context record
           expect(VersionContext.find_by(druid:, version:).values).to eq(original_context)
 

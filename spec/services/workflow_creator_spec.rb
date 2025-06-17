@@ -32,7 +32,7 @@ RSpec.describe WorkflowCreator do
       it 'creates a WorkflowStep for each process' do
         expect do
           create_workflow_steps
-        end.to change(WorkflowStep, :count).by(10)
+        end.to change(WorkflowStep, :count).by(ACCESSION_WF_STEP_COUNT)
         expect(WorkflowStep.last.druid).to eq druid
         first_step = WorkflowStep.find_by(druid:, process: 'start-accession')
         expect(QueueService).to have_received(:enqueue).with(first_step)
@@ -68,7 +68,7 @@ RSpec.describe WorkflowCreator do
       it 'creates a WorkflowStep for each process, along with version context' do
         expect do
           create_workflow_steps
-        end.to change(WorkflowStep, :count).by(10)
+        end.to change(WorkflowStep, :count).by(ACCESSION_WF_STEP_COUNT)
         expect(WorkflowStep.last.druid).to eq druid
         first_step = WorkflowStep.find_by(druid:, process: 'start-accession')
         expect(QueueService).to have_received(:enqueue).with(first_step)
