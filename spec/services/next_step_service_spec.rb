@@ -18,7 +18,7 @@ RSpec.describe NextStepService do
       let!(:ready) do
         FactoryBot.create(:workflow_step,
                           druid: step.druid,
-                          process: 'shelve',
+                          process: 'stage',
                           version: 1,
                           status: 'waiting',
                           active_version: true)

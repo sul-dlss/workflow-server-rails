@@ -3,13 +3,17 @@
   <process lifecycle="submitted" name="start-accession">
     <label>Start Accessioning</label>
   </process>
+  <process batch-limit="1000" error-limit="10" name="stage">
+    <label>Copies files (when present) from staging</label>
+    <prereq>start-accession</prereq>
+  </process>
   <process batch-limit="1000" error-limit="10" name="technical-metadata">
     <label>Creates the technical metadata by calling technical-metadata-service, only for item objects with files</label>
-    <prereq>start-accession</prereq>
+    <prereq>stage</prereq>
   </process>
   <process batch-limit="1" error-limit="5" name="shelve">
     <label>Shelve content in Digital Stacks</label>
-    <prereq>start-accession</prereq>
+    <prereq>stage</prereq>
   </process>
   <process batch-limit="100" error-limit="10" lifecycle="published" name="publish">
     <label>Sends metadata to PURL (but it may be updated by releaseWF)</label>

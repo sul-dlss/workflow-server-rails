@@ -13,6 +13,7 @@ RSpec.describe WorkflowTransformer do
         <?xml version="1.0"?>
         <workflow id="accessionWF">
           <process name="start-accession" status="waiting" lifecycle="submitted"/>
+          <process name="stage" status="waiting"/>
           <process name="technical-metadata" status="waiting"/>
           <process name="shelve" status="waiting"/>
           <process name="publish" status="waiting" lifecycle="published"/>
