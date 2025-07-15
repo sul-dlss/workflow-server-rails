@@ -47,7 +47,7 @@ RSpec.describe 'Create a workflow' do
     end
 
     context 'when the version is passed with context' do
-      let(:context) { { 'requireOCR' => true, 'requireTranscript' => true } }
+      let(:context) { { 'requireOCR' => true, 'requireTranscript' => true, 'ocrLanguages' => ['Russian'] } }
       let(:version) { 1 }
 
       it 'creates new workflows with context' do
@@ -76,8 +76,8 @@ RSpec.describe 'Create a workflow' do
     end
 
     context 'when the version is passed with updated context' do
-      let(:original_context) { { 'requireOCR' => true, 'requireTranscript' => true } }
-      let(:new_context) { { 'requireOCR' => false, 'requireTranscript' => true } }
+      let(:original_context) { { 'requireOCR' => true, 'requireTranscript' => 'true', 'ocrLanguages' => ['Russian'] } }
+      let(:new_context) { { 'requireOCR' => false, 'requireTranscript' => 'true', 'ocrLanguages' => ['Russian'] } }
       let(:version) { 1 }
 
       it 'updates existing workflow context' do
